@@ -1,15 +1,20 @@
 package io.github.mygames;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -20,26 +25,26 @@ import java.util.Iterator;
 
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Main extends ApplicationAdapter {
+public class Main implements Screen {
+    final Drop game;
     static int MAIN_WIDH = 640;
     static int MAIN_HEIGHT = 800;
-    protected SpriteBatch batch;
     protected OrthographicCamera camera;
     protected Vector3 touchPos;
     protected Texture image, bucketImage, dropImage;
-    protected Button the_button;
     protected Sound dropSound;
     protected Music rainMusic;
 
     protected Array<Rectangle> raindrops;
     protected long lastDropTime;
+    protected int dropsGathered = 0;
 
     //entity
     Rectangle bucket;
 
-    @Override
-    public void create() {
-        batch = new SpriteBatch();
+    public Main(final Drop dropGame) {
+        game = dropGame;
+
         // load and configure resources
         image = new Texture("libgdx.png");
         //bucketImage = new Texture(Gdx.files.internal("bucket.png"));
@@ -71,22 +76,29 @@ public class Main extends ApplicationAdapter {
     }
 
     @Override
-    public void render() {
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         ScreenUtils.clear(0.15f, 0.15f, 0.1f, 1f);
 
         // сообщаем SpriteBatch о системе координат
         // визуализации указанной для камеры.
-        batch.setProjectionMatrix(camera.combined);
+        game.batch.setProjectionMatrix(camera.combined);
 
         //draw created drops
-        batch.begin();
-        batch.draw(image, 40, 10); //logo
-        batch.draw(bucketImage, bucket.x, bucket.y);
+        game.batch.begin();
+        game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
+        game.batch.draw(image, 40, 10); //logo
+        game.batch.draw(bucketImage, bucket.x, bucket.y);
         for(Rectangle raindrop: raindrops) {
-            batch.draw(dropImage, raindrop.x, raindrop.y);
+            game.batch.draw(dropImage, raindrop.x, raindrop.y);
         }
-        batch.end();
+        game.batch.end();
 
         //controls
         if(Gdx.input.isTouched()) {
@@ -110,15 +122,38 @@ public class Main extends ApplicationAdapter {
             if(raindrop.overlaps(bucket)) {
                 dropSound.play(1.0f);
                 iter.remove();
+                dropsGathered++;
             }
             if(raindrop.y + 64 < 0) iter.remove();
         }
     }
 
     @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
     public void dispose() {
-        batch.dispose();
+        game.batch.dispose();
         image.dispose();
+        dropSound.dispose();
+        rainMusic.dispose();
     }
 
     //functions

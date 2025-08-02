@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+
+import io.github.mygames.Drop;
 import io.github.mygames.Main;
 
 /** Launches the Android application. */
@@ -17,6 +19,6 @@ public class AndroidLauncher extends AndroidApplication {
         configuration.useAccelerometer = false;
         configuration.useCompass = false;
 
-        initialize(new Main(), configuration);
+        initialize(new Drop(), configuration);
     }
 }
