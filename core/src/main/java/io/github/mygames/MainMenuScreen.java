@@ -10,11 +10,11 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class MainMenuScreen implements Screen {
 
-    final Drop drop_game;
+    final ZAFW drop_game;
     OrthographicCamera camera;
 
 
-    public MainMenuScreen(final Drop dropGame) {
+    public MainMenuScreen(final ZAFW dropGame) {
         drop_game = dropGame;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
@@ -39,7 +39,8 @@ public class MainMenuScreen implements Screen {
         drop_game.batch.end();
 
         if (Gdx.input.isTouched()) {
-            drop_game.setScreen(new Main(drop_game));
+            //drop_game.setScreen(new Main(drop_game));
+            drop_game.setScreen(new Ashley_test(drop_game));
             dispose();
         }
     }

@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main implements Screen {
-    final Drop game;
+    final ZAFW game;
     static int MAIN_WIDH = 640;
     static int MAIN_HEIGHT = 800;
     protected OrthographicCamera camera;
@@ -42,7 +42,7 @@ public class Main implements Screen {
     //entity
     Rectangle bucket;
 
-    public Main(final Drop dropGame) {
+    public Main(final ZAFW dropGame) {
         game = dropGame;
 
         // load and configure resources

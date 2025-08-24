@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2D;
 
-public class Drop extends Game {
+public class ZAFW extends Game {
     SpriteBatch batch;
     BitmapFont font;
 
