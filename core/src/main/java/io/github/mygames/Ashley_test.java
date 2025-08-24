@@ -9,11 +9,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.mygames.entity.Enemy;
 import io.github.mygames.systems.MovementSystem;
+import io.github.mygames.systems.NavigationSystem;
 import io.github.mygames.systems.RenderSystem;
 
 /**
@@ -24,11 +27,14 @@ public class Ashley_test implements Screen{
     ZAFW dropGame;
     Engine engine;
     //SpriteBatch batch;
+    Texture image;
     
     MovementSystem mv_sys;
     RenderSystem r_sys;
+    NavigationSystem nav_sys;
     
     Enemy test_actor;
+    Enemy test_marker;
     Vector3 touchPos;
     OrthographicCamera camera;
 
@@ -38,15 +44,24 @@ public class Ashley_test implements Screen{
         //batch = new SpriteBatch();
         mv_sys = new MovementSystem();
         r_sys = new RenderSystem(dropGame.batch);
+        nav_sys = new NavigationSystem();
         
         
         test_actor = new Enemy(engine);
+        test_marker = new Enemy(engine);
+        test_marker.setTexture(new Texture("target.png"));
+        test_marker.setHidden(true);
+        test_marker.setFreeze(true);
+        
         engine.addSystem(mv_sys);
         engine.addSystem(r_sys);
+        engine.addSystem(nav_sys);
         
         camera = new OrthographicCamera();
         camera.setToOrtho(false);
         touchPos = new Vector3();
+        
+        image = new Texture("target.png");
     }
     
     
@@ -64,16 +79,13 @@ public class Ashley_test implements Screen{
         if(Gdx.input.isTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            if (touchPos.x > test_actor.getPosition().pos.x) {
-                test_actor.setVelocity(100.0f, 0f);
-            } else if (touchPos.x < test_actor.getPosition().pos.x) {
-                test_actor.setVelocity(-100.0f, 0f);
-            }
-            if (touchPos.y > test_actor.getPosition().pos.y) {
-                test_actor.setVelocity(0, 100.0f);
-            } else if (touchPos.y < test_actor.getPosition().pos.y) {
-                test_actor.setVelocity(0, -100.0f);
-            }
+            System.out.printf("\n nav from %s to %s", test_actor.getPosition().pos.toString(),touchPos.toString());
+            
+            test_actor.setMoveTo(touchPos);
+            test_marker.setPosition(touchPos.x, touchPos.y, 0);
+            test_marker.setHidden(false);
+            //
+            //touchPos.set(Gdx.input.getX(), 0, 0);
         }
         engine.update(delta);
     }
