@@ -11,11 +11,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import io.github.mygames.components.StateComponent;
-import io.github.mygames.components.TransformComponent;
-import io.github.mygames.components.TextureComponent;
-import jdk.internal.vm.annotation.Stable;
+import io.github.mygames.Components.StateComponent;
+import io.github.mygames.Components.TextureComponent;
+import io.github.mygames.Components.TransformComponent;
 
 /**
  *
@@ -36,7 +34,7 @@ public class Enemy {
         this.texture = engine.createComponent(TextureComponent.class);
         this.state = engine.createComponent(StateComponent.class);
         
-        texture.texture = new TextureRegion(new Texture(Gdx.files.internal("enemy.png")));
+        texture.texture_region = new TextureRegion(new Texture(Gdx.files.internal("enemy.png")));
         //texture.texture.setRegion(20,20,50,50);
         base_entity.add(position);
         base_entity.add(texture);
@@ -45,31 +43,35 @@ public class Enemy {
     }
     
     public void setMoveTo(Vector3 dest) {
-        position.move_to_pos = dest;
+        position.move_to_coords = dest;
     }
     
-    public void setPosition(float x, float y, float z) {
-        position.pos = new Vector3(x,y,z);
+    public Vector3 getCoords() {
+        return position.coords;
+    }
+    
+    public void setCoords(float x, float y, float z) {
+        position.coords = new Vector3(x, y, z);
     }
     
     public void setVelocity(float x, float y) {
-        position.velocity.add(x ,y);
+        position.vel = new Vector2(x, y);
     }
     
     public void setVelocity(Vector2 vel) {
-        position.velocity.add(vel);
+        position.vel.set(vel);
     }
 
     public Entity getBase_entity() {
         return base_entity;
     }
 
-    public TransformComponent getPosition() {
+    public TransformComponent getPositionComponent() {
         return position;
     }
     
     public void setTexture(Texture texture) {
-        this.texture.texture = new TextureRegion(texture);
+        this.texture.texture_region = new TextureRegion(texture);
     }
 
     public TextureComponent getTexture() {
@@ -77,7 +79,7 @@ public class Enemy {
     }
     
     public void setHidden(boolean hide) {
-        this.position.isHidden = hide;
+        this.position.is_hidden = hide;
     }
     
     public void setFreeze(boolean freezes) {

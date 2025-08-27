@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.mygames.entity.Enemy;
@@ -48,6 +47,7 @@ public class Ashley_test implements Screen{
         
         
         test_actor = new Enemy(engine);
+        //test_actor.setFreeze(true);
         test_marker = new Enemy(engine);
         test_marker.setTexture(new Texture("target.png"));
         test_marker.setHidden(true);
@@ -75,18 +75,20 @@ public class Ashley_test implements Screen{
     public void render(float delta) {
         ScreenUtils.clear(Color.GRAY);
         //dropGame.batch.setProjectionMatrix(camera.combined);
-        
+        //test_actor.setVelocity(100, 0);
         if(Gdx.input.isTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            System.out.printf("\n nav from %s to %s", test_actor.getPosition().pos.toString(),touchPos.toString());
             
             test_actor.setMoveTo(touchPos);
-            test_marker.setPosition(touchPos.x, touchPos.y, 0);
+            test_marker.setCoords(touchPos.x, touchPos.y, 0);
             test_marker.setHidden(false);
+            System.out.printf("\n nav from %s to %s", test_actor.getCoords().toString(),test_marker.getCoords().toString());
             //
             //touchPos.set(Gdx.input.getX(), 0, 0);
         }
+        //test_marker.setCoords(100, 0, 0);
+        
         engine.update(delta);
     }
 
