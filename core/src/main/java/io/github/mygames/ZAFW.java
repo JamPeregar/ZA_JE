@@ -17,7 +17,7 @@ public class ZAFW extends Game {
 
         this.setScreen(new MainMenuScreen(this));
 
-        Box2D.init(); //not necessary but for backwards compatibility
+        //Box2D.init(); //not necessary but for backwards compatibility
     }
 
     public void render() {

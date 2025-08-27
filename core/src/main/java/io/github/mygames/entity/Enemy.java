@@ -29,35 +29,34 @@ public class Enemy {
 
     public Enemy(Engine engine) {
         base_entity = engine.createEntity();
-        
+
         this.position = engine.createComponent(TransformComponent.class);
         this.texture = engine.createComponent(TextureComponent.class);
         this.state = engine.createComponent(StateComponent.class);
-        
-        texture.texture_region = new TextureRegion(new Texture(Gdx.files.internal("enemy.png")));
+        texture.texture_region = new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")));
         //texture.texture.setRegion(20,20,50,50);
         base_entity.add(position);
         base_entity.add(texture);
         base_entity.add(state);
         engine.addEntity(base_entity);
     }
-    
+
     public void setMoveTo(Vector3 dest) {
         position.move_to_coords = dest;
     }
-    
+
     public Vector3 getCoords() {
         return position.coords;
     }
-    
+
     public void setCoords(float x, float y, float z) {
         position.coords = new Vector3(x, y, z);
     }
-    
+
     public void setVelocity(float x, float y) {
         position.vel = new Vector2(x, y);
     }
-    
+
     public void setVelocity(Vector2 vel) {
         position.vel.set(vel);
     }
@@ -69,7 +68,7 @@ public class Enemy {
     public TransformComponent getPositionComponent() {
         return position;
     }
-    
+
     public void setTexture(Texture texture) {
         this.texture.texture_region = new TextureRegion(texture);
     }
@@ -77,18 +76,18 @@ public class Enemy {
     public TextureComponent getTexture() {
         return texture;
     }
-    
+
     public void setHidden(boolean hide) {
         this.position.is_hidden = hide;
     }
-    
+
     public void setFreeze(boolean freezes) {
         if (freezes) {
             this.state.the_state = StateComponent.FREEZE;
         } else {
             this.state.the_state = StateComponent.STAYING;
         }
-        
+
     }
-    
+
 }

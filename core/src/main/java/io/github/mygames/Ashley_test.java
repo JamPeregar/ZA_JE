@@ -26,12 +26,12 @@ public class Ashley_test implements Screen{
     ZAFW dropGame;
     Engine engine;
     //SpriteBatch batch;
-    Texture image;
-    
+    //Texture image;
+
     MovementSystem mv_sys;
     RenderSystem r_sys;
     NavigationSystem nav_sys;
-    
+
     Enemy test_actor;
     Enemy test_marker;
     Vector3 touchPos;
@@ -44,31 +44,31 @@ public class Ashley_test implements Screen{
         mv_sys = new MovementSystem();
         r_sys = new RenderSystem(dropGame.batch);
         nav_sys = new NavigationSystem();
-        
-        
+
+
         test_actor = new Enemy(engine);
         //test_actor.setFreeze(true);
         test_marker = new Enemy(engine);
-        test_marker.setTexture(new Texture("target.png"));
+        test_marker.setTexture(new Texture("models/target.png"));
         test_marker.setHidden(true);
         test_marker.setFreeze(true);
-        
+
         engine.addSystem(mv_sys);
         engine.addSystem(r_sys);
         engine.addSystem(nav_sys);
-        
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false);
         touchPos = new Vector3();
-        
-        image = new Texture("target.png");
+
+        //image = new Texture("target.png");
     }
-    
-    
+
+
 
     @Override
     public void show() {
-        
+
     }
 
     @Override
@@ -79,7 +79,7 @@ public class Ashley_test implements Screen{
         if(Gdx.input.isTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            
+
             test_actor.setMoveTo(touchPos);
             test_marker.setCoords(touchPos.x, touchPos.y, 0);
             test_marker.setHidden(false);
@@ -88,33 +88,33 @@ public class Ashley_test implements Screen{
             //touchPos.set(Gdx.input.getX(), 0, 0);
         }
         //test_marker.setCoords(100, 0, 0);
-        
+
         engine.update(delta);
     }
 
     @Override
     public void resize(int width, int height) {
-        
+
     }
 
     @Override
     public void pause() {
-        
+
     }
 
     @Override
     public void resume() {
-        
+
     }
 
     @Override
     public void hide() {
-        
+
     }
 
     @Override
     public void dispose() {
-        
+
     }
-    
+
 }
