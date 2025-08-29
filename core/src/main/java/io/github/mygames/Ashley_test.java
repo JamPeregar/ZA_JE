@@ -58,7 +58,8 @@ public class Ashley_test implements Screen{
         engine.addSystem(nav_sys);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false);
+        //camera.setToOrtho(false);
+        camera.setToOrtho(false, ZAFW.MAIN_WIDH, ZAFW.MAIN_HEIGHT);
         touchPos = new Vector3();
 
         //image = new Texture("target.png");
