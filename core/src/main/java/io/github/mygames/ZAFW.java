@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2D;
 
 public class ZAFW extends Game {
+
+    public static int MAIN_WIDH = 800;
+    public static int MAIN_HEIGHT = 480;
     SpriteBatch batch;
     BitmapFont font;
     static int MAIN_WIDH = 640; //640x800

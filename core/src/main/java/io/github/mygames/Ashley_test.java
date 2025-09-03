@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
-import io.github.mygames.entity.GenericEntity;
+import io.github.mygames.entity.Enemy;
 import io.github.mygames.systems.MovementSystem;
 import io.github.mygames.systems.NavigationSystem;
 import io.github.mygames.systems.RenderSystem;
@@ -32,8 +32,8 @@ public class Ashley_test implements Screen{
     RenderSystem r_sys;
     NavigationSystem nav_sys;
 
-    GenericEntity test_actor;
-    GenericEntity test_marker;
+    Enemy test_actor;
+    Enemy test_marker;
     Vector3 touchPos;
     OrthographicCamera camera;
 
@@ -46,9 +46,9 @@ public class Ashley_test implements Screen{
         nav_sys = new NavigationSystem();
 
 
-        test_actor = new GenericEntity(engine);
+        test_actor = new Enemy(engine);
         //test_actor.setFreeze(true);
-        test_marker = new GenericEntity(engine);
+        test_marker = new Enemy(engine);
         test_marker.setTexture(new Texture("models/target.png"));
         test_marker.setHidden(true);
         test_marker.setFreeze(true);
@@ -57,8 +57,9 @@ public class Ashley_test implements Screen{
         engine.addSystem(r_sys);
         engine.addSystem(nav_sys);
 
-        camera = ZAFW.self().camera;
-        camera.setToOrtho(false);
+        camera = new OrthographicCamera();
+        //camera.setToOrtho(false);
+        camera.setToOrtho(false, ZAFW.MAIN_WIDH, ZAFW.MAIN_HEIGHT);
         touchPos = new Vector3();
 
         //image = new Texture("target.png");

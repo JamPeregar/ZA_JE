@@ -50,7 +50,7 @@ public class Enemy {
     }
 
     public void setCoords(float x, float y, float z) {
-        position.coords = new Vector3(x, y, z);
+        position.coords.set(x, y, z);
     }
 
     public void setVelocity(float x, float y) {
