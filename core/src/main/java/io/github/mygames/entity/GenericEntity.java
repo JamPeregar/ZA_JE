@@ -1,0 +1,128 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package io.github.mygames.entity;
+
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import io.github.mygames.Components.FactionComponent;
+import io.github.mygames.Components.StateComponent;
+import io.github.mygames.Components.TextureComponent;
+import io.github.mygames.Components.TransformComponent;
+
+/**
+ *
+ * @author Admin
+ */
+public class GenericEntity {
+    //components that entity use
+    private final TransformComponent position_cmp;
+    private final TextureComponent texture_cmp;
+    private final StateComponent state_cmp;
+    private final FactionComponent faction_cmp;
+    
+    private final Entity base_entity;
+    //private final Body base_body; //if box2d needed
+
+    public GenericEntity(Engine engine) {
+        base_entity = engine.createEntity();
+
+        this.position_cmp = engine.createComponent(TransformComponent.class);
+        this.texture_cmp = engine.createComponent(TextureComponent.class);
+        this.state_cmp = engine.createComponent(StateComponent.class);
+        this.faction_cmp = engine.createComponent(FactionComponent.class);
+        texture_cmp.texture_region = new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")));
+        //texture.texture.setRegion(20,20,50,50);
+        base_entity.add(position_cmp);
+        base_entity.add(texture_cmp);
+        base_entity.add(state_cmp);
+        base_entity.add(faction_cmp);
+        engine.addEntity(base_entity);
+    }
+    //--------Transform methods------------//
+    
+    public Vector3 getMoveTo(Vector3 dest) {
+        return position_cmp.move_to_coords;
+    }
+    /**
+     * Set movement destionation target
+     * @param dest
+     **/
+    public void setMoveTo(Vector3 dest) {
+        position_cmp.move_to_coords = dest;
+    }
+    /**Get movement destination point
+     * @return **/
+    public float getSpeed() {
+        return position_cmp.acceleration;
+    }
+    
+    public void setSpeed(float speed) {
+        position_cmp.acceleration = speed;
+    }
+
+    public Vector3 getCoords() {
+        return position_cmp.coords;
+    }
+
+    public void setCoords(float x, float y, float z) {
+        position_cmp.coords = new Vector3(x, y, z);
+    }
+
+    public Vector2 getVelocity() {
+        return position_cmp.vel;
+    }
+    
+    public void setVelocity(float x, float y) {
+        position_cmp.vel = new Vector2(x, y);
+    }
+
+    public void setVelocity(Vector2 vel) {
+        position_cmp.vel.set(vel);
+    }
+    
+    public void setFreeze(boolean freezes) {
+        if (freezes) {
+            this.state_cmp.the_state = StateComponent.FREEZE;
+        } else {
+            this.state_cmp.the_state = StateComponent.STAYING;
+        }
+
+    }
+    
+    //-------------Faction methods------------//
+    
+    public int getFaction() {
+        return faction_cmp.faction;
+    }
+    
+    public void setFaction(int faction) {
+        faction_cmp.faction = faction;
+    }
+    
+    //-------------Render methods------------//
+    
+    public TextureComponent getTexture() {
+        return texture_cmp;
+    }
+    
+    public void setTexture(Texture texture) {
+        this.texture_cmp.texture_region = new TextureRegion(texture);
+    }
+
+    public void setHidden(boolean hide) {
+        this.position_cmp.is_hidden = hide;
+    }
+    
+    //--------------Other methods------------//
+    public Entity getBase_entity() {
+        return base_entity;
+    }
+
+}

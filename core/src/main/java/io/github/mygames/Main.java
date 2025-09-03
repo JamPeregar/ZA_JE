@@ -27,8 +27,6 @@ import java.util.Iterator;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main implements Screen {
     final ZAFW game;
-    static int MAIN_WIDH = 640;
-    static int MAIN_HEIGHT = 800;
     protected OrthographicCamera camera;
     protected Vector3 touchPos;
     protected Texture image, bucketImage, dropImage;
@@ -60,12 +58,12 @@ public class Main implements Screen {
         rainMusic.play();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, MAIN_WIDH, MAIN_HEIGHT);
+        camera.setToOrtho(false, ZAFW.MAIN_WIDH, ZAFW.MAIN_HEIGHT);
         touchPos = new Vector3();
         //figure (dynamic?)
         bucket = new Rectangle();
         // центрируем ведро по горизонтали
-        bucket.x = (float) MAIN_HEIGHT / 2 - (float) 64 / 2;
+        bucket.x = (float) ZAFW.MAIN_HEIGHT / 2 - (float) 64 / 2;
         // размещаем на 20 пикселей выше нижней границы экрана.
         bucket.y = 20;
         bucket.width = bucketImage.getWidth();
@@ -160,7 +158,7 @@ public class Main implements Screen {
     private void spawnRaindrop() {
         Rectangle raindrop = new Rectangle();
         raindrop.x = MathUtils.random(0, 800-64);
-        raindrop.y = MAIN_HEIGHT - 20;
+        raindrop.y = ZAFW.MAIN_HEIGHT - 20;
         //raindrop.width = 1f;
         //raindrop.height = 1f;
         raindrops.add(raindrop);

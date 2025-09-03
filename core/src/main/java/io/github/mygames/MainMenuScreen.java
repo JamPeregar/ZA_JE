@@ -16,8 +16,7 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen(final ZAFW dropGame) {
         drop_game = dropGame;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera = ZAFW.self().camera;
     }
 
     @Override
