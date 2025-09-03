@@ -13,8 +13,6 @@ public class ZAFW extends Game {
     public static int MAIN_HEIGHT = 480;
     SpriteBatch batch;
     BitmapFont font;
-    static int MAIN_WIDH = 640; //640x800
-    static int MAIN_HEIGHT = 480;
     public OrthographicCamera camera;
     
     /** Get game instance to get stuff from here **/
