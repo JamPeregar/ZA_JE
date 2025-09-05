@@ -11,12 +11,18 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
-import io.github.mygames.entity.GenericEntity;
+import io.github.mygames.Components.FactionComponent;
+import io.github.mygames.entity.Bullet;
+import io.github.mygames.entity.NpcGenericEntity;
 import io.github.mygames.systems.MovementSystem;
 import io.github.mygames.systems.NavigationSystem;
 import io.github.mygames.systems.RenderSystem;
+import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
  *
@@ -27,13 +33,16 @@ public class Ashley_test implements Screen{
     Engine engine;
     //SpriteBatch batch;
     //Texture image;
+    ShapeDrawer shape;
 
     MovementSystem mv_sys;
     RenderSystem r_sys;
     NavigationSystem nav_sys;
 
-    GenericEntity test_actor;
-    GenericEntity test_marker;
+    NpcGenericEntity test_actor;
+    NpcGenericEntity test_marker;
+    NpcGenericEntity test_enemy;
+    Bullet bullet;
     Vector3 touchPos;
     OrthographicCamera camera;
 
@@ -46,23 +55,33 @@ public class Ashley_test implements Screen{
         nav_sys = new NavigationSystem();
 
 
-        test_actor = new GenericEntity(engine);
+        test_actor = new NpcGenericEntity(engine);
+        test_actor.setFaction(FactionComponent.PLAYER);
+        test_actor.setTexture(new Texture("models/ally.png"));
+        
+        test_enemy = new NpcGenericEntity(engine);
+        test_enemy.setFaction(FactionComponent.BANDIT);
+        test_enemy.setCoords(200, 200, 200);
+        
         //test_actor.setFreeze(true);
-        test_marker = new GenericEntity(engine);
+        test_marker = new NpcGenericEntity(engine);
         test_marker.setTexture(new Texture("models/target.png"));
         test_marker.setHidden(true);
         test_marker.setFreeze(true);
+        bullet = new Bullet(engine);
+        bullet.setMoveTo(new Vector3(200,200,0));
 
         engine.addSystem(mv_sys);
         engine.addSystem(r_sys);
         engine.addSystem(nav_sys);
-
+        
         camera = new OrthographicCamera();
         //camera.setToOrtho(false);
         camera.setToOrtho(false, ZAFW.MAIN_WIDH, ZAFW.MAIN_HEIGHT);
         touchPos = new Vector3();
 
         //image = new Texture("target.png");
+        //dropGame.batch.disableBlending();
     }
 
 
@@ -89,7 +108,7 @@ public class Ashley_test implements Screen{
             //touchPos.set(Gdx.input.getX(), 0, 0);
         }
         //test_marker.setCoords(100, 0, 0);
-
+	
         engine.update(delta);
     }
 

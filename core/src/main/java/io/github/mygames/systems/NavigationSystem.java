@@ -40,7 +40,7 @@ public class NavigationSystem extends EntitySystem{
             TransformComponent position = pos_mapper.get(entity);
             StateComponent state = state_mapper.get(entity);
             
-            if (state.the_state != StateComponent.FREEZE && position.coords.dst(position.move_to_coords) > 1.0f) {
+            if (state.the_state != StateComponent.FREEZE && state.the_state != StateComponent.SHAPE && position.coords.dst(position.move_to_coords) > 1.0f) {
                 
                 new_vel3 = position.move_to_coords.cpy().sub(position.coords.cpy()).clamp(-position.acceleration, position.acceleration);
                 
@@ -50,7 +50,7 @@ public class NavigationSystem extends EntitySystem{
             } else if (state.the_state == StateComponent.MOVING && position.coords.dst(position.move_to_coords) < 1.0f) {
                 position.vel.set(0f,0f);
                 state.the_state = StateComponent.STAYING;
-                System.out.println("STOPPED");
+                //System.out.println("STOPPED");
             }
         }
     }

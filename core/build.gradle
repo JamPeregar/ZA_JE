@@ -8,6 +8,8 @@ dependencies {
   api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
 
+  implementation "space.earlygrey:shapedrawer:$shapedrawerVersion"
+
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }

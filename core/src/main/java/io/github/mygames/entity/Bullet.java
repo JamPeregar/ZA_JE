@@ -7,6 +7,9 @@ package io.github.mygames.entity;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -20,29 +23,26 @@ import io.github.mygames.Components.TransformComponent;
  *
  * @author Admin
  */
-public class GenericEntity {
-    //components that entity use
+public final class Bullet {
     private final TransformComponent position_cmp;
-    private final TextureComponent texture_cmp;
     private final StateComponent state_cmp;
-    private final FactionComponent faction_cmp;
+    private final TextureComponent texture_cmp; // no need but for render system
     
     private final Entity base_entity;
-    //private final Body base_body; //if box2d needed
-
-    public GenericEntity(Engine engine) {
+    
+    public Bullet(Engine engine) {
         base_entity = engine.createEntity();
-
+        
         this.position_cmp = engine.createComponent(TransformComponent.class);
-        this.texture_cmp = engine.createComponent(TextureComponent.class);
         this.state_cmp = engine.createComponent(StateComponent.class);
-        this.faction_cmp = engine.createComponent(FactionComponent.class);
-        texture_cmp.texture_region = new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")));
+        this.texture_cmp = engine.createComponent(TextureComponent.class);
+        state_cmp.the_state = StateComponent.SHAPE;
+        //texture_cmp.texture_region = new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")));
+        loadTextureRegion();
         //texture.texture.setRegion(20,20,50,50);
         base_entity.add(position_cmp);
-        base_entity.add(texture_cmp);
         base_entity.add(state_cmp);
-        base_entity.add(faction_cmp);
+        base_entity.add(texture_cmp);
         engine.addEntity(base_entity);
     }
     //--------Transform methods------------//
@@ -51,7 +51,7 @@ public class GenericEntity {
         return position_cmp.move_to_coords;
     }
     /**
-     * Set movement destionation target
+     * Set movement destination target
      * @param dest
      **/
     public void setMoveTo(Vector3 dest) {
@@ -96,33 +96,14 @@ public class GenericEntity {
 
     }
     
-    //-------------Faction methods------------//
-    
-    public int getFaction() {
-        return faction_cmp.faction;
+    public void loadTextureRegion() {
+        Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
+        pixmap.setColor(Color.RED);
+        pixmap.drawPixel(0, 0);
+        Texture texture = new Texture(pixmap); //remember to dispose of later
+        texture_cmp.texture_region = new TextureRegion(texture, 0, 0, 1, 1);
+        pixmap.dispose();
+        //texture.dispose();
     }
     
-    public void setFaction(int faction) {
-        faction_cmp.faction = faction;
-    }
-    
-    //-------------Render methods------------//
-    
-    public TextureComponent getTexture() {
-        return texture_cmp;
-    }
-    
-    public void setTexture(Texture texture) {
-        this.texture_cmp.texture_region = new TextureRegion(texture);
-    }
-
-    public void setHidden(boolean hide) {
-        this.position_cmp.is_hidden = hide;
-    }
-    
-    //--------------Other methods------------//
-    public Entity getBase_entity() {
-        return base_entity;
-    }
-
 }

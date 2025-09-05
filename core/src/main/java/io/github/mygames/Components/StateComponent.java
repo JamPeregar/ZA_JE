@@ -16,6 +16,8 @@ public class StateComponent implements Component{
     public static final int MOVING = 2;
     public static final int FIGHTING = 3;
     
+    public static final int SHAPE = 4;
+    
     public int the_state = 1;
     
 }

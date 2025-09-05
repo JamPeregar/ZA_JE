@@ -10,10 +10,15 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import io.github.mygames.Components.StateComponent;
 import io.github.mygames.Components.TextureComponent;
 import io.github.mygames.Components.TransformComponent;
+import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
  *
@@ -21,14 +26,17 @@ import io.github.mygames.Components.TransformComponent;
  */
 public class RenderSystem extends EntitySystem{
     private ImmutableArray<Entity> entities;
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
+    ShapeDrawer shape;
     
     private final ComponentMapper<TransformComponent> pos_mapper = ComponentMapper.getFor(TransformComponent.class);
     private final ComponentMapper<TextureComponent> texture_mapper = ComponentMapper.getFor(TextureComponent.class);
-    private final Family render_family = Family.all(TextureComponent.class, TransformComponent.class).get();
+    private final ComponentMapper<StateComponent> state_mapper = ComponentMapper.getFor(StateComponent.class);
+    private final Family render_family = Family.all(TextureComponent.class, TransformComponent.class,StateComponent.class).get();
 
     public RenderSystem(SpriteBatch batch) {
         this.batch = batch;
+        shape = new ShapeDrawer(batch);
     }
     
     
@@ -48,11 +56,17 @@ public class RenderSystem extends EntitySystem{
             Entity entity = entities.get(i);
             TextureComponent texture_cmp = texture_mapper.get(entity);
             TransformComponent position = pos_mapper.get(entity);
+            StateComponent state = state_mapper.get(entity);
             
             if (position.is_hidden) {
                 return;
             }
-            
+            if (state.the_state == StateComponent.SHAPE) {
+                shape.setTextureRegion(texture_cmp.texture_region);
+                //shape.setColor(Color.RED);
+                shape.line(position.coords.x, position.coords.y,200,200);
+                continue;
+            }
             batch.draw(texture_cmp.texture_region, position.coords.x, position.coords.y);
             //coming soon...
         }
