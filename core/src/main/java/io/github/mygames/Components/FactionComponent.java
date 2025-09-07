@@ -5,8 +5,7 @@
 package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import io.github.mygames.Components.enums.Faction;
 
 /**
  *
@@ -14,10 +13,11 @@ import java.util.ArrayList;
  */
 public class FactionComponent implements Component{
     // May be add some dynamic
-    public int[] relationships = new int[11]; // relations to other factions
-    public int self_aware = NONE;
+    public int[][] relationships = new int[Faction.values().length][Faction.values().length]; // relations to other factions
+    //public Factions[] relationships = new Factions[11]; // relations to other factions
+    public Faction self_aware = Faction.NONE;
     
-    public static final int NONE = 0;
+    /*public static final int NONE = 0;
     public static final int PLAYER = 1;
     public static final int ZOMBIE = 2;
     public static final int BANDIT = 3;
@@ -29,5 +29,6 @@ public class FactionComponent implements Component{
     public static final int SPEC1 = 8;
     public static final int SPEC2 = 9;
     public static final int SPEC3 = 10;
+*/
     
 }

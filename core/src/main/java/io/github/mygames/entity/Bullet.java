@@ -18,6 +18,8 @@ import io.github.mygames.Components.FactionComponent;
 import io.github.mygames.Components.StateComponent;
 import io.github.mygames.Components.TextureComponent;
 import io.github.mygames.Components.TransformComponent;
+import io.github.mygames.Components.TypeComponent;
+import io.github.mygames.Components.enums.TypeEnum;
 
 /**
  *
@@ -25,7 +27,7 @@ import io.github.mygames.Components.TransformComponent;
  */
 public final class Bullet {
     private final TransformComponent position_cmp;
-    private final StateComponent state_cmp;
+    private final TypeComponent type_cmp;
     private final TextureComponent texture_cmp; // no need but for render system
     
     private final Entity base_entity;
@@ -34,14 +36,14 @@ public final class Bullet {
         base_entity = engine.createEntity();
         
         this.position_cmp = engine.createComponent(TransformComponent.class);
-        this.state_cmp = engine.createComponent(StateComponent.class);
+        this.type_cmp = engine.createComponent(TypeComponent.class);
         this.texture_cmp = engine.createComponent(TextureComponent.class);
-        state_cmp.the_state = StateComponent.SHAPE;
+        type_cmp.type = TypeEnum.SHAPE;
         //texture_cmp.texture_region = new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")));
         loadTextureRegion();
         //texture.texture.setRegion(20,20,50,50);
         base_entity.add(position_cmp);
-        base_entity.add(state_cmp);
+        base_entity.add(type_cmp);
         base_entity.add(texture_cmp);
         engine.addEntity(base_entity);
     }
@@ -85,15 +87,6 @@ public final class Bullet {
 
     public void setVelocity(Vector2 vel) {
         position_cmp.vel.set(vel);
-    }
-    
-    public void setFreeze(boolean freezes) {
-        if (freezes) {
-            this.state_cmp.the_state = StateComponent.FREEZE;
-        } else {
-            this.state_cmp.the_state = StateComponent.STAYING;
-        }
-
     }
     
     public void loadTextureRegion() {

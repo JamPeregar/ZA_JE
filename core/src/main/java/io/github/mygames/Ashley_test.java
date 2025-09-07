@@ -10,13 +10,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
-import io.github.mygames.Components.FactionComponent;
+import io.github.mygames.Components.enums.Faction;
 import io.github.mygames.entity.Bullet;
 import io.github.mygames.entity.NpcGenericEntity;
 import io.github.mygames.systems.MovementSystem;
@@ -56,11 +52,11 @@ public class Ashley_test implements Screen{
 
 
         test_actor = new NpcGenericEntity(engine);
-        test_actor.setFaction(FactionComponent.PLAYER);
+        test_actor.setFaction(Faction.PLAYER);
         test_actor.setTexture(new Texture("models/ally.png"));
         
         test_enemy = new NpcGenericEntity(engine);
-        test_enemy.setFaction(FactionComponent.BANDIT);
+        test_enemy.setFaction(Faction.ZOMBIE);
         test_enemy.setCoords(200, 200, 200);
         
         //test_actor.setFreeze(true);

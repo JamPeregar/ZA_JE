@@ -18,6 +18,8 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.mygames.Components.StateComponent;
 import io.github.mygames.Components.TextureComponent;
 import io.github.mygames.Components.TransformComponent;
+import io.github.mygames.Components.TypeComponent;
+import io.github.mygames.Components.enums.TypeEnum;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
@@ -31,8 +33,10 @@ public class RenderSystem extends EntitySystem{
     
     private final ComponentMapper<TransformComponent> pos_mapper = ComponentMapper.getFor(TransformComponent.class);
     private final ComponentMapper<TextureComponent> texture_mapper = ComponentMapper.getFor(TextureComponent.class);
-    private final ComponentMapper<StateComponent> state_mapper = ComponentMapper.getFor(StateComponent.class);
-    private final Family render_family = Family.all(TextureComponent.class, TransformComponent.class,StateComponent.class).get();
+    ///private final ComponentMapper<StateComponent> state_mapper = ComponentMapper.getFor(StateComponent.class);
+    private final ComponentMapper<TypeComponent> type_mapper = ComponentMapper.getFor(TypeComponent.class);
+    
+    private final Family render_family = Family.all(TextureComponent.class, TransformComponent.class,TypeComponent.class).get();
 
     public RenderSystem(SpriteBatch batch) {
         this.batch = batch;
@@ -56,12 +60,13 @@ public class RenderSystem extends EntitySystem{
             Entity entity = entities.get(i);
             TextureComponent texture_cmp = texture_mapper.get(entity);
             TransformComponent position = pos_mapper.get(entity);
-            StateComponent state = state_mapper.get(entity);
+            //StateComponent state = state_mapper.get(entity);
+            TypeComponent type_cmp = type_mapper.get(entity);
             
             if (position.is_hidden) {
                 return;
             }
-            if (state.the_state == StateComponent.SHAPE) {
+            if (type_cmp.type == TypeEnum.SHAPE) {
                 shape.setTextureRegion(texture_cmp.texture_region);
                 //shape.setColor(Color.RED);
                 shape.line(position.coords.x, position.coords.y,200,200);

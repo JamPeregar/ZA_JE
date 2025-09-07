@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
+import io.github.mygames.Components.enums.Faction;
+import io.github.mygames.Components.enums.TypeEnum;
 
 public class MainMenuScreen implements Screen {
 
@@ -17,6 +19,10 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final ZAFW dropGame) {
         drop_game = dropGame;
         camera = ZAFW.self().camera;
+        for (int i = 0; i < Faction.values().length; i++) {
+            System.out.println(Faction.values()[i]);
+        }
+        
     }
 
     @Override

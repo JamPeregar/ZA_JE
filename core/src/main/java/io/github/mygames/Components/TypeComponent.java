@@ -5,19 +5,12 @@
 package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
+import io.github.mygames.Components.enums.TypeEnum;
 
 /**
  *
  * @author Admin
  */
-public class StateComponent implements Component{
-    public static final int FREEZE = 0;
-    public static final int STAYING = 1;
-    public static final int MOVING = 2;
-    public static final int FIGHTING = 3;
-    
-    //public static final int SHAPE = 4;
-    
-    public int the_state = 1;
-    
+public class TypeComponent implements Component{
+    public TypeEnum type = TypeEnum.CHARACTER;
 }

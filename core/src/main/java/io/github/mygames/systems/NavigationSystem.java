@@ -14,6 +14,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import io.github.mygames.Components.StateComponent;
 import io.github.mygames.Components.TransformComponent;
+import io.github.mygames.Components.TypeComponent;
+import io.github.mygames.Components.enums.TypeEnum;
 
 /**
  *
@@ -24,7 +26,8 @@ public class NavigationSystem extends EntitySystem{
     
     private final ComponentMapper<TransformComponent> pos_mapper = ComponentMapper.getFor(TransformComponent.class);
     private final ComponentMapper<StateComponent> state_mapper = ComponentMapper.getFor(StateComponent.class);
-    private final Family movement_family = Family.all(TransformComponent.class, StateComponent.class).get();
+    private final ComponentMapper<TypeComponent> type_mapper = ComponentMapper.getFor(TypeComponent.class);
+    private final Family movement_family = Family.all(TransformComponent.class, StateComponent.class, TypeComponent.class).get();
     private Vector3 new_vel3;
     
     @Override
@@ -39,8 +42,8 @@ public class NavigationSystem extends EntitySystem{
             Entity entity = entities.get(i);
             TransformComponent position = pos_mapper.get(entity);
             StateComponent state = state_mapper.get(entity);
-            
-            if (state.the_state != StateComponent.FREEZE && state.the_state != StateComponent.SHAPE && position.coords.dst(position.move_to_coords) > 1.0f) {
+            TypeComponent type_cmp = type_mapper.get(entity);
+            if (state.the_state != StateComponent.FREEZE && type_cmp.type != TypeEnum.SHAPE && position.coords.dst(position.move_to_coords) > 1.0f) {
                 
                 new_vel3 = position.move_to_coords.cpy().sub(position.coords.cpy()).clamp(-position.acceleration, position.acceleration);
                 

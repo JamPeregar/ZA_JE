@@ -15,6 +15,9 @@ import io.github.mygames.Components.FactionComponent;
 import io.github.mygames.Components.StateComponent;
 import io.github.mygames.Components.TextureComponent;
 import io.github.mygames.Components.TransformComponent;
+import io.github.mygames.Components.TypeComponent;
+import io.github.mygames.Components.enums.Faction;
+import io.github.mygames.Components.enums.TypeEnum;
 
 /**
  *
@@ -26,6 +29,7 @@ public class NpcGenericEntity {
     private final TextureComponent texture_cmp;
     private final StateComponent state_cmp;
     private final FactionComponent faction_cmp;
+    private final TypeComponent type_cmp;
     
     private final Entity base_entity;
     //private final Body base_body; //if box2d needed
@@ -37,8 +41,11 @@ public class NpcGenericEntity {
         this.texture_cmp = engine.createComponent(TextureComponent.class);
         this.state_cmp = engine.createComponent(StateComponent.class);
         this.faction_cmp = engine.createComponent(FactionComponent.class);
+        this.type_cmp = engine.createComponent(TypeComponent.class);
+        this.type_cmp.type = TypeEnum.CHARACTER;
         texture_cmp.texture_region = new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")));
         //texture.texture.setRegion(20,20,50,50);
+        base_entity.add(type_cmp);
         base_entity.add(position_cmp);
         base_entity.add(texture_cmp);
         base_entity.add(state_cmp);
@@ -99,25 +106,14 @@ public class NpcGenericEntity {
     
     //-------------Faction methods------------//
     
-    public int getFaction() {
+    public Faction getFaction() {
         return faction_cmp.self_aware;
     }
     
-    public void setFaction(int faction) {
+    public void setFaction(Faction faction) {
         faction_cmp.self_aware = faction;
     }
     
-    public int[] getRelationships() {
-        return faction_cmp.relationships;
-    }
-    
-     public void setRelationships(int[] new_relationships) {
-        faction_cmp.relationships = new_relationships;
-    }
-    
-    public void setRelationship(int faction_num, int hateness) {
-        faction_cmp.relationships[faction_num] = hateness;
-    }
     
     //-------------Render methods------------//
     
@@ -136,6 +132,10 @@ public class NpcGenericEntity {
     //--------------Other methods------------//
     public Entity getBase_entity() {
         return base_entity;
+    }
+    
+    public TypeEnum getType() {
+        return type_cmp.type;
     }
 
 }
