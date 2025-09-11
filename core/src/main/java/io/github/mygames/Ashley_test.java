@@ -16,7 +16,7 @@ import io.github.mygames.Components.enums.Faction;
 import io.github.mygames.entity.Bullet;
 import io.github.mygames.entity.NpcGenericEntity;
 import io.github.mygames.systems.MovementSystem;
-import io.github.mygames.systems.NavigationSystem;
+import io.github.mygames.systems.ai.NavigationSystem;
 import io.github.mygames.systems.RenderSystem;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 

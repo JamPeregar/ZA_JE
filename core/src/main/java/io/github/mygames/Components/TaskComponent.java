@@ -6,11 +6,13 @@ package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
 import io.github.mygames.Components.enums.StateEnum;
+import io.github.mygames.Components.enums.TaskEnum;
 
 /**
  *
  * @author Admin
  */
-public class StateComponent implements Component{
-    public StateEnum the_state = StateEnum.STAYING;
+public class TaskComponent implements Component{
+    public TaskEnum the_task = TaskEnum.NONE;
+    
 }

@@ -12,6 +12,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import io.github.mygames.Components.StateComponent;
 import io.github.mygames.Components.TransformComponent;
+import io.github.mygames.Components.enums.StateEnum;
 
 /**
  *
@@ -38,7 +39,7 @@ public class MovementSystem extends EntitySystem{
             TransformComponent position = pos_mapper.get(entity);
             StateComponent state = state_mapper.get(entity);
             
-            if (state.the_state != StateComponent.MOVING) {
+            if (state.the_state != StateEnum.MOVING) {
                 return;
             }
             //System.out.println("move");
