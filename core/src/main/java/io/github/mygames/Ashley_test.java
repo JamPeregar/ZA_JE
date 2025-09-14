@@ -6,18 +6,20 @@ package io.github.mygames;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.mygames.Components.enums.Faction;
-import io.github.mygames.entity.Bullet;
 import io.github.mygames.entity.NpcGenericEntity;
 import io.github.mygames.systems.MovementSystem;
 import io.github.mygames.systems.ai.NavigationSystem;
 import io.github.mygames.systems.RenderSystem;
+import io.github.mygames.systems.ShootingSystem;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
@@ -29,16 +31,16 @@ public class Ashley_test implements Screen{
     Engine engine;
     //SpriteBatch batch;
     //Texture image;
-    ShapeDrawer shape;
+    ShapeDrawer shaper;
 
     MovementSystem mv_sys;
     RenderSystem r_sys;
     NavigationSystem nav_sys;
+    ShootingSystem shoot_sys;
 
     NpcGenericEntity test_actor;
     NpcGenericEntity test_marker;
     NpcGenericEntity test_enemy;
-    Bullet bullet;
     Vector3 touchPos;
     OrthographicCamera camera;
 
@@ -49,6 +51,7 @@ public class Ashley_test implements Screen{
         mv_sys = new MovementSystem();
         r_sys = new RenderSystem(dropGame.batch);
         nav_sys = new NavigationSystem();
+        shoot_sys = new ShootingSystem(dropGame.batch, dropGame.shaper);
 
 
         test_actor = new NpcGenericEntity(engine);
@@ -64,27 +67,28 @@ public class Ashley_test implements Screen{
         test_marker.setTexture(new Texture("models/target.png"));
         test_marker.setHidden(true);
         test_marker.setFreeze(true);
-        bullet = new Bullet(engine);
-        bullet.setMoveTo(new Vector3(200,200,0));
 
         engine.addSystem(mv_sys);
         engine.addSystem(r_sys);
         engine.addSystem(nav_sys);
+        engine.addSystem(shoot_sys);
         
         camera = new OrthographicCamera();
         //camera.setToOrtho(false);
         camera.setToOrtho(false, ZAFW.MAIN_WIDH, ZAFW.MAIN_HEIGHT);
         touchPos = new Vector3();
+        dropGame.batch.setProjectionMatrix(camera.combined);
 
         //image = new Texture("target.png");
         //dropGame.batch.disableBlending();
+        
     }
 
 
 
     @Override
     public void show() {
-
+        
     }
 
     @Override
@@ -99,8 +103,10 @@ public class Ashley_test implements Screen{
             test_actor.setMoveTo(touchPos);
             test_marker.setCoords(touchPos.x, touchPos.y, 0);
             test_marker.setHidden(false);
-            System.out.printf("\n nav from %s to %s", test_actor.getCoords().toString(),test_marker.getCoords().toString());
+            //System.out.printf("\n nav from %s to %s", test_actor.getCoords().toString(),test_marker.getCoords().toString());
             //
+            System.out.printf("\n shoot at %s", new Vector2(touchPos.x, touchPos.y));
+            test_enemy.makeSimpleShoot(new Vector2(touchPos.x, touchPos.y), 500, 0);
             //touchPos.set(Gdx.input.getX(), 0, 0);
         }
         //test_marker.setCoords(100, 0, 0);

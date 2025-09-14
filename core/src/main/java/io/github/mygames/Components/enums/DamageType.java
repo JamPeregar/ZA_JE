@@ -8,8 +8,8 @@ package io.github.mygames.Components.enums;
  *
  * @author Admin
  */
-public enum TaskEnum {
-    NONE,
-    MOVE_TO_POINT_SIMPLE,
-    ATTACK_ENTITY
+public enum DamageType {
+    GENERIC,
+    MELEE,
+    WEAPON
 }

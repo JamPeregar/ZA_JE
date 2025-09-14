@@ -38,6 +38,7 @@ public class NavigationSystem extends EntitySystem{
     public void addedToEngine(Engine engine) {
         entities = engine.getEntitiesFor(nav_family);
         System.out.printf("added nav sys, entities: %d \n",entities.size());
+        
     }
 
     @Override
@@ -51,7 +52,7 @@ public class NavigationSystem extends EntitySystem{
             
             if (state.the_state == StateEnum.FREEZE 
                     || type_cmp.type != TypeEnum.CHARACTER) {
-                return;
+                continue;
             }
             
             if (task_cmp.the_task == TaskEnum.MOVE_TO_POINT_SIMPLE) {
@@ -68,6 +69,7 @@ public class NavigationSystem extends EntitySystem{
                 //System.out.println("STOPPED");
                 }
             } 
+            
         }
     }
 }

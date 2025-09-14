@@ -40,7 +40,7 @@ public class MovementSystem extends EntitySystem{
             StateComponent state = state_mapper.get(entity);
             
             if (state.the_state != StateEnum.MOVING) {
-                return;
+                continue;
             }
             //System.out.println("move");
             //move_to = new Vector2(position.velocity.x - position.pos.x, position.velocity.y - position.pos.y);

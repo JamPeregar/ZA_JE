@@ -64,7 +64,7 @@ public class RenderSystem extends EntitySystem{
             TypeComponent type_cmp = type_mapper.get(entity);
             
             if (position.is_hidden) {
-                return;
+                continue;
             }
             if (type_cmp.type == TypeEnum.SHAPE) {
                 shape.setTextureRegion(texture_cmp.texture_region);
@@ -72,7 +72,9 @@ public class RenderSystem extends EntitySystem{
                 shape.line(position.coords.x, position.coords.y,200,200);
                 continue;
             }
-            batch.draw(texture_cmp.texture_region, position.coords.x, position.coords.y);
+            batch.draw(texture_cmp.texture_region,
+                    position.coords.x - texture_cmp.texture_region.getTexture().getHeight()/2,
+                    position.coords.y - texture_cmp.texture_region.getTexture().getWidth()/2);
             //coming soon...
         }
         batch.end();

@@ -6,12 +6,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2D;
+import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class ZAFW extends Game {
 
     public static int MAIN_WIDH = 800;
     public static int MAIN_HEIGHT = 480;
     SpriteBatch batch;
+    ShapeDrawer shaper;
     BitmapFont font;
     public OrthographicCamera camera;
     
@@ -22,6 +24,7 @@ public class ZAFW extends Game {
 
     public void create() {
         batch = new SpriteBatch();
+        shaper = new ShapeDrawer(batch);
         // libGDX по умолчанию использует Arial шрифт.
         font = new BitmapFont();
         camera = new OrthographicCamera();

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import io.github.mygames.Components.BulletComponent;
 import io.github.mygames.Components.FactionComponent;
 import io.github.mygames.Components.StateComponent;
 import io.github.mygames.Components.TaskComponent;
@@ -34,11 +35,14 @@ public class NpcGenericEntity {
     private final FactionComponent faction_cmp;
     private final TypeComponent type_cmp;
     private final TaskComponent task_cmp;
+    private final BulletComponent bullet_cmp;
     
+    private final Engine base_engine;
     private final Entity base_entity;
     //private final Body base_body; //if box2d needed
 
     public NpcGenericEntity(Engine engine) {
+        base_engine = engine;
         base_entity = engine.createEntity();
         //create components
         this.position_cmp = engine.createComponent(TransformComponent.class);
@@ -47,6 +51,7 @@ public class NpcGenericEntity {
         this.faction_cmp = engine.createComponent(FactionComponent.class);
         this.type_cmp = engine.createComponent(TypeComponent.class);
         this.task_cmp = engine.createComponent(TaskComponent.class);
+        this.bullet_cmp = engine.createComponent(BulletComponent.class);
         
         //configure components
         this.type_cmp.type = TypeEnum.CHARACTER;
@@ -59,9 +64,20 @@ public class NpcGenericEntity {
         base_entity.add(state_cmp);
         base_entity.add(faction_cmp);
         base_entity.add(task_cmp);
+        base_entity.add(bullet_cmp);
         
         engine.addEntity(base_entity);
     }
+    
+    //-------Attack----------//
+    
+    public void makeSimpleShoot(Vector2 dest, float maxDist, int dmg) {
+        if (bullet_cmp.elapsed < bullet_cmp.delay) {
+            return;
+        }
+        bullet_cmp.set(new Vector2(position_cmp.coords.x,position_cmp.coords.y), dest, maxDist, dmg, base_entity);
+    }
+    
     //--------Transform methods------------//
     
     public Vector3 getMoveTo(Vector3 dest) {
