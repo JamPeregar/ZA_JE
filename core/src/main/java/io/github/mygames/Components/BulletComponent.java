@@ -35,7 +35,7 @@ public class BulletComponent implements Component {
     public void set(Vector2 start, Vector2 dest, float maxDist, int dmg, Entity ownerEntity) {
         startPoint.set(start);
         //direction.set(dir).nor();
-        endPoint = dest; //.setLength(maxDist); //.clamp(0, maxDist);
+        endPoint.set(dest); //.setLength(maxDist); //.clamp(0, maxDist);
         maxDistance = maxDist;
         damage = dmg;
         owner = ownerEntity;

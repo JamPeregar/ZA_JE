@@ -5,7 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.World;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class ZAFW extends Game {
@@ -15,6 +17,7 @@ public class ZAFW extends Game {
     SpriteBatch batch;
     ShapeDrawer shaper;
     BitmapFont font;
+    public World world;
     public OrthographicCamera camera;
     
     /** Get game instance to get stuff from here **/
@@ -28,6 +31,8 @@ public class ZAFW extends Game {
         // libGDX по умолчанию использует Arial шрифт.
         font = new BitmapFont();
         camera = new OrthographicCamera();
+        world = new World(Vector2.Zero, true);
+        
         camera.setToOrtho(false, ZAFW.MAIN_WIDH, MAIN_HEIGHT);
 
         this.setScreen(new MainMenuScreen(this));

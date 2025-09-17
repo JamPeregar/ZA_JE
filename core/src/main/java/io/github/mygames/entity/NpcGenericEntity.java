@@ -9,11 +9,22 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
+import io.github.mygames.Components.B2dBodyComponent;
 import io.github.mygames.Components.BulletComponent;
+import io.github.mygames.Components.CollisionComponent;
 import io.github.mygames.Components.FactionComponent;
 import io.github.mygames.Components.StateComponent;
+import io.github.mygames.Components.StatisticsComponent;
 import io.github.mygames.Components.TaskComponent;
 import io.github.mygames.Components.TextureComponent;
 import io.github.mygames.Components.TransformComponent;
@@ -22,6 +33,7 @@ import io.github.mygames.Components.enums.Faction;
 import io.github.mygames.Components.enums.StateEnum;
 import io.github.mygames.Components.enums.TaskEnum;
 import io.github.mygames.Components.enums.TypeEnum;
+import io.github.mygames.ZAFW;
 
 /**
  *
@@ -33,17 +45,22 @@ public class NpcGenericEntity {
     private final TextureComponent texture_cmp;
     private final StateComponent state_cmp;
     private final FactionComponent faction_cmp;
+    private final StatisticsComponent stats_cmp;
     private final TypeComponent type_cmp;
     private final TaskComponent task_cmp;
     private final BulletComponent bullet_cmp;
+    private final B2dBodyComponent bod_cmp;
+    private final CollisionComponent col_cmp;
     
     private final Engine base_engine;
+    private final World base_world;
     private final Entity base_entity;
     //private final Body base_body; //if box2d needed
 
-    public NpcGenericEntity(Engine engine) {
-        base_engine = engine;
+    public NpcGenericEntity(Engine engine, World world) {
         base_entity = engine.createEntity();
+        base_engine = engine;
+        base_world = world;
         //create components
         this.position_cmp = engine.createComponent(TransformComponent.class);
         this.texture_cmp = engine.createComponent(TextureComponent.class);
@@ -52,11 +69,15 @@ public class NpcGenericEntity {
         this.type_cmp = engine.createComponent(TypeComponent.class);
         this.task_cmp = engine.createComponent(TaskComponent.class);
         this.bullet_cmp = engine.createComponent(BulletComponent.class);
+        this.bod_cmp = engine.createComponent(B2dBodyComponent.class);
+        this.col_cmp = engine.createComponent(CollisionComponent.class);
+        this.stats_cmp = engine.createComponent(StatisticsComponent.class);
         
         //configure components
         this.type_cmp.type = TypeEnum.CHARACTER;
         texture_cmp.texture_region = new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")));
-        //texture.texture.setRegion(20,20,50,50);
+        bod_cmp.body = B2dBodyComponent.createCharBody(world);
+                
         //add components
         base_entity.add(type_cmp);
         base_entity.add(position_cmp);
@@ -65,6 +86,9 @@ public class NpcGenericEntity {
         base_entity.add(faction_cmp);
         base_entity.add(task_cmp);
         base_entity.add(bullet_cmp);
+        base_entity.add(bod_cmp);
+        base_entity.add(stats_cmp);
+        base_entity.add(col_cmp);
         
         engine.addEntity(base_entity);
     }
@@ -131,6 +155,18 @@ public class NpcGenericEntity {
 
     }
     
+    public boolean isCollides() {
+        return col_cmp.col_detection;
+    }
+    
+    public void toggleCollisions(boolean nocol) {
+        col_cmp.col_detection = nocol;
+    }
+    
+    public boolean isCollidedWithEntity(Entity a) {
+        return false;
+    }
+    
     //-------------Faction methods------------//
     
     public Faction getFaction() {
@@ -157,6 +193,15 @@ public class NpcGenericEntity {
     }
     
     //--------------Other methods------------//
+    
+    public String getName() {
+        return stats_cmp.name;
+    }
+    
+    public void setName(final String new_name) {
+        stats_cmp.name = new_name;
+    }
+    
     public Entity getBase_entity() {
         return base_entity;
     }
@@ -164,5 +209,5 @@ public class NpcGenericEntity {
     public TypeEnum getType() {
         return type_cmp.type;
     }
-
+    
 }

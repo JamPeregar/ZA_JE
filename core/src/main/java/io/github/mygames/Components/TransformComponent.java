@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class TransformComponent implements Component{
     public Vector3 coords = new Vector3(0,0,0);
+    public float angle;
     public Vector2 vel = new Vector2(0,0);
     public float acceleration = 100f;
     
