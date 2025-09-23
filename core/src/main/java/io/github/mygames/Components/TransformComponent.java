@@ -21,4 +21,6 @@ public class TransformComponent implements Component{
     public Vector3 move_to_coords = new Vector3();
     
     public boolean is_hidden = false;
+    
+    public static final float NAV_RANGE = 1.5f; 
 }

@@ -76,20 +76,21 @@ public class NavigationSystem extends EntitySystem{
             
             switch (task_cmp.the_task) {
                 case MOVE_TO_POINT_SIMPLE:
-                    if (position.coords.dst(position.move_to_coords) > 1.0f && !position.coords.hasSameDirection(position.move_to_coords)) {
+                    if (position.coords.dst(position.move_to_coords) > TransformComponent.NAV_RANGE) {
                         new_vel3 = position.move_to_coords.cpy().sub(position.coords.cpy()).clamp(-position.acceleration, position.acceleration);
                         position.vel.set(new_vel3.x, new_vel3.y);
                         state.the_state = StateEnum.MOVING;
-                        body_cmp.body.applyForceToCenter(position.vel.cpy().scl(position.acceleration), false);
+                        //body_cmp.body.applyForceToCenter(position.vel.cpy().scl(position.acceleration), false);
+                         body_cmp.body.setLinearVelocity(position.vel.cpy().scl(position.acceleration));
                         System.out.println("nav changed");
 
                         
                     }
-                    if (position.coords.dst(position.move_to_coords) < 1.0f && state.the_state == StateEnum.MOVING) {
+                    if (position.coords.dst(position.move_to_coords) <= TransformComponent.NAV_RANGE && state.the_state == StateEnum.MOVING) {
                         position.vel.set(0f, 0f);
-                        body_cmp.body.applyForceToCenter(Vector2.Zero, false);
                         task_cmp.the_task = TaskEnum.NONE;
                         state.the_state = StateEnum.STAYING;
+                        body_cmp.body.setLinearVelocity(Vector2.Zero);
                         System.out.println("STOPPED");
                     }
                     break;
