@@ -29,10 +29,12 @@ import io.github.mygames.Components.TaskComponent;
 import io.github.mygames.Components.TextureComponent;
 import io.github.mygames.Components.TransformComponent;
 import io.github.mygames.Components.TypeComponent;
+import io.github.mygames.Components.WeaponComponent;
 import io.github.mygames.Components.enums.Faction;
 import io.github.mygames.Components.enums.StateEnum;
 import io.github.mygames.Components.enums.TaskEnum;
 import io.github.mygames.Components.enums.TypeEnum;
+import io.github.mygames.Components.enums.WeaponType;
 import io.github.mygames.ZAFW;
 
 /**
@@ -51,6 +53,7 @@ public class NpcGenericEntity {
     private final BulletComponent bullet_cmp;
     private final B2dBodyComponent bod_cmp;
     private final CollisionComponent col_cmp;
+    private final WeaponComponent wpn_cmp;
     
     private final Engine base_engine;
     private final World base_world;
@@ -72,11 +75,13 @@ public class NpcGenericEntity {
         this.bod_cmp = engine.createComponent(B2dBodyComponent.class);
         this.col_cmp = engine.createComponent(CollisionComponent.class);
         this.stats_cmp = engine.createComponent(StatisticsComponent.class);
+        this.wpn_cmp = engine.createComponent(WeaponComponent.class);
         
         //configure components
         this.type_cmp.type = TypeEnum.CHARACTER;
         texture_cmp.texture_region = new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")));
         bod_cmp.body = B2dBodyComponent.createCharBody(world);
+        wpn_cmp.init_weapon(WeaponType.AK47);
                 
         //add components
         base_entity.add(type_cmp);
@@ -89,6 +94,7 @@ public class NpcGenericEntity {
         base_entity.add(bod_cmp);
         base_entity.add(stats_cmp);
         base_entity.add(col_cmp);
+        base_entity.add(wpn_cmp);
         
         engine.addEntity(base_entity);
     }

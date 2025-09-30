@@ -27,7 +27,8 @@ public class CollisionSystem extends IteratingSystem {
     
     private final ComponentMapper<CollisionComponent> col_mapper;
     private final ComponentMapper<TransformComponent> pos_mapper;
-    //private final Family col_family = Family.all(CollisionComponent.class, TransformComponent.class).get();
+    private final ComponentMapper<TypeComponent> type_mapper;
+    //private final Family col_family;
 
     @Override
     public void addedToEngine(Engine engine) {
@@ -39,10 +40,13 @@ public class CollisionSystem extends IteratingSystem {
 
     public CollisionSystem() {
 	// only need to worry about player collisions
-	super(Family.all(CollisionComponent.class,TransformComponent.class).get());
+        
+	super(Family.all(CollisionComponent.class, TransformComponent.class).get());
+        //col_family = Family.all(CollisionComponent.class, TransformComponent.class).get();
 	
 	col_mapper = ComponentMapper.getFor(CollisionComponent.class);
         pos_mapper = ComponentMapper.getFor(TransformComponent.class);
+        type_mapper = ComponentMapper.getFor(TypeComponent.class);
     }
 
     @Override
@@ -53,7 +57,7 @@ public class CollisionSystem extends IteratingSystem {
         
         Entity collidedEntity = cc.collisionEntity;
         if (collidedEntity != null) {
-            TypeComponent type = collidedEntity.getComponent(TypeComponent.class);
+            TypeComponent type = type_mapper.get(collidedEntity);
             if (type != null) {
                 switch (type.type) {
                     case CHARACTER:

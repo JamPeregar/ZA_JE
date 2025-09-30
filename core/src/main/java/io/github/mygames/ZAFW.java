@@ -20,11 +20,13 @@ public class ZAFW extends Game {
     public World world;
     public OrthographicCamera camera;
     
-    /** Get game instance to get stuff from here **/
+    /** Get game instance to get stuff from here
+     * @return  **/
     public static ZAFW self() {
         return (ZAFW) Gdx.app.getApplicationListener();
     }
 
+    @Override
     public void create() {
         batch = new SpriteBatch();
         shaper = new ShapeDrawer(batch);
@@ -40,10 +42,12 @@ public class ZAFW extends Game {
         Box2D.init(); //not necessary but for backwards compatibility
     }
 
+    @Override
     public void render() {
         super.render(); // важно!
     }
 
+    @Override
     public void dispose() {
         batch.dispose();
         font.dispose();

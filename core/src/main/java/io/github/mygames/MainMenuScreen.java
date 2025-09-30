@@ -19,9 +19,9 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final ZAFW dropGame) {
         drop_game = dropGame;
         camera = ZAFW.self().camera;
-        for (int i = 0; i < Faction.values().length; i++) {
+        /*for (int i = 0; i < Faction.values().length; i++) {
             System.out.println(Faction.values()[i]);
-        }
+        }*/
         
     }
 

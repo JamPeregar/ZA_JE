@@ -20,10 +20,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.mygames.Components.enums.Faction;
 import io.github.mygames.entity.NpcGenericEntity;
 import io.github.mygames.systems.CollisionSystem;
+import io.github.mygames.systems.DamageBrokerSystem;
 import io.github.mygames.systems.MovementSystem;
 import io.github.mygames.systems.PhysicsSystem;
 import io.github.mygames.systems.ai.NavigationSystem;
 import io.github.mygames.systems.RenderSystem;
+import io.github.mygames.systems.ShootingSystem;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
@@ -42,6 +44,8 @@ public class Ashley_test implements Screen{
     RenderSystem r_sys;
     NavigationSystem nav_sys;
     PhysicsSystem phys_sys;
+    DamageBrokerSystem dmg_sys;
+    ShootingSystem shoot_sys;
     
     CollisionSystem col_sys;
 
@@ -61,6 +65,8 @@ public class Ashley_test implements Screen{
         nav_sys = new NavigationSystem();
         col_sys = new CollisionSystem();
         phys_sys = new PhysicsSystem(world);
+        dmg_sys = new DamageBrokerSystem();
+        shoot_sys = new ShootingSystem(world, engine);
 
 
         test_actor = new NpcGenericEntity(engine,world);
@@ -86,17 +92,23 @@ public class Ashley_test implements Screen{
         engine.addSystem(nav_sys);
         engine.addSystem(col_sys);
         engine.addSystem(phys_sys);
+        engine.addSystem(dmg_sys);
+        engine.addSystem(shoot_sys);
         System.out.printf("Systems:\n"
         //+ "mov: %d\n"
         + "render: %d\n"
         + "nav: %d\n"
         + "col: %d\n"
         + "phys: %d\n"
-        //,mv_sys.getEntities().size()
+        + "dmg: %d\n"
+        + "shoot: %d\n"
         ,r_sys.entities.size()
         ,nav_sys.entities.size()
         ,col_sys.getEntities().size()
-        ,phys_sys.getEntities().size());
+        ,phys_sys.getEntities().size()
+        ,dmg_sys.getEntities().size()
+        ,shoot_sys.getEntities().size()
+        );
         
         camera = new OrthographicCamera();
         //camera.setToOrtho(false);
@@ -134,6 +146,7 @@ public class Ashley_test implements Screen{
             }
             
             test_enemy.makeSimpleShoot(new Vector2(touchPos.x, touchPos.y), 500, 0);
+            shoot_sys.shoot(test_enemy.getBase_entity(), new Vector2(touchPos.x, touchPos.y));
             //touchPos.set(Gdx.input.getX(), 0, 0);
         }
         //test_marker.setCoords(100, 0, 0);

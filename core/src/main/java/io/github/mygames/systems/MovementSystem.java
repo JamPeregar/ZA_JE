@@ -31,18 +31,10 @@ public class MovementSystem extends IteratingSystem{
     private final ComponentMapper<StateComponent> state_mapper = ComponentMapper.getFor(StateComponent.class);
     //private final Family movement_family = Family.all(B2dBodyComponent.class, TransformComponent.class, StateComponent.class,B2dBodyComponent.class).get();
     float stepX, stepY;
-
-    @Override
-    public void addedToEngine(Engine engine) {
-        super.addedToEngine(engine); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        //this.entities = engine.getEntitiesFor(movement_family);
-    }
-    
-    
     
     @SuppressWarnings("unchecked")
     public MovementSystem(World world) {
-        super(Family.all(B2dBodyComponent.class, TransformComponent.class, StateComponent.class,B2dBodyComponent.class).get());
+        super(Family.all(B2dBodyComponent.class, TransformComponent.class, StateComponent.class).get());
         this.world = world;
         
     }

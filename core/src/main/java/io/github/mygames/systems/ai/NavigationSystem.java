@@ -82,7 +82,7 @@ public class NavigationSystem extends EntitySystem{
                         state.the_state = StateEnum.MOVING;
                         //body_cmp.body.applyForceToCenter(position.vel.cpy().scl(position.acceleration), false);
                          body_cmp.body.setLinearVelocity(position.vel.cpy().scl(position.acceleration));
-                        System.out.println("nav changed");
+                        //System.out.println("nav changed");
 
                         
                     }
@@ -91,7 +91,7 @@ public class NavigationSystem extends EntitySystem{
                         task_cmp.the_task = TaskEnum.NONE;
                         state.the_state = StateEnum.STAYING;
                         body_cmp.body.setLinearVelocity(Vector2.Zero);
-                        System.out.println("STOPPED");
+                        //System.out.println("STOPPED");
                     }
                     break;
                 case NONE:

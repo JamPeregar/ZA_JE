@@ -8,10 +8,9 @@ package io.github.mygames.Components.enums;
  *
  * @author Admin
  */
-public enum DamageType {
-    GENERIC,
-    MELEE,
-    BULLET,
-    EXPLOSIVE,
-    FIRE
+public enum WeaponType {
+    UNARMMED,
+    COLT45,
+    AK47,
+    RPG
 }
