@@ -81,6 +81,8 @@ public class NpcGenericEntity {
         this.type_cmp.type = TypeEnum.CHARACTER;
         texture_cmp.texture_region = new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")));
         bod_cmp.body = B2dBodyComponent.createCharBody(world);
+        bod_cmp.body.setUserData(base_entity); // body belongs to entity
+        //bod_cmp.hitboxFx = bod_cmp.body.getFixtureList().first();
         wpn_cmp.init_weapon(WeaponType.AK47);
                 
         //add components

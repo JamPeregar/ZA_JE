@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class B2dBodyComponent implements Component{
     public Body body;
+    public Fixture hitboxFx;
     
     public static Body createCharBody(final World world) {
         BodyDef bodyDef = new BodyDef();
@@ -43,6 +44,7 @@ public class B2dBodyComponent implements Component{
         //fixtureDef.restitution = 0.6f; // Make it bounce a little bit
 
 // Create our fixture and attach it to the body
+        //Fixture fixture = 
         body.createFixture(fixtureDef);
         return body;
     }

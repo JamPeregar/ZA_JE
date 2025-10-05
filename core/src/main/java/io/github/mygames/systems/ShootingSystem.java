@@ -14,10 +14,10 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import io.github.mygames.Components.DamageComponent;
+//import io.github.mygames.Components.StatisticsComponent;
 import io.github.mygames.Components.TransformComponent;
 import io.github.mygames.Components.WeaponComponent;
 import io.github.mygames.Components.enums.DamageType;
-import io.github.mygames.Components.enums.ProjectileType;
 
 /**
  *
@@ -27,6 +27,7 @@ public class ShootingSystem extends IteratingSystem {
 
     private ComponentMapper<WeaponComponent> wm;
     private ComponentMapper<TransformComponent> tm;
+    //private ComponentMapper<StatisticsComponent> stat_m;
     private World box2dWorld;
     private Engine ashleyEngine;
     
@@ -37,6 +38,7 @@ public class ShootingSystem extends IteratingSystem {
         this.ashleyEngine = ashleyEngine;
         wm = ComponentMapper.getFor(WeaponComponent.class);
         tm = ComponentMapper.getFor(TransformComponent.class);
+        //stat_m = ComponentMapper.getFor(StatisticsComponent.class);
     }
 
     @Override
@@ -77,35 +79,31 @@ public class ShootingSystem extends IteratingSystem {
         // Вычисляем точку выстрела в мировых координатах
         //something wrong here...
         Vector2 coords_2d = new Vector2(shooter.getComponent(TransformComponent.class).coords.x, shooter.getComponent(TransformComponent.class).coords.y);
-        Vector2 firePoint = new Vector2(weapon.firePoint).add(
-            coords_2d);
+        Vector2 firePoint =  coords_2d;   //new Vector2(weapon.firePoint).add(coords_2d);
+            
         
-        // Raycast для определения попадания
-        RayCastCallback callback = new RayCastCallback() {
-            @Override
-            public float reportRayFixture(Fixture fixture, Vector2 point, 
-                                        Vector2 normal, float fraction) {
-                // Игнорируем сенсоры и триггеры
-                if (fixture.isSensor()) return -1;
-                
-                // Получаем сущность из фикстуры
-                Entity hitEntity = (Entity) fixture.getBody().getUserData();
-                if (hitEntity != null && hitEntity != shooter) {
-                    // Создаем компонент урона
-                    Entity damageEvent = ashleyEngine.createEntity();
-                    damageEvent.add(new DamageComponent(
+        // RayCastCallback создаётся при пересечении фикстур (они часть body)
+        RayCastCallback callback = (Fixture fixture, Vector2 point, Vector2 normal, float fraction) -> {
+            // Игнорируем сенсоры и триггеры
+            if (fixture.isSensor()) return -1;
+            // Получаем сущность из фикстуры
+            Entity hitEntity = (Entity) fixture.getBody().getUserData();
+            if (hitEntity != null && hitEntity != shooter) {
+                // Создаем компонент урона
+                Entity damageEvent = ashleyEngine.createEntity();
+                damageEvent.add(new DamageComponent(
                         hitEntity, shooter, weapon.damage, DamageType.BULLET
-                    ));
-                    ashleyEngine.addEntity(damageEvent);
-                    System.out.printf("someone has hited someone\n");
-                    // Эффекты: кровь, искры и т.д.
-                    //createHitEffect(point, normal);
-                    
-                    return fraction; // Останавливаем raycast
-                }
+                ));
+                ashleyEngine.addEntity(damageEvent);
                 
-                return -1; // Продолжаем raycast
+                //System.out.printf("%s has hited %s\n",stat_m.get(shooter).name,stat_m.get(hitEntity).name);
+                // Эффекты: кровь, искры и т.д.
+                //createHitEffect(point, normal);
+                
+                return fraction; // Останавливаем raycast
             }
+            
+            return -1; // Продолжаем raycast
         };
         
         Vector2 direction = new Vector2(target).sub(firePoint).nor();
