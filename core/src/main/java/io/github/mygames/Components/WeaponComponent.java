@@ -23,9 +23,13 @@ public class WeaponComponent implements Component{
     public WeaponType weaponType;   // Тип оружия
     public ProjectileType projectileType = ProjectileType.BULLET; // Тип снаряда
     public boolean isAutomatic;     // Автоматическое оружие?
+    /**Flag should weapon shoot now**/
+    public boolean make_shoot;
     
-    // Для hitscan оружия
+    /**Point weapon is shooting from**/
     public Vector2 firePoint = new Vector2(); // Точка выстрела относительно центра entity
+    /**Point weapon aimed at**/
+    public Vector2 aimPoint = new Vector2(); // 
     
     // Для projectile оружия
     //public String projectileType;   // Тип снаряда (пуля, ракета)

@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.mygames.Components.enums.Faction;
+import io.github.mygames.entity.Human;
 import io.github.mygames.entity.NpcGenericEntity;
 import io.github.mygames.systems.CollisionSystem;
 import io.github.mygames.systems.DamageBrokerSystem;
@@ -69,18 +70,18 @@ public class Ashley_test implements Screen{
         shoot_sys = new ShootingSystem(world, engine);
 
 
-        test_actor = new NpcGenericEntity(engine,world);
+        test_actor = new Human(engine,world);
         test_actor.setFaction(Faction.PLAYER);
         test_actor.setTexture(new Texture("models/ally.png"));
         test_actor.setName("ally");
         
-        test_enemy = new NpcGenericEntity(engine,world);
+        test_enemy = new Human(engine,world);
         test_enemy.setFaction(Faction.ZOMBIE);
         test_enemy.setCoords(200, 200, 200);
         test_enemy.setName("enemy");
         
         //test_actor.setFreeze(true);
-        test_marker = new NpcGenericEntity(engine,world);
+        test_marker = new Human(engine,world);
         test_marker.setTexture(new Texture("models/target.png"));
         test_marker.setHidden(true);
         test_marker.setFreeze(true);
@@ -145,8 +146,10 @@ public class Ashley_test implements Screen{
                 //System.out.println("COLLIDED");
             }
             
-            test_enemy.makeSimpleShoot(new Vector2(touchPos.x, touchPos.y), 500, 0);
-            shoot_sys.shoot(test_enemy.getBase_entity(), new Vector2(touchPos.x, touchPos.y));
+            //test_enemy.makeSimpleShoot(new Vector2(touchPos.x, touchPos.y), 500, 0);
+            test_enemy.aimAtPoint(new Vector2(touchPos.x, touchPos.y));
+            test_enemy.makeshoot();
+            //shoot_sys.shoot(test_enemy.getBase_entity(), new Vector2(touchPos.x, touchPos.y));
             //touchPos.set(Gdx.input.getX(), 0, 0);
         }
         //test_marker.setCoords(100, 0, 0);

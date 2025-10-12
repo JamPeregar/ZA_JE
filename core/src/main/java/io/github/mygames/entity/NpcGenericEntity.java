@@ -41,7 +41,7 @@ import io.github.mygames.ZAFW;
  *
  * @author Admin
  */
-public class NpcGenericEntity {
+public abstract class NpcGenericEntity {
     //components that entity use
     private final TransformComponent position_cmp;
     private final TextureComponent texture_cmp;
@@ -102,12 +102,12 @@ public class NpcGenericEntity {
     }
     
     //-------Attack----------//
-    
+    @Deprecated
     public void makeSimpleShoot(Vector2 dest, float maxDist, int dmg) {
         if (bullet_cmp.elapsed < bullet_cmp.delay) {
             return;
         }
-        bullet_cmp.set(new Vector2(position_cmp.coords.x,position_cmp.coords.y), dest, maxDist, dmg, base_entity);
+        //bullet_cmp.set(new Vector2(position_cmp.coords.x,position_cmp.coords.y), base_entity);
     }
     
     //--------Transform methods------------//
@@ -115,16 +115,7 @@ public class NpcGenericEntity {
     public Vector3 getMoveTo(Vector3 dest) {
         return position_cmp.move_to_coords;
     }
-    /**
-     * Set movement destination target
-     * @param dest
-     **/
-    public void setMoveTo(Vector3 dest) {
-        position_cmp.move_to_coords = dest;
-        task_cmp.the_task = TaskEnum.MOVE_TO_POINT_SIMPLE;
-    }
-    /**Get movement destination point
-     * @return **/
+    
     public float getSpeed() {
         return position_cmp.acceleration;
     }
@@ -171,6 +162,14 @@ public class NpcGenericEntity {
         col_cmp.col_detection = nocol;
     }
     
+    public B2dBodyComponent getBod_cmp() {
+        return bod_cmp;
+    }
+
+    public CollisionComponent getCol_cmp() {
+        return col_cmp;
+    }
+    
     public boolean isCollidedWithEntity(Entity a) {
         return false;
     }
@@ -184,7 +183,15 @@ public class NpcGenericEntity {
     public void setFaction(Faction faction) {
         faction_cmp.self_aware = faction;
     }
+    /**Get Char's relationship list
+     * @return relationship for each faction**/
+    public int[] getRelationships() {
+        return faction_cmp.relationships;
+    }
     
+    public void setRelationship(int faction, int disposition) {
+        faction_cmp.relationships[faction] = disposition;
+    }
     
     //-------------Render methods------------//
     
@@ -200,7 +207,7 @@ public class NpcGenericEntity {
         this.position_cmp.is_hidden = hide;
     }
     
-    //--------------Other methods------------//
+    //--------------Statistics------------//
     
     public String getName() {
         return stats_cmp.name;
@@ -210,12 +217,78 @@ public class NpcGenericEntity {
         stats_cmp.name = new_name;
     }
     
+    //--------------Tasks------------//
+    
+    /**
+     * Set movement destination target
+     * @param dest
+     **/
+    public void setMoveTo(Vector3 dest) {
+        position_cmp.move_to_coords = dest;
+        task_cmp.the_task = TaskEnum.MOVE_TO_POINT_SIMPLE;
+    }
+    
+    public TaskComponent getTask_cmp() {
+        return task_cmp;
+    }
+    
+    public void aimAtPoint(Vector2 dest) {
+        wpn_cmp.aimPoint = dest;
+        //bullet_cmp.endPoint = dest;
+    }
+    
+    /**Make simple attack of specified point **/
+    public void makeshoot() {
+        
+        if (!wpn_cmp.make_shoot && bullet_cmp.elapsed > bullet_cmp.delay) {
+            wpn_cmp.make_shoot = true;
+            //aimAtPoint(Vector2.Zero);
+            //makeSimpleShoot(Vector2.Zero, 0, 0);
+            bullet_cmp.isActive = true;
+            bullet_cmp.elapsed = 0f;
+            bullet_cmp.set(new Vector2(position_cmp.coords.x,position_cmp.coords.y), bullet_cmp.endPoint);
+        }
+    }
+    
+     //--------------Other------------//
     public Entity getBase_entity() {
         return base_entity;
     }
     
     public TypeEnum getType() {
         return type_cmp.type;
+    }
+
+    public TextureComponent getTexture_cmp() {
+        return texture_cmp;
+    }
+
+    public StateComponent getState_cmp() {
+        return state_cmp;
+    }
+
+    public StatisticsComponent getStats_cmp() {
+        return stats_cmp;
+    }
+
+    public TypeComponent getType_cmp() {
+        return type_cmp;
+    }
+
+    public BulletComponent getBullet_cmp() {
+        return bullet_cmp;
+    }
+
+    public WeaponComponent getWpn_cmp() {
+        return wpn_cmp;
+    }
+
+    public Engine getBase_engine() {
+        return base_engine;
+    }
+
+    public World getBase_world() {
+        return base_world;
     }
     
 }

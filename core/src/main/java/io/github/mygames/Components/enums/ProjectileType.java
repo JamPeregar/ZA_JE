@@ -11,5 +11,6 @@ package io.github.mygames.Components.enums;
 public enum ProjectileType {
     BULLET,
     PROJECTILE,
-    MELEE
+    MELEE,
+    FRAC
 }

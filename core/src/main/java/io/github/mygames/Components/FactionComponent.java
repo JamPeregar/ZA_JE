@@ -12,9 +12,11 @@ import io.github.mygames.Components.enums.Faction;
  * @author Admin
  */
 public class FactionComponent implements Component{
-    // May be add some dynamic
-    public static int[][] relationships = new int[Faction.values().length][Faction.values().length]; // relations to other factions
-    //public Factions[] relationships = new Factions[11]; // relations to other factions
+    /**Relationships matrix for all factions**/
+    public static int[][] political_map = new int[Faction.values().length][Faction.values().length]; // relations to other factions
+    /**Relationships between character and factions**/
+    public int[] relationships = new int[Faction.values().length];
+    /**Faction of character**/
     public Faction self_aware = Faction.NONE;
     
 }

@@ -32,13 +32,32 @@ public class BulletComponent implements Component {
     public Entity owner; 
     public TextureRegion texture_r;
     
-    public void set(Vector2 start, Vector2 dest, float maxDist, int dmg, Entity ownerEntity) {
+    public BulletComponent() {}
+    
+    public BulletComponent(Vector2 start, Vector2 dest) {
         startPoint.set(start);
         //direction.set(dir).nor();
         endPoint.set(dest); //.setLength(maxDist); //.clamp(0, maxDist);
-        maxDistance = maxDist;
-        damage = dmg;
-        owner = ownerEntity;
+        //maxDistance = maxDist;
+        isActive = true;
+        elapsed = 0f;
+        
+        Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
+        pixmap.setColor(Color.RED);
+        pixmap.drawPixel(0, 0);
+        //Texture texture = new Texture(pixmap); //remember to dispose of later
+        texture_r = new TextureRegion(new Texture(pixmap), 0, 0, 1, 1);
+        pixmap.dispose();
+    }
+    
+    public void set(Vector2 start, Vector2 dest) {
+        startPoint.set(start);
+        endPoint.set(dest);
+        //direction.set(dir).nor();
+        //endPoint.set(dest); //.setLength(maxDist); //.clamp(0, maxDist);
+        //maxDistance = maxDist;
+        //damage = dmg;
+        //owner = ownerEntity;
         isActive = true;
         elapsed = 0f;
         
