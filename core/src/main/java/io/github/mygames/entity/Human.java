@@ -5,8 +5,13 @@
 package io.github.mygames.entity;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
+import io.github.mygames.Components.B2dBodyComponent;
+import io.github.mygames.Components.enums.TypeEnum;
+import io.github.mygames.Components.enums.WeaponType;
 
 /**
  *
@@ -17,6 +22,12 @@ public class Human extends NpcGenericEntity{
     public Human(Engine engine, World world) {
         super(engine, world);
         
+        //configure components
+        this.type_cmp.type = TypeEnum.CHARACTER;
+        wpn_cmp.init_weapon(WeaponType.UNARMMED);
     }
-
+    
+    public void giveWeapon(WeaponType wpn) {
+        wpn_cmp.init_weapon(wpn);
+    }
 }

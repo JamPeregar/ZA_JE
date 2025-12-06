@@ -9,15 +9,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import io.github.mygames.Components.B2dBodyComponent;
 import io.github.mygames.Components.BulletComponent;
@@ -30,7 +23,7 @@ import io.github.mygames.Components.TextureComponent;
 import io.github.mygames.Components.TransformComponent;
 import io.github.mygames.Components.TypeComponent;
 import io.github.mygames.Components.WeaponComponent;
-import io.github.mygames.Components.enums.Faction;
+import io.github.mygames.Components.enums.FactionEnum;
 import io.github.mygames.Components.enums.StateEnum;
 import io.github.mygames.Components.enums.TaskEnum;
 import io.github.mygames.Components.enums.TypeEnum;
@@ -43,21 +36,21 @@ import io.github.mygames.ZAFW;
  */
 public abstract class NpcGenericEntity {
     //components that entity use
-    private final TransformComponent position_cmp;
-    private final TextureComponent texture_cmp;
-    private final StateComponent state_cmp;
-    private final FactionComponent faction_cmp;
-    private final StatisticsComponent stats_cmp;
-    private final TypeComponent type_cmp;
-    private final TaskComponent task_cmp;
-    private final BulletComponent bullet_cmp;
-    private final B2dBodyComponent bod_cmp;
-    private final CollisionComponent col_cmp;
-    private final WeaponComponent wpn_cmp;
+    final TransformComponent position_cmp; //no modifer - childrens can use
+    final TextureComponent texture_cmp;
+    final StateComponent state_cmp;
+    final FactionComponent faction_cmp;
+    final StatisticsComponent stats_cmp;
+    final TypeComponent type_cmp;
+    final TaskComponent task_cmp;
+    final BulletComponent bullet_cmp;
+    final B2dBodyComponent bod_cmp;
+    final CollisionComponent col_cmp;
+    final WeaponComponent wpn_cmp;
     
-    private final Engine base_engine;
-    private final World base_world;
-    private final Entity base_entity;
+    final Engine base_engine;
+    final World base_world;
+    final Entity base_entity;
     //private final Body base_body; //if box2d needed
 
     public NpcGenericEntity(Engine engine, World world) {
@@ -77,14 +70,13 @@ public abstract class NpcGenericEntity {
         this.stats_cmp = engine.createComponent(StatisticsComponent.class);
         this.wpn_cmp = engine.createComponent(WeaponComponent.class);
         
-        //configure components
-        this.type_cmp.type = TypeEnum.CHARACTER;
-        texture_cmp.texture_region = new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")));
+          //configure other in children     
+          //configure components
+        //this.type_cmp.type = TypeEnum.CHARACTER;
         bod_cmp.body = B2dBodyComponent.createCharBody(world);
         bod_cmp.body.setUserData(base_entity); // body belongs to entity
         //bod_cmp.hitboxFx = bod_cmp.body.getFixtureList().first();
-        wpn_cmp.init_weapon(WeaponType.AK47);
-                
+        
         //add components
         base_entity.add(type_cmp);
         base_entity.add(position_cmp);
@@ -176,11 +168,11 @@ public abstract class NpcGenericEntity {
     
     //-------------Faction methods------------//
     
-    public Faction getFaction() {
+    public FactionEnum getFaction() {
         return faction_cmp.self_aware;
     }
     
-    public void setFaction(Faction faction) {
+    public void setFaction(FactionEnum faction) {
         faction_cmp.self_aware = faction;
     }
     /**Get Char's relationship list

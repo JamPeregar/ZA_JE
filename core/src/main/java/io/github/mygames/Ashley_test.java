@@ -11,14 +11,17 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
-import io.github.mygames.Components.enums.Faction;
+import io.github.mygames.Components.enums.FactionEnum;
+import io.github.mygames.Components.enums.WeaponType;
 import io.github.mygames.entity.Human;
+import io.github.mygames.entity.NpcFactory;
 import io.github.mygames.entity.NpcGenericEntity;
 import io.github.mygames.systems.CollisionSystem;
 import io.github.mygames.systems.DamageBrokerSystem;
@@ -27,6 +30,8 @@ import io.github.mygames.systems.PhysicsSystem;
 import io.github.mygames.systems.ai.NavigationSystem;
 import io.github.mygames.systems.RenderSystem;
 import io.github.mygames.systems.ShootingSystem;
+import java.util.ArrayList;
+import java.util.Random;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
@@ -50,16 +55,22 @@ public class Ashley_test implements Screen{
     
     CollisionSystem col_sys;
 
-    NpcGenericEntity test_actor;
+    Human test_actor;
     NpcGenericEntity test_marker;
     NpcGenericEntity test_enemy;
+    NpcFactory npc_gen;
+    
+    ArrayList<Human> npcpool = new ArrayList<>();
+    Random rand = new Random();
+    
     Vector3 touchPos;
     OrthographicCamera camera;
 
     public Ashley_test(final ZAFW dropGame) {
         this.dropGame = dropGame;
         world = dropGame.world;
-        engine = new Engine();
+        engine = dropGame.engine;
+        npc_gen = dropGame.npc_generator;
         //batch = new SpriteBatch();
         //mv_sys = new MovementSystem(world);
         r_sys = new RenderSystem(dropGame.batch, dropGame.shaper);
@@ -69,14 +80,20 @@ public class Ashley_test implements Screen{
         dmg_sys = new DamageBrokerSystem();
         shoot_sys = new ShootingSystem(world, engine);
 
-
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
+        npcpool.add(npc_gen.createNPCFaction(1500f, 1500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
+        
+        
         test_actor = new Human(engine,world);
-        test_actor.setFaction(Faction.PLAYER);
+        test_actor.setFaction(FactionEnum.PLAYER);
         test_actor.setTexture(new Texture("models/ally.png"));
         test_actor.setName("ally");
+        test_actor.giveWeapon(WeaponType.ASSAULT_RIFLE);
         
-        test_enemy = new Human(engine,world);
-        test_enemy.setFaction(Faction.ZOMBIE);
+        //test_enemy = new Human(engine,world);
+        test_enemy = npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.BANDIT, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png"))));
+        test_enemy.setFaction(FactionEnum.ZOMBIE);
         test_enemy.setCoords(200, 200, 200);
         test_enemy.setName("enemy");
         
@@ -138,19 +155,26 @@ public class Ashley_test implements Screen{
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
             
-            test_actor.setMoveTo(touchPos);
+            test_enemy.setMoveTo(touchPos);
             test_marker.setCoords(touchPos.x, touchPos.y, 0);
             test_marker.setHidden(false);
             //System.out.printf("\n nav from %s to %s", test_actor.getCoords().toString(),test_marker.getCoords().toString());
             if (test_actor.isCollidedWithEntity(test_enemy.getBase_entity())) {
-                //System.out.println("COLLIDED");
+                System.out.println("COLLIDED");
             }
             
             //test_enemy.makeSimpleShoot(new Vector2(touchPos.x, touchPos.y), 500, 0);
-            test_enemy.aimAtPoint(new Vector2(touchPos.x, touchPos.y));
-            test_enemy.makeshoot();
+            test_actor.aimAtPoint(new Vector2(touchPos.x, touchPos.y));
+            test_actor.makeshoot();
+            
             //shoot_sys.shoot(test_enemy.getBase_entity(), new Vector2(touchPos.x, touchPos.y));
             //touchPos.set(Gdx.input.getX(), 0, 0);
+            for (Human h: npcpool) {
+                
+                //float rf = ;
+            h.setMoveTo(new Vector3(touchPos.x+rand.nextFloat(100f), touchPos.y+rand.nextFloat(100f), 0));
+            
+            }
         }
         //test_marker.setCoords(100, 0, 0);
 	
@@ -180,7 +204,7 @@ public class Ashley_test implements Screen{
 
     @Override
     public void dispose() {
-
+        npcpool.clear();
     }
     
     

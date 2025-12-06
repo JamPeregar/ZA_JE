@@ -66,7 +66,7 @@ public class RenderSystem extends EntitySystem{
             TypeComponent type_cmp = type_mapper.get(entity);
             BulletComponent bullet_cmp = bullet_mapper.get(entity);
             
-            if (position.is_hidden) {
+            if (position.is_hidden || texture_cmp.texture_region == null) {
                 continue;
             }
             batch.draw(texture_cmp.texture_region,

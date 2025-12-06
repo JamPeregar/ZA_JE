@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
-import io.github.mygames.Components.enums.Faction;
+import io.github.mygames.Components.enums.FactionEnum;
 import io.github.mygames.Components.enums.TypeEnum;
 
 public class MainMenuScreen implements Screen {

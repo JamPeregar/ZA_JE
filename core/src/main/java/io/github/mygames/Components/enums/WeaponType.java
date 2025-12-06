@@ -10,7 +10,9 @@ package io.github.mygames.Components.enums;
  */
 public enum WeaponType {
     UNARMMED,
-    COLT45,
-    AK47,
+    PISTOL,
+    ASSAULT_RIFLE,
+    RIFLE,
+    THROWABLE,
     RPG
 }

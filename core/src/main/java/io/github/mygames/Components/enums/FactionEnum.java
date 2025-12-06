@@ -8,7 +8,7 @@ package io.github.mygames.Components.enums;
  *
  * @author Admin
  */
-public enum Faction {
+public enum FactionEnum {
     NONE,
     PLAYER,
     ZOMBIE,

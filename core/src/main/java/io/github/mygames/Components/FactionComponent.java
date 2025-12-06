@@ -5,7 +5,7 @@
 package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
-import io.github.mygames.Components.enums.Faction;
+import io.github.mygames.Components.enums.FactionEnum;
 
 /**
  *
@@ -13,10 +13,10 @@ import io.github.mygames.Components.enums.Faction;
  */
 public class FactionComponent implements Component{
     /**Relationships matrix for all factions**/
-    public static int[][] political_map = new int[Faction.values().length][Faction.values().length]; // relations to other factions
+    public static int[][] political_map = new int[FactionEnum.values().length][FactionEnum.values().length]; // relations to other factions
     /**Relationships between character and factions**/
-    public int[] relationships = new int[Faction.values().length];
+    public int[] relationships = new int[FactionEnum.values().length];
     /**Faction of character**/
-    public Faction self_aware = Faction.NONE;
+    public FactionEnum self_aware = FactionEnum.NONE;
     
 }

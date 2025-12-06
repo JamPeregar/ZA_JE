@@ -1,5 +1,6 @@
 package io.github.mygames;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
+import io.github.mygames.entity.NpcFactory;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class ZAFW extends Game {
@@ -18,6 +20,8 @@ public class ZAFW extends Game {
     ShapeDrawer shaper;
     BitmapFont font;
     public World world;
+    public Engine engine;
+    public NpcFactory npc_generator;
     public OrthographicCamera camera;
     
     /** Get game instance to get stuff from here
@@ -34,6 +38,8 @@ public class ZAFW extends Game {
         font = new BitmapFont();
         camera = new OrthographicCamera();
         world = new World(Vector2.Zero, true);
+        engine = new Engine();
+        npc_generator = new NpcFactory(engine, world);
         
         camera.setToOrtho(false, ZAFW.MAIN_WIDH, MAIN_HEIGHT);
 

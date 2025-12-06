@@ -8,7 +8,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
 import io.github.mygames.Components.enums.ProjectileType;
 import io.github.mygames.Components.enums.WeaponType;
-import static io.github.mygames.Components.enums.WeaponType.AK47;
+import static io.github.mygames.Components.enums.WeaponType.ASSAULT_RIFLE;
 import static io.github.mygames.Components.enums.WeaponType.UNARMMED;
 
 /**
@@ -43,15 +43,15 @@ public class WeaponComponent implements Component{
                 weaponType = WeaponType.UNARMMED;
                 projectileType = ProjectileType.MELEE;
                 break;
-            case COLT45:
-                weaponType = WeaponType.COLT45;
+            case PISTOL:
+                weaponType = WeaponType.PISTOL;
                 projectileType = ProjectileType.BULLET;
                 fireRate = 1;
                 damage = 10;
                 range = 100;
                 break;
-            case AK47:
-                weaponType = WeaponType.AK47;
+            case ASSAULT_RIFLE:
+                weaponType = WeaponType.ASSAULT_RIFLE;
                 projectileType = ProjectileType.BULLET;
                 fireRate = 4;
                 damage = 5;
