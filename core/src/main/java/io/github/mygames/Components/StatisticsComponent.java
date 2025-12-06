@@ -18,4 +18,5 @@ public class StatisticsComponent implements Component{
     public int attack_rate = 100;
     public int strengh = 0;
     public float sense_range = 100;
+    public boolean is_dead = false;
 }

@@ -24,7 +24,7 @@ import io.github.mygames.Components.TypeComponent;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
- *Moves col obj and obj origin
+ *Moves collision obj and obj origin
  * @author Admin
  */
 public class PhysicsSystem extends IteratingSystem {

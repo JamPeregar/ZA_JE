@@ -105,7 +105,8 @@ public class ShootingSystem extends IteratingSystem {
             if (hitEntity != null && hitEntity != shooter) {
                 // Создаем компонент урона
                 Entity damageEvent = ashleyEngine.createEntity();
-                damageEvent.add(new Bullet(hitEntity, shooter, weapon.damage, DamageType.BULLET).bullet_data);
+                damageEvent.add(new DamageComponent(hitEntity, shooter, weapon.damage, DamageType.BULLET));
+                //new DamageComponent(hitEntity, shooter, weapon.damage, DamageType.BULLET)
                 
                 /*damageEvent.add(new DamageComponent(
                         hitEntity, shooter, weapon.damage, DamageType.BULLET

@@ -17,7 +17,7 @@ import io.github.mygames.Components.StatisticsComponent;
 public class DamageBrokerSystem extends IteratingSystem{
     
     public DamageBrokerSystem() {
-        super(Family.all(DamageComponent.class, StatisticsComponent.class).get());
+        super(Family.all(DamageComponent.class).get());
     }
 
     @Override
@@ -30,12 +30,13 @@ public class DamageBrokerSystem extends IteratingSystem{
             stats.health -= dmg.dmg;
             
             // Логика смерти
-            if (stats.health <= 0) {
+            if (stats.health <= 0 && !stats.is_dead) {
                 // Помечаем сущность для удаления или запускаем анимацию смерти
                 //dmg.victim.add(new DeadComponent());
-                
+                stats.is_dead = true;
+                System.out.println(stats.name + " died with hp " + stats.health);
             }
-            System.out.printf("%s has damaged\n",stats.name);
+//            System.out.printf("%s has damaged\n",stats.name);
         }
         
         // Удаляем компонент урона после обработки

@@ -48,14 +48,14 @@ public class WeaponComponent implements Component{
                 projectileType = ProjectileType.BULLET;
                 fireRate = 1;
                 damage = 10;
-                range = 100;
+                range = 300;
                 break;
             case ASSAULT_RIFLE:
                 weaponType = WeaponType.ASSAULT_RIFLE;
                 projectileType = ProjectileType.BULLET;
                 fireRate = 4;
                 damage = 5;
-                range = 300;
+                range = 600;
                 break;
             default:
                 weaponType = WeaponType.UNARMMED;

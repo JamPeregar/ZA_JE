@@ -81,15 +81,15 @@ public class Ashley_test implements Screen{
         shoot_sys = new ShootingSystem(world, engine);
 
         npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
-        npcpool.add(npc_gen.createNPCFaction(1500f, 1500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
-        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
+        //npcpool.add(npc_gen.createNPCFaction(1500f, 1500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
+        //npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
         
         
         test_actor = new Human(engine,world);
         test_actor.setFaction(FactionEnum.PLAYER);
         test_actor.setTexture(new Texture("models/ally.png"));
         test_actor.setName("ally");
-        test_actor.giveWeapon(WeaponType.ASSAULT_RIFLE);
+        test_actor.giveWeapon(WeaponType.PISTOL);
         
         //test_enemy = new Human(engine,world);
         test_enemy = npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.BANDIT, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png"))));
@@ -170,9 +170,9 @@ public class Ashley_test implements Screen{
             //shoot_sys.shoot(test_enemy.getBase_entity(), new Vector2(touchPos.x, touchPos.y));
             //touchPos.set(Gdx.input.getX(), 0, 0);
             for (Human h: npcpool) {
-                
+                if (h.getStats_cmp().is_dead) { continue; }
                 //float rf = ;
-            h.setMoveTo(new Vector3(touchPos.x+rand.nextFloat(100f), touchPos.y+rand.nextFloat(100f), 0));
+                h.setMoveTo(new Vector3(touchPos.x+rand.nextFloat(100f), touchPos.y+rand.nextFloat(100f), 0));
             
             }
         }

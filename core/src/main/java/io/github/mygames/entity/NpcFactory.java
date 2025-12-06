@@ -37,14 +37,15 @@ public class NpcFactory {
         //specify spawn later
         switch (faction) {
             case ZOMBIE:
-                //human_template = 
+                human_template.setName("Infected");
                 break;
             case SURVIVOR:
-                //human_template = new Human(base_engine,base_world);
+                human_template.setName("Survivor");
                 break;
             case BANDIT:
                 //human_template = new Human(base_engine,base_world);
                 //configure components
+                human_template.setName("Bandit");
                 break;
             default:
                 throw new AssertionError("unknown type");
