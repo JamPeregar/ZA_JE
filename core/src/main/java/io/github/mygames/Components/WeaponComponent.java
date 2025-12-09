@@ -6,10 +6,7 @@ package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
-import io.github.mygames.Components.enums.ProjectileType;
-import io.github.mygames.Components.enums.WeaponType;
-import static io.github.mygames.Components.enums.WeaponType.ASSAULT_RIFLE;
-import static io.github.mygames.Components.enums.WeaponType.UNARMMED;
+import io.github.mygames.Components.ProjectileComponent.ProjectileType;
 
 /**
  *
@@ -31,11 +28,19 @@ public class WeaponComponent implements Component{
     /**Point weapon aimed at**/
     public Vector2 aimPoint = new Vector2(); // 
     
-    // Для projectile оружия
     //public String projectileType;   // Тип снаряда (пуля, ракета)
     public float projectileSpeed;
     
-    public WeaponComponent() {weaponType = UNARMMED;}
+    public enum WeaponType {
+    UNARMMED,
+    PISTOL,
+    ASSAULT_RIFLE,
+    RIFLE,
+    THROWABLE,
+    RPG
+}
+    
+    public WeaponComponent() {weaponType = WeaponType.UNARMMED;}
 
     public void init_weapon(WeaponType weapon) {
         switch (weapon) {

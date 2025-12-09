@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import io.github.mygames.Components.B2dBodyComponent;
-import io.github.mygames.Components.enums.TypeEnum;
-import io.github.mygames.Components.enums.WeaponType;
+import io.github.mygames.Components.TypeComponent.TypeEnum;
+import io.github.mygames.Components.WeaponComponent.WeaponType;
 
 /**
  *

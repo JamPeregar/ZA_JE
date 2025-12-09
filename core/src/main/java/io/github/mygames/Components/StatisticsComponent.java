@@ -5,6 +5,7 @@
 package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,4 +20,5 @@ public class StatisticsComponent implements Component{
     public int strengh = 0;
     public float sense_range = 100;
     public boolean is_dead = false;
+    public ArrayList inventory;
 }

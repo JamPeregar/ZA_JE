@@ -17,10 +17,9 @@ import io.github.mygames.Components.StateComponent;
 import io.github.mygames.Components.TaskComponent;
 import io.github.mygames.Components.TransformComponent;
 import io.github.mygames.Components.TypeComponent;
-import io.github.mygames.Components.enums.StateEnum;
-import io.github.mygames.Components.enums.TaskEnum;
-import static io.github.mygames.Components.enums.TaskEnum.MOVE_TO_POINT_SIMPLE;
-import io.github.mygames.Components.enums.TypeEnum;
+import io.github.mygames.Components.StateComponent.StateEnum;
+import io.github.mygames.Components.TaskComponent.TaskEnum;
+import io.github.mygames.Components.TypeComponent.TypeEnum;
 
 /**
  *

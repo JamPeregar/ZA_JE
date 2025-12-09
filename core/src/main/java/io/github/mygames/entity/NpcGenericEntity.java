@@ -23,11 +23,11 @@ import io.github.mygames.Components.TextureComponent;
 import io.github.mygames.Components.TransformComponent;
 import io.github.mygames.Components.TypeComponent;
 import io.github.mygames.Components.WeaponComponent;
-import io.github.mygames.Components.enums.FactionEnum;
-import io.github.mygames.Components.enums.StateEnum;
-import io.github.mygames.Components.enums.TaskEnum;
-import io.github.mygames.Components.enums.TypeEnum;
-import io.github.mygames.Components.enums.WeaponType;
+import io.github.mygames.Components.FactionComponent.FactionEnum;
+import io.github.mygames.Components.StateComponent.StateEnum;
+import io.github.mygames.Components.TaskComponent.TaskEnum;
+import io.github.mygames.Components.TypeComponent.TypeEnum;
+import io.github.mygames.Components.WeaponComponent.WeaponType;
 import io.github.mygames.ZAFW;
 
 /**

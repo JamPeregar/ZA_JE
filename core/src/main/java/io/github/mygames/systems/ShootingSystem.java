@@ -19,8 +19,7 @@ import io.github.mygames.Components.StatisticsComponent;
 //import io.github.mygames.Components.StatisticsComponent;
 import io.github.mygames.Components.TransformComponent;
 import io.github.mygames.Components.WeaponComponent;
-import io.github.mygames.Components.enums.DamageType;
-import io.github.mygames.entity.Bullet;
+import io.github.mygames.Components.DamageComponent.DamageType;
 
 /**
  *

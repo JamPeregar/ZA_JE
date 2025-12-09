@@ -6,7 +6,7 @@ package io.github.mygames.entity;
 
 import com.badlogic.ashley.core.Entity;
 import io.github.mygames.Components.DamageComponent;
-import io.github.mygames.Components.enums.DamageType;
+import io.github.mygames.Components.DamageComponent.DamageType;
 
 /**
  *

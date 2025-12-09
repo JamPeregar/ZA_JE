@@ -5,7 +5,6 @@
 package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
-import io.github.mygames.Components.enums.TypeEnum;
 
 /**
  *
@@ -13,4 +12,14 @@ import io.github.mygames.Components.enums.TypeEnum;
  */
 public class TypeComponent implements Component{
     public TypeEnum type = TypeEnum.CHARACTER;
+    
+    public enum TypeEnum {
+    CHARACTER,
+    BUILDING,
+    CAR,
+    ITEM,
+    POINT,
+    SHAPE,
+    EFFECT
+}
 }

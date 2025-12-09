@@ -5,8 +5,6 @@
 package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
-import io.github.mygames.Components.enums.StateEnum;
-import io.github.mygames.Components.enums.TaskEnum;
 
 /**
  *
@@ -15,4 +13,9 @@ import io.github.mygames.Components.enums.TaskEnum;
 public class TaskComponent implements Component{
     public TaskEnum the_task = TaskEnum.NONE;
     
+    public enum TaskEnum {
+    NONE,
+    MOVE_TO_POINT_SIMPLE,
+    ATTACK_ENTITY
+}
 }

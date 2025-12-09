@@ -5,7 +5,6 @@
 package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
-import io.github.mygames.Components.enums.FactionEnum;
 
 /**
  *
@@ -18,5 +17,22 @@ public class FactionComponent implements Component{
     public int[] relationships = new int[FactionEnum.values().length];
     /**Faction of character**/
     public FactionEnum self_aware = FactionEnum.NONE;
+    
+    public static enum FactionEnum {
+        NONE,
+        PLAYER,
+        ZOMBIE,
+        BANDIT,
+        SURVIVOR,
+        ARMY,
+        FARMER,
+        MERCENARY,
+        MILITIA,
+        ROUGE,
+        ASSHOLE,
+        SPEC1,
+        SPEC2,
+        SPEC3
+    }
     
 }

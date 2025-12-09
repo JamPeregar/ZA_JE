@@ -6,7 +6,7 @@ package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
-import io.github.mygames.Components.enums.DamageType;
+import io.github.mygames.Components.DamageComponent.DamageType;
 
 /**
  *
@@ -19,4 +19,11 @@ public class ProjectileComponent {
     public DamageType damageType;  // Тип урона
     public float maxRange;         // Максимальная дистанция полета
     public Vector2 startPosition = new Vector2(); // Начальная позиция
+    
+    public static enum ProjectileType {
+    BULLET,
+    PROJECTILE,
+    MELEE,
+    FRAC
+}
 }

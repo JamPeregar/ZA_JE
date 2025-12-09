@@ -20,7 +20,7 @@ import io.github.mygames.Components.StateComponent;
 import io.github.mygames.Components.TextureComponent;
 import io.github.mygames.Components.TransformComponent;
 import io.github.mygames.Components.TypeComponent;
-import io.github.mygames.Components.enums.TypeEnum;
+import io.github.mygames.Components.TypeComponent.TypeEnum;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**

@@ -6,7 +6,6 @@ package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
-import io.github.mygames.Components.enums.DamageType;
 
 /**
  *
@@ -17,6 +16,14 @@ public class DamageComponent implements Component{
     public DamageType dmgtype;
     public Entity attacker;
     public Entity victim;
+    
+    public static enum DamageType {
+    GENERIC,
+    MELEE,
+    BULLET,
+    EXPLOSIVE,
+    FIRE
+}
     
     public DamageComponent() {
     }

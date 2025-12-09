@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import io.github.mygames.Components.B2dBodyComponent;
 import io.github.mygames.Components.StateComponent;
 import io.github.mygames.Components.TransformComponent;
-import io.github.mygames.Components.enums.StateEnum;
+import io.github.mygames.Components.StateComponent.StateEnum;
 
 /**
  *

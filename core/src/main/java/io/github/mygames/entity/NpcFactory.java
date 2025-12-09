@@ -11,12 +11,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import io.github.mygames.Components.B2dBodyComponent;
+import io.github.mygames.Components.FactionComponent.FactionEnum;
 import io.github.mygames.Components.TypeComponent;
-import io.github.mygames.Components.enums.FactionEnum;
-import static io.github.mygames.Components.enums.FactionEnum.SURVIVOR;
-import static io.github.mygames.Components.enums.FactionEnum.ZOMBIE;
-import io.github.mygames.Components.enums.TypeEnum;
-import io.github.mygames.Components.enums.WeaponType;
+import io.github.mygames.Components.TypeComponent.TypeEnum;
+import io.github.mygames.Components.WeaponComponent.WeaponType;
 
 /**
  *
