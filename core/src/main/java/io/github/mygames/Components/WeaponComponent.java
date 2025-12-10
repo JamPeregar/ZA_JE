@@ -7,12 +7,21 @@ package io.github.mygames.Components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
 import io.github.mygames.Components.ProjectileComponent.ProjectileType;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.*;
 
 /**
  *
  * @author Admin
  */
 public class WeaponComponent implements Component{
+    static final String filepath = "cfg/weapons.ini";
+    
+    public String weaponName;
     public int fireRate;          // Выстрелов в секунду
     public float lastShotTime;      // Время последнего выстрела
     public int damage;              // Урон за выстрел
@@ -32,7 +41,7 @@ public class WeaponComponent implements Component{
     public float projectileSpeed;
     
     public enum WeaponType {
-    UNARMMED,
+    UNARMED,
     PISTOL,
     ASSAULT_RIFLE,
     RIFLE,
@@ -40,12 +49,12 @@ public class WeaponComponent implements Component{
     RPG
 }
     
-    public WeaponComponent() {weaponType = WeaponType.UNARMMED;}
+    public WeaponComponent() {weaponType = WeaponType.UNARMED;}
 
     public void init_weapon(WeaponType weapon) {
         switch (weapon) {
-            case UNARMMED:
-                weaponType = WeaponType.UNARMMED;
+            case UNARMED:
+                weaponType = WeaponType.UNARMED;
                 projectileType = ProjectileType.MELEE;
                 break;
             case PISTOL:
@@ -63,13 +72,65 @@ public class WeaponComponent implements Component{
                 range = 600;
                 break;
             default:
-                weaponType = WeaponType.UNARMMED;
+                weaponType = WeaponType.UNARMED;
                 fireRate = 1;
                 damage = 10;
                 range = 100;
         }
     }
+    /**Get weapon's data from xml
+     * @return Weapon component with data**/
+    public static WeaponComponent getWeaponDataXML(String weaponname) {
+        try {
+            // Создаем парсер
+            //DocumentBuilderFactory factory = 
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            
+            // Загружаем XML файл
+            Document document = builder.parse(new File("weapons.xml"));
+            document.getDocumentElement().normalize();
+            
+            // Получаем все элементы weapon
+            NodeList weaponList = document.getElementsByTagName("weapon");
+            
+            // Создаем список для хранения оружия и возвращаем нужный
+            //List<WeaponComponent> weapons = new ArrayList<>();
+            
+            for (int i = 0; i < weaponList.getLength(); i++) {
+                Node node = weaponList.item(i);
+                
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    if (    !weaponname.equals(getElementValue(element, "name")) ) {return new WeaponComponent();}
+                    
+                    // Создаем объект Weapon и заполняем его
+                    WeaponComponent weapon = new WeaponComponent();
+                    weapon.weaponName = getElementValue(element, "name");
+                    weapon.fireRate = Integer.parseInt(getElementValue(element, "fireRate"));
+                    weapon.damage = Integer.parseInt(getElementValue(element, "damage"));
+                    weapon.range = Integer.parseInt(getElementValue(element, "range"));
+                    weapon.weaponType = WeaponType.valueOf(getElementValue(element, "weaponType"));
+                    weapon.projectileType = ProjectileType.valueOf(getElementValue(element, "projectileType"));
+                    weapon.isAutomatic = getElementValue(element, "isAutomatic").equals("1");
+                    
+                    //weapons.add(weapon);
+                    return weapon;
+                }
+            }
+            
+        } catch (Exception e) {
+            
+        }
+        return new WeaponComponent();
+    }
     
-    
+    private static String getElementValue(Element element, String tagName) {
+        NodeList nodeList = element.getElementsByTagName(tagName);
+        if (nodeList.getLength() > 0) {
+            Node node = nodeList.item(0);
+            return node.getTextContent();
+        }
+        return "";
+    }
 
 }

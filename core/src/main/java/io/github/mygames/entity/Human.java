@@ -5,11 +5,7 @@
 package io.github.mygames.entity;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
-import io.github.mygames.Components.B2dBodyComponent;
 import io.github.mygames.Components.TypeComponent.TypeEnum;
 import io.github.mygames.Components.WeaponComponent.WeaponType;
 
@@ -24,7 +20,7 @@ public class Human extends NpcGenericEntity{
         
         //configure components
         this.type_cmp.type = TypeEnum.CHARACTER;
-        wpn_cmp.init_weapon(WeaponType.UNARMMED);
+        wpn_cmp.init_weapon(WeaponType.UNARMED);
     }
     
     public void giveWeapon(WeaponType wpn) {

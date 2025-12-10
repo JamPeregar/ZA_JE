@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this template
+-->
+
+
+
+<weapons>
+    <count>3</count>
+    <weapon>
+        <name>unarmed</name>
+        <fireRate>1</fireRate>
+        <damage>10</damage>
+        <range>5</range>
+        <weaponType>unarmed</weaponType>
+        <projectileType>none</projectileType>
+        <isAutomatic>0</isAutomatic>
+    </weapon>
+    <weapon>
+        <name>colt45</name>
+        <fireRate>1</fireRate>
+        <damage>10</damage>
+        <range>300</range>
+        <weaponType>pistol</weaponType>
+        <projectileType>bullet</projectileType>
+        <isAutomatic>0</isAutomatic>
+    </weapon>
+    <weapon>
+        <name>ak47</name>
+        <fireRate>4</fireRate>
+        <damage>5</damage>
+        <range>600</range>
+        <weaponType>assault_rifle</weaponType>
+        <projectileType>bullet</projectileType>
+        <isAutomatic>1</isAutomatic>
+    </weapon>
+</weapons>
+

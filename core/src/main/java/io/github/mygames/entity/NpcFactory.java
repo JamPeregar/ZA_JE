@@ -5,16 +5,9 @@
 package io.github.mygames.entity;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
-import io.github.mygames.Components.B2dBodyComponent;
 import io.github.mygames.Components.FactionComponent.FactionEnum;
-import io.github.mygames.Components.TypeComponent;
-import io.github.mygames.Components.TypeComponent.TypeEnum;
-import io.github.mygames.Components.WeaponComponent.WeaponType;
 
 /**
  *
