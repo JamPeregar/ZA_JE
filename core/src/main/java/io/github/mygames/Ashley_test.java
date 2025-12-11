@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.mygames.Components.FactionComponent.FactionEnum;
 import io.github.mygames.Components.WeaponComponent.WeaponType;
 import io.github.mygames.entity.Human;
+import io.github.mygames.entity.ModelLoader;
 import io.github.mygames.entity.NpcFactory;
 import io.github.mygames.entity.NpcGenericEntity;
 import io.github.mygames.systems.CollisionSystem;
@@ -61,6 +62,7 @@ public class Ashley_test implements Screen{
     NpcFactory npc_gen;
     
     ArrayList<Human> npcpool = new ArrayList<>();
+    ModelLoader mloader = new ModelLoader();
     Random rand = new Random();
     
     Vector3 touchPos;
@@ -80,7 +82,7 @@ public class Ashley_test implements Screen{
         dmg_sys = new DamageBrokerSystem();
         shoot_sys = new ShootingSystem(world, engine);
 
-        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("ally.png")));
         //npcpool.add(npc_gen.createNPCFaction(1500f, 1500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
         //npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
         

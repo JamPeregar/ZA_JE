@@ -28,6 +28,7 @@ public class WeaponComponent implements Component{
     public float range;             // Дальность стрельбы
     public WeaponType weaponType;   // Тип оружия
     public ProjectileType projectileType = ProjectileType.BULLET; // Тип снаряда
+    public int modelid;
     public boolean isAutomatic;     // Автоматическое оружие?
     /**Flag should weapon shoot now**/
     public boolean make_shoot;
