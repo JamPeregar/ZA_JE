@@ -22,5 +22,13 @@ public class TransformComponent implements Component{
     
     public boolean is_hidden = false;
     
+    public byte FORM_FLAGS;
+    
     public static final float NAV_RANGE = 1.5f; 
+    
+    //flags
+    public static final byte NO_COL_DETECTION = 1; //1 bit for sign 
+    public static final byte NOCLIP = 2;
+    public static final byte FREEZE = 4;
+    
 }

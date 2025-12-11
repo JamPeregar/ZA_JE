@@ -21,4 +21,6 @@ public class StatisticsComponent implements Component{
     public float sense_range = 100;
     public boolean is_dead = false;
     public ArrayList inventory;
+    
+    public byte STAT_FLAGS;
 }
