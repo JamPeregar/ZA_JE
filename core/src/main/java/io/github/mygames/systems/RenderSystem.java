@@ -21,6 +21,7 @@ import io.github.mygames.Components.TextureComponent;
 import io.github.mygames.Components.TransformComponent;
 import io.github.mygames.Components.TypeComponent;
 import io.github.mygames.Components.TypeComponent.TypeEnum;
+import io.github.mygames.Components.WeaponComponent;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
@@ -35,7 +36,7 @@ public class RenderSystem extends EntitySystem{
     private final ComponentMapper<TransformComponent> pos_mapper = ComponentMapper.getFor(TransformComponent.class);
     private final ComponentMapper<TextureComponent> texture_mapper = ComponentMapper.getFor(TextureComponent.class);
     ///private final ComponentMapper<StateComponent> state_mapper = ComponentMapper.getFor(StateComponent.class);
-    private final ComponentMapper<TypeComponent> type_mapper = ComponentMapper.getFor(TypeComponent.class);
+    private final ComponentMapper<WeaponComponent> weapon_mapper = ComponentMapper.getFor(WeaponComponent.class);
     private final ComponentMapper<BulletComponent> bullet_mapper = ComponentMapper.getFor(BulletComponent.class);
     
     private final Family render_family = Family.all(TextureComponent.class, TransformComponent.class,TypeComponent.class).get();
@@ -63,8 +64,9 @@ public class RenderSystem extends EntitySystem{
             TextureComponent texture_cmp = texture_mapper.get(entity);
             TransformComponent position = pos_mapper.get(entity);
             //StateComponent state = state_mapper.get(entity);
-            TypeComponent type_cmp = type_mapper.get(entity);
+            //TypeComponent type_cmp = type_mapper.get(entity);
             BulletComponent bullet_cmp = bullet_mapper.get(entity);
+            WeaponComponent wpn_cmp = weapon_mapper.get(entity);
             
             if (position.is_hidden || texture_cmp.texture_region == null) {
                 continue;
@@ -72,6 +74,15 @@ public class RenderSystem extends EntitySystem{
             batch.draw(texture_cmp.texture_region,
             position.coords.x - texture_cmp.texture_region.getTexture().getHeight()/2,
             position.coords.y - texture_cmp.texture_region.getTexture().getWidth()/2);
+            
+            //Render char's weapon
+            if (wpn_cmp != null) {
+                if (wpn_cmp.texture != null) {
+                    batch.draw(wpn_cmp.texture,
+                    wpn_cmp.firePoint.x - wpn_cmp.texture.getTexture().getHeight()/2,
+                    wpn_cmp.firePoint.y - wpn_cmp.texture.getTexture().getWidth()/2);
+                }
+            }
             
             //Render entity's shoot
             if (bullet_cmp != null) {
@@ -89,9 +100,11 @@ public class RenderSystem extends EntitySystem{
                 shaper.setTextureRegion(bullet_cmp.texture_r);
                 shaper.line(bullet_cmp.startPoint, bullet_cmp.endPoint, bullet_cmp.widh);
             }
+            
         }
         batch.end();
     }
+    
     
     
 }

@@ -91,7 +91,7 @@ public class Ashley_test implements Screen{
         test_actor.setFaction(FactionEnum.PLAYER);
         test_actor.setTexture(new Texture("models/ally.png"));
         test_actor.setName("ally");
-        test_actor.giveWeapon(WeaponType.PISTOL);
+        test_actor.giveWeapon(WeaponType.ASSAULT_RIFLE);
         
         //test_enemy = new Human(engine,world);
         test_enemy = npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.BANDIT, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png"))));
@@ -167,7 +167,7 @@ public class Ashley_test implements Screen{
             
             //test_enemy.makeSimpleShoot(new Vector2(touchPos.x, touchPos.y), 500, 0);
             test_actor.aimAtPoint(new Vector2(touchPos.x, touchPos.y));
-            test_actor.makeshoot();
+            test_actor.makeshoot(true);
             
             //shoot_sys.shoot(test_enemy.getBase_entity(), new Vector2(touchPos.x, touchPos.y));
             //touchPos.set(Gdx.input.getX(), 0, 0);
@@ -177,6 +177,8 @@ public class Ashley_test implements Screen{
                 h.setMoveTo(new Vector3(touchPos.x+rand.nextFloat(100f), touchPos.y+rand.nextFloat(100f), 0));
             
             }
+        } else {
+            test_actor.makeshoot(false);
         }
         //test_marker.setCoords(100, 0, 0);
 	

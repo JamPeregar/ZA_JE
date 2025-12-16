@@ -230,15 +230,17 @@ public abstract class NpcGenericEntity {
     }
     
     /**Make simple attack of specified point **/
-    public void makeshoot() {
+    public void makeshoot(boolean fire_pressed) {
         
-        if (!wpn_cmp.make_shoot && bullet_cmp.elapsed > bullet_cmp.delay) {
+        if (fire_pressed) {
             wpn_cmp.make_shoot = true;
             //aimAtPoint(Vector2.Zero);
             //makeSimpleShoot(Vector2.Zero, 0, 0);
-            bullet_cmp.isActive = true;
-            bullet_cmp.elapsed = 0f;
-            bullet_cmp.set(new Vector2(position_cmp.coords.x,position_cmp.coords.y), bullet_cmp.endPoint);
+            //bullet_cmp.isActive = true;
+            //bullet_cmp.elapsed = 0f;
+            //bullet_cmp.set(new Vector2(position_cmp.coords.x,position_cmp.coords.y), bullet_cmp.endPoint);
+        } else {
+            wpn_cmp.make_shoot = false;
         }
     }
     

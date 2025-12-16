@@ -5,6 +5,7 @@
 package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import io.github.mygames.Components.ProjectileComponent.ProjectileType;
 import java.io.File;
@@ -28,7 +29,8 @@ public class WeaponComponent implements Component{
     public float range;             // Дальность стрельбы
     public WeaponType weaponType;   // Тип оружия
     public ProjectileType projectileType = ProjectileType.BULLET; // Тип снаряда
-    public int modelid;
+   // public int modelid;
+    public TextureRegion texture;
     public boolean isAutomatic;     // Автоматическое оружие?
     /**Flag should weapon shoot now**/
     public boolean make_shoot;
@@ -64,6 +66,7 @@ public class WeaponComponent implements Component{
                 fireRate = 1;
                 damage = 10;
                 range = 300;
+                texture = TextureComponent.getSimpleModelFromSource("models/test_pistol.png");
                 break;
             case ASSAULT_RIFLE:
                 weaponType = WeaponType.ASSAULT_RIFLE;
@@ -71,6 +74,7 @@ public class WeaponComponent implements Component{
                 fireRate = 4;
                 damage = 5;
                 range = 600;
+                texture = TextureComponent.getSimpleModelFromSource("models/test_rifle.png");
                 break;
             default:
                 weaponType = WeaponType.UNARMED;

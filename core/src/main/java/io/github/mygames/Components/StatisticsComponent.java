@@ -6,6 +6,7 @@ package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 /**
  *
@@ -22,5 +23,25 @@ public class StatisticsComponent implements Component{
     public boolean is_dead = false;
     public ArrayList inventory;
     
-    public byte STAT_FLAGS;
+    public EnumSet<CHAR_TRAITS> STAT_FLAGS = EnumSet.noneOf(CHAR_TRAITS.class);
+    
+    public enum CHAR_TRAITS {
+        IMMORTAL,
+        SUFFER_CRITICAL_HITS,
+        SUFFER_HEADSHOTS,
+        SUFFER_HUNGER,
+        SUFFER_BLEEDING
+    }
+    
+    public void setflag(CHAR_TRAITS strait, boolean is_adds){
+        if (is_adds) {
+            STAT_FLAGS.add(strait);
+        } else {
+            STAT_FLAGS.add(strait);
+        }
+    }
+    
+    public boolean checkflag(CHAR_TRAITS strait){
+        return STAT_FLAGS.contains(strait);
+    }
 }

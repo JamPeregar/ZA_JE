@@ -36,7 +36,7 @@ public class DamageBrokerSystem extends IteratingSystem{
                 stats.is_dead = true;
                 System.out.println(stats.name + " died with hp " + stats.health);
             }
-//            System.out.printf("%s has damaged\n",stats.name);
+            System.out.printf("%s has damaged\n",stats.name);
         }
         
         // Удаляем компонент урона после обработки

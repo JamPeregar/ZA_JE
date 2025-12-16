@@ -21,6 +21,7 @@ import io.github.mygames.Components.BulletComponent;
 import io.github.mygames.Components.CollisionComponent;
 import io.github.mygames.Components.TransformComponent;
 import io.github.mygames.Components.TypeComponent;
+import io.github.mygames.Components.WeaponComponent;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
@@ -36,6 +37,7 @@ public class PhysicsSystem extends IteratingSystem {
  
     private ComponentMapper<B2dBodyComponent> bm = ComponentMapper.getFor(B2dBodyComponent.class);
     private ComponentMapper<TransformComponent> tm = ComponentMapper.getFor(TransformComponent.class);
+    private final ComponentMapper<WeaponComponent> weapon_mapper = ComponentMapper.getFor(WeaponComponent.class);
  
     @SuppressWarnings("unchecked")
 	public PhysicsSystem(World world) {
@@ -50,10 +52,16 @@ public class PhysicsSystem extends IteratingSystem {
         for (Entity entity : bodiesQueue) {
             TransformComponent tfm = tm.get(entity);
             B2dBodyComponent bodyComp = bm.get(entity);
+            WeaponComponent wpn_cmp = weapon_mapper.get(entity);
+            
             Vector2 position = bodyComp.body.getPosition();
             tfm.coords.x = position.x;
             tfm.coords.y = position.y;
             tfm.angle = bodyComp.body.getAngle() * MathUtils.radiansToDegrees;
+            //update weapon pos
+            if (wpn_cmp != null) {
+                wpn_cmp.firePoint.set(tfm.coords.x,tfm.coords.y);
+            }
         }
         bodiesQueue.clear();
     }

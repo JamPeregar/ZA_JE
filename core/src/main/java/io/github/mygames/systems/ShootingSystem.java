@@ -47,7 +47,7 @@ public class ShootingSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         WeaponComponent weapon = wm.get(entity);
-        TransformComponent transform = tm.get(entity);
+        //TransformComponent transform = tm.get(entity);
         if (weapon.make_shoot) {
             shoot(entity, weapon.aimPoint);
         }
@@ -67,7 +67,7 @@ public class ShootingSystem extends IteratingSystem {
         //System.out.println("some shoot!");
         switch (weapon.projectileType) {
             case BULLET:
-                performHitscanShot(shooter, targetPosition, weapon);
+                performHitscanShot(shooter, weapon);
                 break;
             case PROJECTILE:
                 launchProjectile(shooter, targetPosition, weapon);
@@ -78,16 +78,17 @@ public class ShootingSystem extends IteratingSystem {
             default:
                 System.out.println("Unhandled weapontype");
         }
-        weapon.make_shoot = false;
+        //weapon.make_shoot = false;
+        if (!weapon.isAutomatic) {
+            weapon.make_shoot=false;
+        }
     }
     //-------FUNCTIONS----------//
-    private void performHitscanShot(Entity shooter, Vector2 target, WeaponComponent weapon) {
+    private void performHitscanShot(Entity shooter, WeaponComponent weapon) {
         // Вычисляем точку выстрела в мировых координатах
         //something wrong here...
-        Vector2 firePoint = new Vector2(shooter.getComponent(TransformComponent.class).coords.x, shooter.getComponent(TransformComponent.class).coords.y);
-        //Vector2 firePoint =  coords_2d;   //new Vector2(weapon.firePoint).add(coords_2d);
-        Vector2 direction = new Vector2(target).sub(firePoint).nor();
-        Vector2 rayEnd = new Vector2(firePoint).add(direction.scl(weapon.range));
+        Vector2 direction = new Vector2(weapon.aimPoint).sub(weapon.firePoint).nor();
+        Vector2 rayEnd = new Vector2(weapon.firePoint).add(direction.scl(weapon.range));
         
         //create visual shoot line
        //Entity hit_vis = ashleyEngine.createEntity();
@@ -102,31 +103,26 @@ public class ShootingSystem extends IteratingSystem {
             // Получаем сущность из фикстуры
             Entity hitEntity = (Entity) fixture.getBody().getUserData();
             if (hitEntity != null && hitEntity != shooter) {
+                TransformComponent hitEntity_transform = shooter.getComponent(TransformComponent.class);
                 // Создаем компонент урона
                 Entity damageEvent = ashleyEngine.createEntity();
                 damageEvent.add(new DamageComponent(hitEntity, shooter, weapon.damage, DamageType.BULLET));
-                //new DamageComponent(hitEntity, shooter, weapon.damage, DamageType.BULLET)
-                
-                /*damageEvent.add(new DamageComponent(
-                        hitEntity, shooter, weapon.damage, DamageType.BULLET
-                ));*/
                 ashleyEngine.addEntity(damageEvent);
                 
-                System.out.printf("%s has hited %s\n",stat_m.get(shooter).name,stat_m.get(hitEntity).name);
+                //System.out.printf("%s has hited %s\n",stat_m.get(shooter).name,stat_m.get(hitEntity).name);
                 //bullet_cmp.set(firePoint, rayEnd); //override that bullet hit entity
                 
                 // Эффекты: кровь, искры и т.д.
                 //createHitEffect(point, normal);
-                
                 return fraction; // Останавливаем raycast
-            } else {
-                
-            }
+            } 
+            //bullet_cmp.set(weapon.firePoint, rayEnd); //renderable bullet; IF HIT
             return -1; // Продолжаем raycast
         };
-        bullet_cmp.set(firePoint, rayEnd);
         
-        box2dWorld.rayCast(callback, firePoint, rayEnd);
+        bullet_cmp.set(weapon.firePoint, rayEnd); //renderable bullet; IF HIT
+        
+        box2dWorld.rayCast(callback, weapon.firePoint, rayEnd); //hit scaning
         //System.out.println("shoot ended");
         
         // Визуальные эффекты выстрела
