@@ -71,7 +71,7 @@ public class WeaponComponent implements Component{
             case ASSAULT_RIFLE:
                 weaponType = WeaponType.ASSAULT_RIFLE;
                 projectileType = ProjectileType.BULLET;
-                fireRate = 4;
+                fireRate = 8;
                 damage = 5;
                 range = 600;
                 texture = TextureComponent.getSimpleModelFromSource("models/test_rifle.png");

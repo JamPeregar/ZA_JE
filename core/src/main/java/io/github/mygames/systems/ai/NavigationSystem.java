@@ -80,7 +80,7 @@ public class NavigationSystem extends EntitySystem{
                         position.vel.set(new_vel3.x, new_vel3.y);
                         state.the_state = StateEnum.MOVING;
                         //body_cmp.body.applyForceToCenter(position.vel.cpy().scl(position.acceleration), false);
-                         body_cmp.body.setLinearVelocity(position.vel.cpy().scl(position.acceleration));
+                         //body_cmp.body.setLinearVelocity(position.vel.cpy().scl(position.acceleration));
                         //System.out.println("nav changed");
 
                         

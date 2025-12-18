@@ -116,11 +116,11 @@ public class ShootingSystem extends IteratingSystem {
                 //createHitEffect(point, normal);
                 return fraction; // Останавливаем raycast
             } 
-            //bullet_cmp.set(weapon.firePoint, rayEnd); //renderable bullet; IF HIT
+            //bullet_cmp.set(weapon.firePoint, rayEnd); //renderable bullet;
             return -1; // Продолжаем raycast
         };
         
-        bullet_cmp.set(weapon.firePoint, rayEnd); //renderable bullet; IF HIT
+        bullet_cmp.set(weapon.firePoint, rayEnd); //renderable bullet; 
         
         box2dWorld.rayCast(callback, weapon.firePoint, rayEnd); //hit scaning
         //System.out.println("shoot ended");

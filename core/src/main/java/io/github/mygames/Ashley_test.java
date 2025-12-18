@@ -6,7 +6,9 @@ package io.github.mygames;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -20,6 +22,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.mygames.Components.FactionComponent.FactionEnum;
 import io.github.mygames.Components.WeaponComponent.WeaponType;
+import io.github.mygames.entity.Controller;
 import io.github.mygames.entity.Human;
 import io.github.mygames.entity.ModelLoader;
 import io.github.mygames.entity.NpcFactory;
@@ -43,6 +46,7 @@ public class Ashley_test implements Screen{
     ZAFW dropGame;
     Engine engine;
     World world;
+    Controller player_ctrl;
     //SpriteBatch batch;
     //Texture image;
     ShapeDrawer shaper;
@@ -135,10 +139,9 @@ public class Ashley_test implements Screen{
         camera.setToOrtho(false, ZAFW.MAIN_WIDH, ZAFW.MAIN_HEIGHT);
         touchPos = new Vector3();
         dropGame.batch.setProjectionMatrix(camera.combined);
-
+        player_ctrl = new Controller(test_actor);
         //image = new Texture("target.png");
         //dropGame.batch.disableBlending();
-        
     }
 
 
@@ -157,6 +160,7 @@ public class Ashley_test implements Screen{
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
             
+            
             test_enemy.setMoveTo(touchPos);
             test_marker.setCoords(touchPos.x, touchPos.y, 0);
             test_marker.setHidden(false);
@@ -168,6 +172,7 @@ public class Ashley_test implements Screen{
             //test_enemy.makeSimpleShoot(new Vector2(touchPos.x, touchPos.y), 500, 0);
             test_actor.aimAtPoint(new Vector2(touchPos.x, touchPos.y));
             test_actor.makeshoot(true);
+            System.out.println("ANGLE = " + test_actor.getAngle());
             
             //shoot_sys.shoot(test_enemy.getBase_entity(), new Vector2(touchPos.x, touchPos.y));
             //touchPos.set(Gdx.input.getX(), 0, 0);
@@ -180,8 +185,9 @@ public class Ashley_test implements Screen{
         } else {
             test_actor.makeshoot(false);
         }
+        //InputAdapter
         //test_marker.setCoords(100, 0, 0);
-	
+	player_ctrl.update(delta);
         engine.update(delta);
         world.step(delta, 0, 0);
     }

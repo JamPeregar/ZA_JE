@@ -115,9 +115,13 @@ public abstract class NpcGenericEntity {
     public void setSpeed(float speed) {
         position_cmp.acceleration = speed;
     }
-
+    
     public Vector3 getCoords() {
         return position_cmp.coords;
+    }
+    
+    public float getAngle() {
+        return position_cmp.angle;
     }
 
     public void setCoords(float x, float y, float z) {
@@ -144,6 +148,14 @@ public abstract class NpcGenericEntity {
             this.state_cmp.the_state = StateEnum.STAYING;
         }
 
+    }
+    
+    public void setAngle(float a) {
+        position_cmp.angle = a;
+        position_cmp.angle = position_cmp.angle % 360;
+            if (position_cmp.angle < 0) {
+                position_cmp.angle += 360;
+            } //to make sure its 0-360 degree
     }
     
     public boolean isCollides() {
@@ -227,6 +239,11 @@ public abstract class NpcGenericEntity {
     public void aimAtPoint(Vector2 dest) {
         wpn_cmp.aimPoint = dest;
         //bullet_cmp.endPoint = dest;
+        float targetAngle = (float) Math.atan2(
+                dest.y - position_cmp.coords.y,
+                dest.x - position_cmp.coords.x
+            );
+        setAngle((float) Math.toDegrees(targetAngle));
     }
     
     /**Make simple attack of specified point **/

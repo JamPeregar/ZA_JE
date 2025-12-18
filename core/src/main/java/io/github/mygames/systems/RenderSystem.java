@@ -71,16 +71,38 @@ public class RenderSystem extends EntitySystem{
             if (position.is_hidden || texture_cmp.texture_region == null) {
                 continue;
             }
-            batch.draw(texture_cmp.texture_region,
-            position.coords.x - texture_cmp.texture_region.getTexture().getHeight()/2,
-            position.coords.y - texture_cmp.texture_region.getTexture().getWidth()/2);
+            batch.draw(
+                    texture_cmp.texture_region,
+                    position.coords.x - texture_cmp.texture_region.getTexture().getWidth()/2,
+                    position.coords.y - texture_cmp.texture_region.getTexture().getHeight()/2,
+                    texture_cmp.texture_region.getTexture().getWidth()/2, //originX, Y
+                    texture_cmp.texture_region.getTexture().getHeight()/2,
+                    texture_cmp.texture_region.getTexture().getWidth(),
+                    texture_cmp.texture_region.getTexture().getHeight(),
+                    1,1,
+                    position.angle
+            );
             
             //Render char's weapon
             if (wpn_cmp != null) {
                 if (wpn_cmp.texture != null) {
+                    
+                    /*float angleRad = (float) Math.toRadians(position.angle);
+                    wpn_cmp.aimPoint.set(
+                        position.coords.x + (float) Math.cos(angleRad) * wpn_cmp.range,
+                        position.coords.y + (float) Math.sin(angleRad) * wpn_cmp.range
+                    );*/
+                    
                     batch.draw(wpn_cmp.texture,
                     wpn_cmp.firePoint.x - wpn_cmp.texture.getTexture().getHeight()/2,
-                    wpn_cmp.firePoint.y - wpn_cmp.texture.getTexture().getWidth()/2);
+                    wpn_cmp.firePoint.y - wpn_cmp.texture.getTexture().getWidth()/2,
+                    wpn_cmp.texture.getTexture().getHeight()/2, //originXY
+                    wpn_cmp.texture.getTexture().getWidth()/2,
+                    wpn_cmp.texture.getTexture().getHeight(),
+                    wpn_cmp.texture.getTexture().getWidth(),
+                    1,1,
+                    position.angle
+                    );
                 }
             }
             
