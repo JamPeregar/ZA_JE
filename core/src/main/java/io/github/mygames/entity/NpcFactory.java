@@ -38,6 +38,16 @@ public class NpcFactory {
                 //configure components
                 human_template.setName("Bandit");
                 break;
+            case FARMER:
+                //human_template = new Human(base_engine,base_world);
+                //configure components
+                human_template.setName("Farmer");
+                break;
+            case ARMY:
+                //human_template = new Human(base_engine,base_world);
+                //configure components
+                human_template.setName("Army");
+                break;
             default:
                 throw new AssertionError("unknown type");
         }

@@ -35,4 +35,9 @@ public class FactionComponent implements Component{
         SPEC3
     }
     
+    public boolean isHostileTo(FactionEnum faction) {
+        
+        return true;
+    }
+    
 }

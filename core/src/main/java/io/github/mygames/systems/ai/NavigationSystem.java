@@ -12,6 +12,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import io.github.mygames.Components.AIComponent;
 import io.github.mygames.Components.B2dBodyComponent;
 import io.github.mygames.Components.StateComponent;
 import io.github.mygames.Components.TaskComponent;
@@ -20,9 +21,10 @@ import io.github.mygames.Components.TypeComponent;
 import io.github.mygames.Components.StateComponent.StateEnum;
 import io.github.mygames.Components.TaskComponent.TaskEnum;
 import io.github.mygames.Components.TypeComponent.TypeEnum;
+import sun.awt.www.content.audio.aiff;
 
 /**
- *
+ *Provides high level interface - makes entities to do things
  * @author Admin
  */
 public class NavigationSystem extends EntitySystem{
@@ -33,6 +35,7 @@ public class NavigationSystem extends EntitySystem{
     private final ComponentMapper<StateComponent> state_mapper = ComponentMapper.getFor(StateComponent.class);
     private final ComponentMapper<TypeComponent> type_mapper = ComponentMapper.getFor(TypeComponent.class);
     private final ComponentMapper<TaskComponent> task_mapper = ComponentMapper.getFor(TaskComponent.class);
+    private final ComponentMapper<AIComponent> ai_mapper = ComponentMapper.getFor(AIComponent.class);
     private final Family nav_family = Family.all(TransformComponent.class, B2dBodyComponent.class, StateComponent.class, TypeComponent.class, TaskComponent.class).get();
     private Vector3 new_vel3;
     
@@ -52,28 +55,17 @@ public class NavigationSystem extends EntitySystem{
             StateComponent state = state_mapper.get(entity);
             TypeComponent type_cmp = type_mapper.get(entity);
             TaskComponent task_cmp = task_mapper.get(entity);
-            
+            AIComponent ai_cmp = ai_mapper.get(entity);
             if (state.the_state == StateEnum.FREEZE 
                     || type_cmp.type != TypeEnum.CHARACTER) {
                 continue;
             }
             
-            /*if (task_cmp.the_task == TaskEnum.MOVE_TO_POINT_SIMPLE) {
-                
-                new_vel3 = position.move_to_coords.cpy().sub(position.coords.cpy()).clamp(-position.acceleration, position.acceleration);
-                position.vel.set(new_vel3.x, new_vel3.y);
-                //position.vel = new Vector2(new_vel3.x, new_vel3.y);
-                state.the_state = StateEnum.MOVING;
-                //System.out.println("nav changed");
-                if (position.coords.dst(position.move_to_coords) < 1.0f) {
-                    position.vel.set(0f,0f);
-                    task_cmp.the_task = TaskEnum.NONE;
-                    state.the_state = StateEnum.STAYING;
-                    System.out.println("STOPPED");
-                }
-            } */
-            
             switch (task_cmp.the_task) {
+                case MOVE_FORWARD:
+                    position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
+                    state.the_state = StateEnum.MOVING;
+                    break;
                 case MOVE_TO_POINT_SIMPLE:
                     if (position.coords.dst(position.move_to_coords) > TransformComponent.NAV_RANGE) {
                         new_vel3 = position.move_to_coords.cpy().sub(position.coords.cpy()).clamp(-position.acceleration, position.acceleration);
@@ -89,11 +81,19 @@ public class NavigationSystem extends EntitySystem{
                         position.vel.set(0f, 0f);
                         task_cmp.the_task = TaskEnum.NONE;
                         state.the_state = StateEnum.STAYING;
-                        body_cmp.body.setLinearVelocity(Vector2.Zero);
+                        //body_cmp.body.setLinearVelocity(Vector2.Zero);
                         //System.out.println("STOPPED");
                     }
                     break;
+                case WANDER:
+                    if (ai_cmp != null) {
+                        ai_cmp.state = AIComponent.AIState.WANDER;
+                        task_cmp.the_task = TaskEnum.NONE;
+                    }
+                    break;
                 case NONE:
+                    body_cmp.body.setLinearVelocity(Vector2.Zero);
+                    state.the_state = StateEnum.STAYING;
                     break;
             }
             

@@ -15,6 +15,7 @@ import java.util.EnumSet;
 public class StatisticsComponent implements Component{
     public String name;
     public int health = 100;
+    public int maxhealth = 100;
     public int armor = 0;
     public int accuracy = 60;
     public int attack_rate = 100;

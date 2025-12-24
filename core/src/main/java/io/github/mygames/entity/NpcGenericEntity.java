@@ -93,7 +93,7 @@ public abstract class NpcGenericEntity {
         engine.addEntity(base_entity);
     }
     
-    //-------Attack----------//
+    //-------High level methods----------//
     @Deprecated
     public void makeSimpleShoot(Vector2 dest, float maxDist, int dmg) {
         if (bullet_cmp.elapsed < bullet_cmp.delay) {
@@ -101,6 +101,20 @@ public abstract class NpcGenericEntity {
         }
         //bullet_cmp.set(new Vector2(position_cmp.coords.x,position_cmp.coords.y), base_entity);
     }
+    
+    public void performTask(TaskEnum task) {
+        task_cmp.the_task = task;
+    }
+    /**
+     * Set movement destination target
+     * @param dest
+     **/
+    public void setMoveTo(Vector3 dest) {
+        position_cmp.move_to_coords = dest;
+        performTask(TaskEnum.MOVE_TO_POINT_SIMPLE);
+        //task_cmp.the_task = TaskEnum.MOVE_TO_POINT_SIMPLE;
+    }
+    
     
     //--------Transform methods------------//
     
@@ -157,6 +171,17 @@ public abstract class NpcGenericEntity {
                 position_cmp.angle += 360;
             } //to make sure its 0-360 degree
     }
+    
+    public void aimAtPoint(Vector2 dest) {
+        wpn_cmp.aimPoint.set(dest);
+        //bullet_cmp.endPoint = dest;
+        float targetAngle = (float) Math.atan2(
+                dest.y - position_cmp.coords.y,
+                dest.x - position_cmp.coords.x
+            );
+        setAngle((float) Math.toDegrees(targetAngle));
+    }
+    
     
     public boolean isCollides() {
         return col_cmp.col_detection;
@@ -223,27 +248,8 @@ public abstract class NpcGenericEntity {
     
     //--------------Tasks------------//
     
-    /**
-     * Set movement destination target
-     * @param dest
-     **/
-    public void setMoveTo(Vector3 dest) {
-        position_cmp.move_to_coords = dest;
-        task_cmp.the_task = TaskEnum.MOVE_TO_POINT_SIMPLE;
-    }
-    
     public TaskComponent getTask_cmp() {
         return task_cmp;
-    }
-    
-    public void aimAtPoint(Vector2 dest) {
-        wpn_cmp.aimPoint = dest;
-        //bullet_cmp.endPoint = dest;
-        float targetAngle = (float) Math.atan2(
-                dest.y - position_cmp.coords.y,
-                dest.x - position_cmp.coords.x
-            );
-        setAngle((float) Math.toDegrees(targetAngle));
     }
     
     /**Make simple attack of specified point **/

@@ -46,10 +46,11 @@ public class MovementSystem extends IteratingSystem{
             B2dBodyComponent body_cmp = bm.get(entity);
             TransformComponent position = pos_mapper.get(entity);
             StateComponent state = state_mapper.get(entity);
-            
-            if (state.the_state != StateEnum.MOVING) {
-                continue;
+            //wtf drops always
+            if (state.the_state == StateEnum.MOVING) {
+                body_cmp.body.setLinearVelocity(position.vel.cpy().scl(position.acceleration)); //chars movement
             }
+            
             //System.out.println("move");
             //move_to = new Vector2(position.velocity.x - position.pos.x, position.velocity.y - position.pos.y);
             //stepX = position.vel.x;
@@ -58,8 +59,8 @@ public class MovementSystem extends IteratingSystem{
             //position.coords.add(stepX * deltaTime, stepY * deltaTime, 0);
             //position.vel.x = 0;
             //position.vel.y = 0;
-            body_cmp.body.applyForceToCenter(position.vel.cpy().scl(position.acceleration), false);
-            
+            //body_cmp.body.applyForceToCenter(position.vel.cpy().scl(position.acceleration), false);
+            //System.out.println("MOVE");
             
         }
     }

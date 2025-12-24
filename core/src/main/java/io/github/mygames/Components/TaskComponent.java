@@ -12,10 +12,14 @@ import com.badlogic.ashley.core.Component;
  */
 public class TaskComponent implements Component{
     public TaskEnum the_task = TaskEnum.NONE;
+    public boolean is_important = false;
     
     public enum TaskEnum {
     NONE,
+    STOP_MOVING,
+    MOVE_FORWARD,
     MOVE_TO_POINT_SIMPLE,
+    WANDER,
     ATTACK_ENTITY
 }
 }

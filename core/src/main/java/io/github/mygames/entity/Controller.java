@@ -10,6 +10,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import io.github.mygames.Components.StateComponent;
+import io.github.mygames.Components.TaskComponent;
 
 /**
  *
@@ -38,9 +39,13 @@ public class Controller extends InputAdapter{
                        Gdx.input.isKeyPressed(Input.Keys.RIGHT);
         
         if (upPressed || downPressed || leftPressed || rightPressed) {
-            domove();
+            //domove();
+            puppet.performTask(TaskComponent.TaskEnum.MOVE_FORWARD);
+            System.out.println("GO");
         } else {
+            puppet.performTask(TaskComponent.TaskEnum.NONE);
             puppet.setVelocity(Vector2.Zero);
+            System.out.println("STOP");
         }
         
     }

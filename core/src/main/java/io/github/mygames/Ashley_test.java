@@ -21,6 +21,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.mygames.Components.FactionComponent.FactionEnum;
+import io.github.mygames.Components.TaskComponent;
 import io.github.mygames.Components.WeaponComponent.WeaponType;
 import io.github.mygames.entity.Controller;
 import io.github.mygames.entity.Human;
@@ -34,6 +35,7 @@ import io.github.mygames.systems.PhysicsSystem;
 import io.github.mygames.systems.ai.NavigationSystem;
 import io.github.mygames.systems.RenderSystem;
 import io.github.mygames.systems.ShootingSystem;
+import io.github.mygames.systems.ai.SteeringSystem;
 import java.util.ArrayList;
 import java.util.Random;
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -51,14 +53,14 @@ public class Ashley_test implements Screen{
     //Texture image;
     ShapeDrawer shaper;
 
-    //MovementSystem mv_sys;
+    MovementSystem mv_sys;
     RenderSystem r_sys;
     NavigationSystem nav_sys;
     PhysicsSystem phys_sys;
     DamageBrokerSystem dmg_sys;
     ShootingSystem shoot_sys;
-    
     CollisionSystem col_sys;
+    SteeringSystem ai_sys;
 
     Human test_actor;
     NpcGenericEntity test_marker;
@@ -78,30 +80,33 @@ public class Ashley_test implements Screen{
         engine = dropGame.engine;
         npc_gen = dropGame.npc_generator;
         //batch = new SpriteBatch();
-        //mv_sys = new MovementSystem(world);
+        mv_sys = new MovementSystem(world);
         r_sys = new RenderSystem(dropGame.batch, dropGame.shaper);
         nav_sys = new NavigationSystem();
         col_sys = new CollisionSystem();
         phys_sys = new PhysicsSystem(world);
         dmg_sys = new DamageBrokerSystem();
         shoot_sys = new ShootingSystem(world, engine);
+        ai_sys = new SteeringSystem();
 
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.FARMER, mloader.getTextureRegionFromFileName("ally.png")));
+        npcpool.add(npc_gen.createNPCFaction(650f, 150f, 0f, FactionEnum.FARMER, mloader.getTextureRegionFromFileName("ally.png")));
         npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("ally.png")));
-        //npcpool.add(npc_gen.createNPCFaction(1500f, 1500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("ally.png")));
         //npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
         
         
         test_actor = new Human(engine,world);
         test_actor.setFaction(FactionEnum.PLAYER);
-        test_actor.setTexture(new Texture("models/ally.png"));
-        test_actor.setName("ally");
+        test_actor.setTexture(new Texture("models/player.png"));
+        test_actor.setName("player");
         test_actor.giveWeapon(WeaponType.ASSAULT_RIFLE);
         
         //test_enemy = new Human(engine,world);
-        test_enemy = npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.BANDIT, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png"))));
+        /*test_enemy = npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.BANDIT, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png"))));
         test_enemy.setFaction(FactionEnum.ZOMBIE);
         test_enemy.setCoords(200, 200, 200);
-        test_enemy.setName("enemy");
+        test_enemy.setName("enemy");*/
         
         //test_actor.setFreeze(true);
         test_marker = new Human(engine,world);
@@ -111,13 +116,24 @@ public class Ashley_test implements Screen{
         test_marker.toggleCollisions(false);
         test_marker.setName("marker");
 
-        //engine.addSystem(mv_sys);
+        engine.addSystem(mv_sys);
         engine.addSystem(r_sys);
         engine.addSystem(nav_sys);
         engine.addSystem(col_sys);
         engine.addSystem(phys_sys);
         engine.addSystem(dmg_sys);
         engine.addSystem(shoot_sys);
+        engine.addSystem(ai_sys);
+        
+        camera = new OrthographicCamera();
+        //camera.setToOrtho(false);
+        camera.setToOrtho(false, ZAFW.MAIN_WIDH, ZAFW.MAIN_HEIGHT);
+        touchPos = new Vector3();
+        dropGame.batch.setProjectionMatrix(camera.combined);
+        player_ctrl = new Controller(test_actor);
+        
+        //npcpool.get(1).performTask(TaskComponent.TaskEnum.WANDER);
+        
         System.out.printf("Systems:\n"
         //+ "mov: %d\n"
         + "render: %d\n"
@@ -126,22 +142,15 @@ public class Ashley_test implements Screen{
         + "phys: %d\n"
         + "dmg: %d\n"
         + "shoot: %d\n"
+        //+ "ai: %d\n"
         ,r_sys.entities.size()
         ,nav_sys.entities.size()
         ,col_sys.getEntities().size()
         ,phys_sys.getEntities().size()
         ,dmg_sys.getEntities().size()
         ,shoot_sys.getEntities().size()
+        //,ai_sys.getEntities().size()
         );
-        
-        camera = new OrthographicCamera();
-        //camera.setToOrtho(false);
-        camera.setToOrtho(false, ZAFW.MAIN_WIDH, ZAFW.MAIN_HEIGHT);
-        touchPos = new Vector3();
-        dropGame.batch.setProjectionMatrix(camera.combined);
-        player_ctrl = new Controller(test_actor);
-        //image = new Texture("target.png");
-        //dropGame.batch.disableBlending();
     }
 
 
@@ -161,18 +170,18 @@ public class Ashley_test implements Screen{
             camera.unproject(touchPos);
             
             
-            test_enemy.setMoveTo(touchPos);
+            /*test_enemy.setMoveTo(touchPos);
             test_marker.setCoords(touchPos.x, touchPos.y, 0);
             test_marker.setHidden(false);
             //System.out.printf("\n nav from %s to %s", test_actor.getCoords().toString(),test_marker.getCoords().toString());
             if (test_actor.isCollidedWithEntity(test_enemy.getBase_entity())) {
                 System.out.println("COLLIDED");
-            }
+            }*/
             
             //test_enemy.makeSimpleShoot(new Vector2(touchPos.x, touchPos.y), 500, 0);
             test_actor.aimAtPoint(new Vector2(touchPos.x, touchPos.y));
             test_actor.makeshoot(true);
-            System.out.println("ANGLE = " + test_actor.getAngle());
+            //System.out.println("ANGLE = " + test_actor.getAngle());
             
             //shoot_sys.shoot(test_enemy.getBase_entity(), new Vector2(touchPos.x, touchPos.y));
             //touchPos.set(Gdx.input.getX(), 0, 0);
@@ -180,13 +189,20 @@ public class Ashley_test implements Screen{
                 if (h.getStats_cmp().is_dead) { continue; }
                 //float rf = ;
                 h.setMoveTo(new Vector3(touchPos.x+rand.nextFloat(100f), touchPos.y+rand.nextFloat(100f), 0));
-            
+                if (h.isCollidedWithEntity(test_actor.getBase_entity())) {
+                    System.out.println("COLLIDED");
+                    
+                }
+                //h.performTask(TaskComponent.TaskEnum.WANDER);
+                npcpool.get(1).setCoords(touchPos.x,touchPos.y,touchPos.z);
             }
         } else {
             test_actor.makeshoot(false);
         }
         //InputAdapter
         //test_marker.setCoords(100, 0, 0);
+        npcpool.get(1).performTask(TaskComponent.TaskEnum.WANDER);
+        System.out.println(test_actor.getState_cmp().the_state);
 	player_ctrl.update(delta);
         engine.update(delta);
         world.step(delta, 0, 0);

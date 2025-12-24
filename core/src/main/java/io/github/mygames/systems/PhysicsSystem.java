@@ -57,8 +57,10 @@ public class PhysicsSystem extends IteratingSystem {
             Vector2 position = bodyComp.body.getPosition();
             tfm.coords.x = position.x;
             tfm.coords.y = position.y;
+            //position.x = tfm.coords.x;
+            //position.y = tfm.coords.y;
             //tfm.angle = bodyComp.body.getAngle() * MathUtils.radiansToDegrees; //phys body do not rotate
-            bodyComp.body.setLinearVelocity(tfm.vel.cpy().scl(tfm.acceleration)); //chars movement
+            //bodyComp.body.setLinearVelocity(tfm.vel.cpy().scl(tfm.acceleration)); //chars movement
             //GOOD FOR CARS V
             //bodyComp.body.applyForceToCenter(tfm.vel.cpy().scl(tfm.acceleration), false); //GOOD FOR CARS
             //update weapon pos
@@ -66,7 +68,7 @@ public class PhysicsSystem extends IteratingSystem {
                 wpn_cmp.firePoint.set(tfm.coords.x,tfm.coords.y);
             }
         }
-        bodiesQueue.clear();
+        //bodiesQueue.clear();
     }
  
     @Override
