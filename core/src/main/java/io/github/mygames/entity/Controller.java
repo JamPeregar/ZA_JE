@@ -39,32 +39,34 @@ public class Controller extends InputAdapter{
                        Gdx.input.isKeyPressed(Input.Keys.RIGHT);
         
         if (upPressed || downPressed || leftPressed || rightPressed) {
-            //domove();
-            puppet.performTask(TaskComponent.TaskEnum.MOVE_FORWARD);
-            System.out.println("GO");
+            domove();
+            //puppet.performTask(TaskComponent.TaskEnum.MOVE_FORWARD);
+            //System.out.println("GO");
         } else {
-            puppet.performTask(TaskComponent.TaskEnum.NONE);
+            puppet.performTask(TaskComponent.TaskEnum.STOP_MOVING);
             puppet.setVelocity(Vector2.Zero);
-            System.out.println("STOP");
+            //System.out.println("STOP");
         }
         
     }
     
     public void domove() {
         Vector2 vel = new Vector2();
+        float speed = puppet.position_cmp.acceleration;
         if (rightPressed) {
-            vel.add(1f,0f);
+            vel.add(speed,0f);
         }
         if (leftPressed) {
-            vel.add(-1f,0f);
+            vel.add(-1*speed,0f);
         }
         if (upPressed) {
-            vel.add(0f,1f);
+            vel.add(0f,speed);
         }
         if (downPressed) {
-            vel.add(0f,-1f);
+            vel.add(0f,-1*speed);
         }
         puppet.setVelocity(vel);
+        puppet.performTask(TaskComponent.TaskEnum.MOVE_VEL);
     }
 
     //@Override

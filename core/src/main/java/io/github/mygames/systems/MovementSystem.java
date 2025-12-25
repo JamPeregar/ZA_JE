@@ -47,9 +47,21 @@ public class MovementSystem extends IteratingSystem{
             TransformComponent position = pos_mapper.get(entity);
             StateComponent state = state_mapper.get(entity);
             //wtf drops always
-            if (state.the_state == StateEnum.MOVING) {
+            switch (state.the_state) {
+                case MOVING:
+                    body_cmp.body.setLinearVelocity(position.vel.cpy().scl(position.acceleration)); //chars movement
+                    break;
+                case ROTATE:
+                    body_cmp.body.setAngularVelocity(position.rotate_speed); //chars movement
+                    break;
+            }
+            /*if (state.the_state == StateEnum.MOVING) {
                 body_cmp.body.setLinearVelocity(position.vel.cpy().scl(position.acceleration)); //chars movement
             }
+            
+            if (state.the_state == StateEnum.ROTATE) {
+                body_cmp.body.setLinearVelocity(position.vel.cpy().scl(position.acceleration)); //chars movement
+            }*/
             
             //System.out.println("move");
             //move_to = new Vector2(position.velocity.x - position.pos.x, position.velocity.y - position.pos.y);

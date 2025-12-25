@@ -17,6 +17,7 @@ public class StateComponent implements Component{
     FREEZE,
     STAYING,
     MOVING,
+    ROTATE,
     FLYING
 }
 }

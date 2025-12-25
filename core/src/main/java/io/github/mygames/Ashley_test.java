@@ -91,9 +91,11 @@ public class Ashley_test implements Screen{
 
         npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.FARMER, mloader.getTextureRegionFromFileName("ally.png")));
         npcpool.add(npc_gen.createNPCFaction(650f, 150f, 0f, FactionEnum.FARMER, mloader.getTextureRegionFromFileName("ally.png")));
-        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("ally.png")));
-        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("ally.png")));
-        //npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("enemy.png")));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("enemy.png")));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("enemy.png")));
+                
+//npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
         
         
         test_actor = new Human(engine,world);
@@ -195,14 +197,18 @@ public class Ashley_test implements Screen{
                 }
                 //h.performTask(TaskComponent.TaskEnum.WANDER);
                 npcpool.get(1).setCoords(touchPos.x,touchPos.y,touchPos.z);
+                
             }
         } else {
             test_actor.makeshoot(false);
+            //npcpool.get(1).performTask(TaskComponent.TaskEnum.WANDER);
+            //npcpool.get(3).performTask(TaskComponent.TaskEnum.WANDER);
         }
-        //InputAdapter
-        //test_marker.setCoords(100, 0, 0);
-        npcpool.get(1).performTask(TaskComponent.TaskEnum.WANDER);
-        System.out.println(test_actor.getState_cmp().the_state);
+        if (Gdx.input.isKeyPressed(Input.Keys.E) ) {
+            npcpool.get(0).performTask(TaskComponent.TaskEnum.WANDER);
+        }
+        
+        //System.out.println(test_actor.getState_cmp().the_state);
 	player_ctrl.update(delta);
         engine.update(delta);
         world.step(delta, 0, 0);

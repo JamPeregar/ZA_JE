@@ -25,7 +25,7 @@ public class AIComponent implements Component {
     public SteeringBehavior<Vector2> steeringBehavior;
     public SteeringAcceleration<Vector2> steeringOutput;
     public Vector3 targetPosition;
-    public AIState state = AIState.IDLE;
+    public AIState state = AIState.GOSLING;
     public AIState previous_state = AIState.GOSLING;
     public AIState default_state = AIState.GOSLING;
     //public float maxLinearSpeed = 100f;
@@ -44,19 +44,13 @@ public class AIComponent implements Component {
     public float wanderRadius = 3f;
     public float wanderDistance = 7f;
     public float wanderJitter = 20f;
+    public float followDistanse = 10f;
     public float detectionRadius = 200f;
     public float attackRange = 50f;
-    /*public AIState state = AIState.IDLE;
-    public Entity targetEntity;
-    public float detectionRadius = 200f;
-    public float attackRadius = 50f;
-    public float wanderRadius = 3f;
-    public float wanderDistance = 7f;
-    public float wanderJitter = 20f;
-    */
+    
     // Временные переменные
     public float stateTime;
-    public float decisionCooldown;
+    public float decisionCooldown = 1f; //ALL decisions
     public float decisionTimer;
     
     //память
@@ -72,6 +66,7 @@ public class AIComponent implements Component {
     public enum AIState {
         IDLE,           // Стоит на месте
         WANDER,         // Блуждает случайно
+        FOLLOW,         //Следует за целью на расстоянии
         PATROL,         // Патрулирует по точкам
         INVESTIGATE,    // Ищет врагов
         PURSUE,         // Преследует цель

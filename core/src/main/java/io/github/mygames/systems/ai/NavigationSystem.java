@@ -66,6 +66,29 @@ public class NavigationSystem extends EntitySystem{
                     position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
                     state.the_state = StateEnum.MOVING;
                     break;
+                case MOVE_BACKWARD:
+                    position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(-position.acceleration));
+                    state.the_state = StateEnum.MOVING;
+                    break;
+                case MOVE_LEFT:
+                    position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
+                    state.the_state = StateEnum.MOVING;
+                    break;
+                case MOVE_RIGHT:
+                    position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
+                    state.the_state = StateEnum.MOVING;
+                    break;
+                case ROTATE_LEFT:
+                    position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
+                    state.the_state = StateEnum.MOVING;
+                    break;
+                case ROTATE_RIGHT:
+                    position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
+                    state.the_state = StateEnum.MOVING;
+                    break;
+                case MOVE_VEL:
+                    state.the_state = StateEnum.MOVING;
+                    break;
                 case MOVE_TO_POINT_SIMPLE:
                     if (position.coords.dst(position.move_to_coords) > TransformComponent.NAV_RANGE) {
                         new_vel3 = position.move_to_coords.cpy().sub(position.coords.cpy()).clamp(-position.acceleration, position.acceleration);
@@ -74,8 +97,6 @@ public class NavigationSystem extends EntitySystem{
                         //body_cmp.body.applyForceToCenter(position.vel.cpy().scl(position.acceleration), false);
                          //body_cmp.body.setLinearVelocity(position.vel.cpy().scl(position.acceleration));
                         //System.out.println("nav changed");
-
-                        
                     }
                     if (position.coords.dst(position.move_to_coords) <= TransformComponent.NAV_RANGE && state.the_state == StateEnum.MOVING) {
                         position.vel.set(0f, 0f);
@@ -88,12 +109,18 @@ public class NavigationSystem extends EntitySystem{
                 case WANDER:
                     if (ai_cmp != null) {
                         ai_cmp.state = AIComponent.AIState.WANDER;
-                        task_cmp.the_task = TaskEnum.NONE;
+                        //task_cmp.the_task = TaskEnum.NONE;
                     }
                     break;
-                case NONE:
-                    body_cmp.body.setLinearVelocity(Vector2.Zero);
+                case STOP_MOVING:
                     state.the_state = StateEnum.STAYING;
+                    body_cmp.body.setLinearVelocity(Vector2.Zero);
+                    body_cmp.body.setAngularVelocity(0f);
+                    break;
+                case NONE:
+                    state.the_state = StateEnum.STAYING;
+                    body_cmp.body.setLinearVelocity(Vector2.Zero);
+                    body_cmp.body.setAngularVelocity(0f);
                     break;
             }
             

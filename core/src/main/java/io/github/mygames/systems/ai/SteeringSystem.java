@@ -31,6 +31,7 @@ import io.github.mygames.Components.TransformComponent;
 import io.github.mygames.Components.TypeComponent;
 import io.github.mygames.Components.WeaponComponent;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -45,6 +46,8 @@ public class SteeringSystem extends IteratingSystem {
     private ComponentMapper<WeaponComponent> wpnMapper;
     private ImmutableArray<Entity> CharsEntities;
     private ArrayList<Entity> nearbyEntitiesCache;
+    
+    Random randomizer = new Random();
     
     public SteeringSystem() {
         super(Family.all(AIComponent.class, 
@@ -74,7 +77,7 @@ public class SteeringSystem extends IteratingSystem {
     
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        /*AIComponent ai = aiMapper.get(entity);
+        AIComponent ai = aiMapper.get(entity);
         TransformComponent transform = transformMapper.get(entity);
         StatisticsComponent stats = statsMapper.get(entity);
         FactionComponent faction = factionMapper.get(entity);
@@ -94,14 +97,14 @@ public class SteeringSystem extends IteratingSystem {
         
         // Проверяем, не пора ли принимать новое решение
         if (shouldMakeDecision(ai, deltaTime)) {
-            //makeDecision(entity, ai, transform, stats, faction);
+            makeDecision(entity, ai, transform, stats, faction);
         }
-        */
+        
         // Обновляем поведение на основе текущего состояния
-        /*updateSteeringBehavior(entity, ai, transform, stats);
+        //updateSteeringBehavior(entity, ai, transform, stats);
         
         // Обрабатываем текущее состояние
-        processAIState(entity, ai, transform, stats, deltaTime);
+        /*processAIState(entity, ai, transform, stats, deltaTime);
         
         // Применяем steering behavior если он есть
         if (ai.steeringBehavior != null && ai.state != AIState.IDLE && ai.state != AIState.DEAD) {
@@ -154,25 +157,26 @@ public class SteeringSystem extends IteratingSystem {
     private void makeDecision(Entity self, AIComponent ai, TransformComponent transform, 
                              StatisticsComponent stats, FactionComponent faction) {
         
-        System.out.println("MAKE DEC");
+        //System.out.println("MAKE DEC");
         // Проверяем ближайших существ
-        //ArrayList<Entity> nearbyEntities = getNearbyEntities(self, transform.coords, 
-           // ai.detectionRadius, faction);
+        ArrayList<Entity> nearbyEntities = getNearbyEntities(self, 
+                transform.coords, 
+                ai.detectionRadius);
         
         // Ищем ближайшую враждебную цель
-        //Entity closestHostile = findClosestHostile(self, nearbyEntities, transform.coords);
+        Entity closestHostile = findClosestHostile(self, nearbyEntities, transform.coords);
         
         // Проверяем наличие опасности (для EVADE)
-       // Entity closestDanger = findClosestDanger(self, nearbyEntities, transform.coords, stats);
+        Entity closestDanger = findClosestDanger(self, nearbyEntities, transform.coords, stats);
         
         // Логика принятия решений на основе текущего состояния
         switch (ai.state) {
             case IDLE:
-                //handleIdleState(self, ai, stats, closestHostile, closestDanger);
+                handleIdleState(self, ai, stats, closestHostile, closestDanger);
                 break;
                 
             case WANDER:
-                //handleWanderState(self, ai, stats, closestHostile, closestDanger);
+                handleWanderState(self, ai, stats, closestHostile, closestDanger);
                 break;
                 
             case PATROL:
@@ -207,59 +211,67 @@ public class SteeringSystem extends IteratingSystem {
         // Обновляем таймер для следующего решения
         ai.decisionTimer = ai.decisionCooldown;
         // Сбрасываем таймер состояния
-        ai.stateTime = 0;
+        //ai.stateTime = 0;
     }
     
     private void handleIdleState(Entity self, AIComponent ai, StatisticsComponent stats,
                                 Entity closestHostile, Entity closestDanger) {
         // Проверяем опасность
         if (closestDanger != null) {
-            ai.state = AIState.EVADE;
-            ai.targetEntity = closestDanger;
+            //ai.state = AIState.EVADE;
+            //ai.targetEntity = closestDanger;
             return;
         }
         
         // Проверяем врагов
         if (closestHostile != null) {
-            ai.state = AIState.PURSUE;
-            ai.targetEntity = closestHostile;
+            //ai.state = AIState.PURSUE;
+            //ai.targetEntity = closestHostile;
             return;
         }
         
-        // Случайный переход к другим состояниям
-        if (ai.stateTime > 2f) {
-            TransformComponent transform = transformMapper.get(self);
-            //float rand = (float) Math.random();
+        TransformComponent transform = transformMapper.get(self);
+        TaskComponent task_cmp = task_map.get(self);
+        if (ai.stateTime > 5f) {
+            ai.state = AIState.WANDER;
+            ai.stateTime = 0;
+            System.out.println("GO WANDER AROUND");
+        } else {
+            //move to random point
+            task_cmp.the_task = TaskComponent.TaskEnum.STOP_MOVING;
             transform.vel.set(Vector2.Zero);
-            // остается в IDLE
+            
         }
+        
     }
     
     private void handleWanderState(Entity self, AIComponent ai, StatisticsComponent stats,
                                   Entity closestHostile, Entity closestDanger) {
         // Проверяем опасность
         if (closestDanger != null) {
-            ai.state = AIState.EVADE;
-            ai.targetEntity = closestDanger;
+            //ai.state = AIState.EVADE;
+            //ai.targetEntity = closestDanger;
             return;
         }
         
         // Проверяем врагов
         if (closestHostile != null) {
-            ai.state = AIState.PURSUE;
-            ai.targetEntity = closestHostile;
+            //ai.state = AIState.PURSUE;
+            //ai.targetEntity = closestHostile;
             return;
         }
         
         // Случайный переход к IDLE или идти в случайную точку (потом мб по дорогам)
-        if (ai.stateTime > 5f && Math.random() < 0.2f) {
+        TransformComponent transform = transformMapper.get(self);
+        TaskComponent task_cmp = task_map.get(self);
+        if (ai.stateTime > 3f) {
             ai.state = AIState.IDLE;
-        } else {
+            ai.stateTime = 0;
+            System.out.println("GO STAND");
+        } else {//if (task_cmp.the_task != TaskComponent.TaskEnum.MOVE_VEL){
             //move to random point
-            TransformComponent transform = transformMapper.get(self);
-            Vector2 vel = new Vector2();
-            vel.add((float)Math.random()*1f,(float)Math.random()*1f);
-            //transform.vel.set(vel);
+            transform.vel.set(randomizer.nextFloat(-transform.acceleration,transform.acceleration),randomizer.nextFloat(-transform.acceleration,transform.acceleration));
+            task_cmp.the_task = TaskComponent.TaskEnum.MOVE_VEL;
             
         }
     }
@@ -527,7 +539,7 @@ public class SteeringSystem extends IteratingSystem {
     }
     
     private ArrayList<Entity> getNearbyEntities(Entity self, Vector3 position, 
-                                           float radius, FactionComponent faction) {
+                                           float radius) {
         
         nearbyEntitiesCache.clear();
         float radiusSquared = radius * radius;
@@ -549,7 +561,9 @@ public class SteeringSystem extends IteratingSystem {
     
     private Entity findClosestHostile(Entity self, ArrayList<Entity> entities, Vector3 position) {
         Entity closest = null;
-        float closestDistance = Float.MAX_VALUE;
+        StatisticsComponent self_stats = statsMapper.get(self);
+        if (self_stats == null) return null;
+        float closestDistance = self_stats.sense_range;
         
         FactionComponent selfFaction = factionMapper.get(self);
         if (selfFaction == null) return null;

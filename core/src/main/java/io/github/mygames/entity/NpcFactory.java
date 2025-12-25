@@ -25,6 +25,8 @@ public class NpcFactory {
     
     public Human createNPCFaction(float x,float y, float z, FactionEnum faction, TextureRegion texture_region) {
         Human human_template = new Human(base_engine,base_world);
+        human_template.texture_cmp.texture_region = texture_region; //new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")));
+        human_template.setCoords(x, y, z);
         //specify spawn later
         switch (faction) {
             case ZOMBIE:
@@ -51,8 +53,6 @@ public class NpcFactory {
             default:
                 throw new AssertionError("unknown type");
         }
-        human_template.texture_cmp.texture_region = texture_region; //new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")));
-        human_template.setCoords(x, y, z);
         return human_template;
     }
     

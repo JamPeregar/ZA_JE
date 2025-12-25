@@ -17,7 +17,13 @@ public class TaskComponent implements Component{
     public enum TaskEnum {
     NONE,
     STOP_MOVING,
+    MOVE_VEL,
     MOVE_FORWARD,
+    MOVE_BACKWARD,
+    MOVE_LEFT,
+    MOVE_RIGHT,
+    ROTATE_LEFT,
+    ROTATE_RIGHT,
     MOVE_TO_POINT_SIMPLE,
     WANDER,
     ATTACK_ENTITY

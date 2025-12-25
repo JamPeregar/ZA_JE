@@ -35,9 +35,24 @@ public class FactionComponent implements Component{
         SPEC3
     }
     
+    public static int FactionToInteger(FactionEnum faction) {
+        for (int i = 0; i < FactionEnum.values().length; i++) {
+            if (FactionEnum.values()[i] == faction) {
+                return i;
+            }
+        }
+        return 0;
+    }
+    
     public boolean isHostileTo(FactionEnum faction) {
+        final int fac_num = FactionToInteger(faction);
         
-        return true;
+        for (int i = 0; i < relationships.length; i++) {
+            if (FactionEnum.values()[i] != faction) {
+                if (political_map[fac_num][i] < 0) return true; 
+            }
+        }
+        return false;
     }
     
 }
