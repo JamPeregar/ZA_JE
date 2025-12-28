@@ -22,6 +22,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.mygames.Components.FactionComponent.FactionEnum;
 import io.github.mygames.Components.TaskComponent;
+import io.github.mygames.Components.TransformComponent;
 import io.github.mygames.Components.WeaponComponent.WeaponType;
 import io.github.mygames.entity.Controller;
 import io.github.mygames.entity.Human;
@@ -32,7 +33,7 @@ import io.github.mygames.systems.CollisionSystem;
 import io.github.mygames.systems.DamageBrokerSystem;
 import io.github.mygames.systems.MovementSystem;
 import io.github.mygames.systems.PhysicsSystem;
-import io.github.mygames.systems.ai.NavigationSystem;
+import io.github.mygames.systems.ai.TaskSystem;
 import io.github.mygames.systems.RenderSystem;
 import io.github.mygames.systems.ShootingSystem;
 import io.github.mygames.systems.ai.SteeringSystem;
@@ -55,7 +56,7 @@ public class Ashley_test implements Screen{
 
     MovementSystem mv_sys;
     RenderSystem r_sys;
-    NavigationSystem nav_sys;
+    TaskSystem nav_sys;
     PhysicsSystem phys_sys;
     DamageBrokerSystem dmg_sys;
     ShootingSystem shoot_sys;
@@ -82,7 +83,7 @@ public class Ashley_test implements Screen{
         //batch = new SpriteBatch();
         mv_sys = new MovementSystem(world);
         r_sys = new RenderSystem(dropGame.batch, dropGame.shaper);
-        nav_sys = new NavigationSystem();
+        nav_sys = new TaskSystem();
         col_sys = new CollisionSystem();
         phys_sys = new PhysicsSystem(world);
         dmg_sys = new DamageBrokerSystem();
@@ -135,6 +136,7 @@ public class Ashley_test implements Screen{
         player_ctrl = new Controller(test_actor);
         
         //npcpool.get(1).performTask(TaskComponent.TaskEnum.WANDER);
+        npcpool.get(0).giveWeapon(WeaponType.PISTOL);
         
         System.out.printf("Systems:\n"
         //+ "mov: %d\n"
@@ -197,8 +199,9 @@ public class Ashley_test implements Screen{
                 }
                 //h.performTask(TaskComponent.TaskEnum.WANDER);
                 npcpool.get(1).setCoords(touchPos.x,touchPos.y,touchPos.z);
-                
             }
+            System.out.println("Player angle " + test_actor.getAngle());
+            System.out.println("Body angle = " + test_actor.getBod_cmp().body.getAngle());
         } else {
             test_actor.makeshoot(false);
             //npcpool.get(1).performTask(TaskComponent.TaskEnum.WANDER);
@@ -209,6 +212,7 @@ public class Ashley_test implements Screen{
         }
         
         //System.out.println(test_actor.getState_cmp().the_state);
+        //System.out.println("Player task "+ test_actor.getTask_cmp().the_task);
 	player_ctrl.update(delta);
         engine.update(delta);
         world.step(delta, 0, 0);

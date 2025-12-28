@@ -5,6 +5,8 @@
 package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -12,6 +14,8 @@ import com.badlogic.ashley.core.Component;
  */
 public class TaskComponent implements Component{
     public TaskEnum the_task = TaskEnum.NONE;
+    public List<TaskEnum> task_sequence = new ArrayList<>();
+    public int task_seq_id = 0;
     public boolean is_important = false;
     
     public enum TaskEnum {
@@ -24,8 +28,10 @@ public class TaskComponent implements Component{
     MOVE_RIGHT,
     ROTATE_LEFT,
     ROTATE_RIGHT,
+    ROTATE_VEL,
     MOVE_TO_POINT_SIMPLE,
     WANDER,
+    AIM_AT_VEL,
     ATTACK_ENTITY
 }
 }

@@ -170,6 +170,7 @@ public abstract class NpcGenericEntity {
             if (position_cmp.angle < 0) {
                 position_cmp.angle += 360;
             } //to make sure its 0-360 degree
+        bod_cmp.body.setTransform(position_cmp.coords.x, position_cmp.coords.y, position_cmp.angle);
     }
     
     public void aimAtPoint(Vector2 dest) {
@@ -180,6 +181,7 @@ public abstract class NpcGenericEntity {
                 dest.x - position_cmp.coords.x
             );
         setAngle((float) Math.toDegrees(targetAngle));
+        //setAngle(targetAngle);
     }
     
     

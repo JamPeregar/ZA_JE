@@ -27,11 +27,13 @@ public class WeaponComponent implements Component{
     public float lastShotTime;      // Время последнего выстрела
     public int damage;              // Урон за выстрел
     public float range;             // Дальность стрельбы
+    public float aimangle;          // угол направления оружия
     public WeaponType weaponType;   // Тип оружия
     public ProjectileType projectileType = ProjectileType.BULLET; // Тип снаряда
    // public int modelid;
     public TextureRegion texture;
     public boolean isAutomatic;     // Автоматическое оружие?
+    public boolean isTargeting; //in case when char run and shoot
     /**Flag should weapon shoot now**/
     public boolean make_shoot;
     
@@ -39,6 +41,7 @@ public class WeaponComponent implements Component{
     public Vector2 firePoint = new Vector2(); // Точка выстрела относительно центра entity
     /**Point weapon aimed at**/
     public Vector2 aimPoint = new Vector2(); // 
+    public Vector2 aim_vec = new Vector2(); //
     
     //public String projectileType;   // Тип снаряда (пуля, ракета)
     public float projectileSpeed;

@@ -172,7 +172,7 @@ public class SteeringSystem extends IteratingSystem {
         // Логика принятия решений на основе текущего состояния
         switch (ai.state) {
             case IDLE:
-                handleIdleState(self, ai, stats, closestHostile, closestDanger);
+                //handleIdleState(self, ai, stats, closestHostile, closestDanger);
                 break;
                 
             case WANDER:
@@ -236,7 +236,7 @@ public class SteeringSystem extends IteratingSystem {
             ai.state = AIState.WANDER;
             ai.stateTime = 0;
             System.out.println("GO WANDER AROUND");
-        } else {
+        } else if (task_cmp.the_task == TaskComponent.TaskEnum.MOVE_VEL){
             //move to random point
             task_cmp.the_task = TaskComponent.TaskEnum.STOP_MOVING;
             transform.vel.set(Vector2.Zero);
@@ -264,13 +264,23 @@ public class SteeringSystem extends IteratingSystem {
         // Случайный переход к IDLE или идти в случайную точку (потом мб по дорогам)
         TransformComponent transform = transformMapper.get(self);
         TaskComponent task_cmp = task_map.get(self);
-        if (ai.stateTime > 3f) {
+        /*if (ai.stateTime > 3f) {
             ai.state = AIState.IDLE;
+            ai.previous_state = AIState.WANDER;
             ai.stateTime = 0;
             System.out.println("GO STAND");
-        } else {//if (task_cmp.the_task != TaskComponent.TaskEnum.MOVE_VEL){
+        } else if (task_cmp.the_task != TaskComponent.TaskEnum.MOVE_VEL) {
             //move to random point
             transform.vel.set(randomizer.nextFloat(-transform.acceleration,transform.acceleration),randomizer.nextFloat(-transform.acceleration,transform.acceleration));
+            task_cmp.the_task = TaskComponent.TaskEnum.MOVE_VEL;
+        }*/
+        if (task_cmp.the_task == TaskComponent.TaskEnum.MOVE_VEL) {
+            if (ai.stateTime > 2f) {
+                task_cmp.the_task = TaskComponent.TaskEnum.STOP_MOVING;
+            }
+        } else {
+            transform.vel.set(randomizer.nextFloat(-transform.acceleration,transform.acceleration),randomizer.nextFloat(-transform.acceleration,transform.acceleration));
+            //somehow aim weapon at mov direction
             task_cmp.the_task = TaskComponent.TaskEnum.MOVE_VEL;
             
         }

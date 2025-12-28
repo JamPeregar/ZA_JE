@@ -87,7 +87,7 @@ public class ShootingSystem extends IteratingSystem {
     private void performHitscanShot(Entity shooter, WeaponComponent weapon) {
         // Вычисляем точку выстрела в мировых координатах
         //something wrong here...
-        Vector2 direction = new Vector2(weapon.aimPoint).sub(weapon.firePoint).nor();
+        Vector2 direction = new Vector2(weapon.aimPoint).sub(weapon.firePoint).cpy().nor();
         Vector2 rayEnd = new Vector2(weapon.firePoint).add(direction.scl(weapon.range));
         
         //create visual shoot line

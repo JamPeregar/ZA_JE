@@ -54,9 +54,13 @@ public class PhysicsSystem extends IteratingSystem {
             B2dBodyComponent bodyComp = bm.get(entity);
             WeaponComponent wpn_cmp = weapon_mapper.get(entity);
             
-            Vector2 position = bodyComp.body.getPosition();
-            tfm.coords.x = position.x;
-            tfm.coords.y = position.y;
+            Vector2 body_pos = bodyComp.body.getPosition();
+            tfm.coords.x = body_pos.x;
+            tfm.coords.y = body_pos.y;
+            tfm.angle = bodyComp.body.getAngle();
+            //bodyComp.body.setTransform(tfm.coords.x, tfm.coords.y, tfm.angle);
+            //tfm.angle = TransformComponent.prettyAngle(bodyComp.body.getAngle());
+            
             //position.x = tfm.coords.x;
             //position.y = tfm.coords.y;
             //tfm.angle = bodyComp.body.getAngle() * MathUtils.radiansToDegrees; //phys body do not rotate
@@ -66,6 +70,7 @@ public class PhysicsSystem extends IteratingSystem {
             //update weapon pos
             if (wpn_cmp != null) {
                 wpn_cmp.firePoint.set(tfm.coords.x,tfm.coords.y);
+                //wpn_cmp.aimangle = tfm.angle;
             }
         }
         //bodiesQueue.clear();

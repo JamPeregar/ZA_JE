@@ -21,13 +21,14 @@ import io.github.mygames.Components.TypeComponent;
 import io.github.mygames.Components.StateComponent.StateEnum;
 import io.github.mygames.Components.TaskComponent.TaskEnum;
 import io.github.mygames.Components.TypeComponent.TypeEnum;
+import io.github.mygames.Components.WeaponComponent;
 import sun.awt.www.content.audio.aiff;
 
 /**
  *Provides high level interface - makes entities to do things
  * @author Admin
  */
-public class NavigationSystem extends EntitySystem{
+public class TaskSystem extends EntitySystem{
     public ImmutableArray<Entity> entities;
     
     private final ComponentMapper<TransformComponent> pos_mapper = ComponentMapper.getFor(TransformComponent.class);
@@ -36,6 +37,7 @@ public class NavigationSystem extends EntitySystem{
     private final ComponentMapper<TypeComponent> type_mapper = ComponentMapper.getFor(TypeComponent.class);
     private final ComponentMapper<TaskComponent> task_mapper = ComponentMapper.getFor(TaskComponent.class);
     private final ComponentMapper<AIComponent> ai_mapper = ComponentMapper.getFor(AIComponent.class);
+    private final ComponentMapper<WeaponComponent> weapon_map = ComponentMapper.getFor(WeaponComponent.class);
     private final Family nav_family = Family.all(TransformComponent.class, B2dBodyComponent.class, StateComponent.class, TypeComponent.class, TaskComponent.class).get();
     private Vector3 new_vel3;
     
@@ -56,37 +58,52 @@ public class NavigationSystem extends EntitySystem{
             TypeComponent type_cmp = type_mapper.get(entity);
             TaskComponent task_cmp = task_mapper.get(entity);
             AIComponent ai_cmp = ai_mapper.get(entity);
+            WeaponComponent wpn_cmp = weapon_map.get(entity);
             if (state.the_state == StateEnum.FREEZE 
                     || type_cmp.type != TypeEnum.CHARACTER) {
                 continue;
             }
             
             switch (task_cmp.the_task) {
+                case AIM_AT_VEL:
+                    //wpn_cmp.aimangle = position.angle;
+                    break;
                 case MOVE_FORWARD:
-                    position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
+                    //position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
+                    //position.angle = body_cmp.body.getAngle();
+                    position.vel.set(TransformComponent.getNorVector2FromAngle(body_cmp.body.getAngle()).scl(position.acceleration));
+                    System.out.println("foward is to " + body_cmp.body.getAngle());
+                    System.out.println("actually foward is to " + TransformComponent.getNorVector2FromAngle(body_cmp.body.getAngle()).scl(position.acceleration));
+                    
                     state.the_state = StateEnum.MOVING;
                     break;
                 case MOVE_BACKWARD:
-                    position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(-position.acceleration));
+                    position.vel.set(TransformComponent.getNorVector2FromAngle(position.angle).scl(-position.acceleration));
                     state.the_state = StateEnum.MOVING;
                     break;
-                case MOVE_LEFT:
+                /*case MOVE_LEFT:
                     position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
                     state.the_state = StateEnum.MOVING;
                     break;
                 case MOVE_RIGHT:
                     position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
                     state.the_state = StateEnum.MOVING;
-                    break;
+                    break;*/
                 case ROTATE_LEFT:
-                    position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
+                    body_cmp.body.setAngularVelocity(position.rotate_speed);
+                    //puppet.bod_cmp.body.setAngularVelocity(speed);
+                    
                     state.the_state = StateEnum.MOVING;
                     break;
                 case ROTATE_RIGHT:
-                    position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
+                    body_cmp.body.setAngularVelocity(-position.rotate_speed);
                     state.the_state = StateEnum.MOVING;
                     break;
                 case MOVE_VEL:
+                    state.the_state = StateEnum.MOVING;
+                    break;
+                case ROTATE_VEL:
+                    //NOT CORRECT FORMULA position.rotate_deg = TransformComponent.getAngleFromVector2(position.vel);
                     state.the_state = StateEnum.MOVING;
                     break;
                 case MOVE_TO_POINT_SIMPLE:

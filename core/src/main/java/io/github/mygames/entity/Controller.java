@@ -54,19 +54,28 @@ public class Controller extends InputAdapter{
         Vector2 vel = new Vector2();
         float speed = puppet.position_cmp.acceleration;
         if (rightPressed) {
-            vel.add(speed,0f);
+            //vel.add(speed,0f);
+            puppet.performTask(TaskComponent.TaskEnum.ROTATE_RIGHT);
         }
         if (leftPressed) {
-            vel.add(-1*speed,0f);
+            //vel.add(-1*speed,0f);
+            //puppet.position_cmp.rotate_speed
+            puppet.performTask(TaskComponent.TaskEnum.ROTATE_LEFT);
+            //puppet.bod_cmp.body.setAngularVelocity(speed);
+        }
+        if (!upPressed && !downPressed) {
+            return;
         }
         if (upPressed) {
-            vel.add(0f,speed);
+            //vel.add(0f,speed);
+            puppet.performTask(TaskComponent.TaskEnum.MOVE_FORWARD);
         }
         if (downPressed) {
-            vel.add(0f,-1*speed);
+            //vel.add(0f,-1*speed);
+            puppet.performTask(TaskComponent.TaskEnum.MOVE_BACKWARD);
         }
-        puppet.setVelocity(vel);
-        puppet.performTask(TaskComponent.TaskEnum.MOVE_VEL);
+        //puppet.setVelocity(vel);
+        //puppet.performTask(TaskComponent.TaskEnum.MOVE_VEL);
     }
 
     //@Override
