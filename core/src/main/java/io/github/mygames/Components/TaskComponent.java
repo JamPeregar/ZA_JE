@@ -17,6 +17,7 @@ public class TaskComponent implements Component{
     public List<TaskEnum> task_sequence = new ArrayList<>();
     public int task_seq_id = 0;
     public boolean is_important = false;
+    public boolean is_done = false;
     
     public enum TaskEnum {
     NONE,
@@ -28,7 +29,7 @@ public class TaskComponent implements Component{
     MOVE_RIGHT,
     ROTATE_LEFT,
     ROTATE_RIGHT,
-    ROTATE_VEL,
+    ROTATE_TO_VEL_NOW,
     MOVE_TO_POINT_SIMPLE,
     WANDER,
     AIM_AT_VEL,

@@ -101,7 +101,7 @@ public class RenderSystem extends EntitySystem{
                     wpn_cmp.texture.getTexture().getHeight(),
                     wpn_cmp.texture.getTexture().getWidth(),
                     1,1,
-                    position.angle
+                    wpn_cmp.aim_vec.angleDeg()
                     );
                 }
             }

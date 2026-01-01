@@ -27,7 +27,7 @@ public class WeaponComponent implements Component{
     public float lastShotTime;      // Время последнего выстрела
     public int damage;              // Урон за выстрел
     public float range;             // Дальность стрельбы
-    public float aimangle;          // угол направления оружия
+    //public float aimangle;          // угол направления оружия
     public WeaponType weaponType;   // Тип оружия
     public ProjectileType projectileType = ProjectileType.BULLET; // Тип снаряда
    // public int modelid;

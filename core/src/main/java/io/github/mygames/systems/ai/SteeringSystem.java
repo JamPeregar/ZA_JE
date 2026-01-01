@@ -44,6 +44,7 @@ public class SteeringSystem extends IteratingSystem {
     private ComponentMapper<StatisticsComponent> statsMapper;
     private ComponentMapper<FactionComponent> factionMapper;
     private ComponentMapper<WeaponComponent> wpnMapper;
+    private ComponentMapper<B2dBodyComponent> bodyMapper;
     private ImmutableArray<Entity> CharsEntities;
     private ArrayList<Entity> nearbyEntitiesCache;
     
@@ -67,6 +68,7 @@ public class SteeringSystem extends IteratingSystem {
         statsMapper = ComponentMapper.getFor(StatisticsComponent.class);
         factionMapper = ComponentMapper.getFor(FactionComponent.class);
         wpnMapper = ComponentMapper.getFor(WeaponComponent.class);
+        bodyMapper = ComponentMapper.getFor(B2dBodyComponent.class);
         // Получаем персонажей для обнаружения (а мы их и так имеем. Тут был игрок зачем-то)
         CharsEntities = engine.getEntitiesFor(
             Family.all(FactionComponent.class, TransformComponent.class).get()
@@ -264,6 +266,9 @@ public class SteeringSystem extends IteratingSystem {
         // Случайный переход к IDLE или идти в случайную точку (потом мб по дорогам)
         TransformComponent transform = transformMapper.get(self);
         TaskComponent task_cmp = task_map.get(self);
+        WeaponComponent weapon_cmp = wpnMapper.get(self);
+        B2dBodyComponent bod_cmp = bodyMapper.get(self);
+        
         /*if (ai.stateTime > 3f) {
             ai.state = AIState.IDLE;
             ai.previous_state = AIState.WANDER;
@@ -281,6 +286,11 @@ public class SteeringSystem extends IteratingSystem {
         } else {
             transform.vel.set(randomizer.nextFloat(-transform.acceleration,transform.acceleration),randomizer.nextFloat(-transform.acceleration,transform.acceleration));
             //somehow aim weapon at mov direction
+            //weapon_component.aim_vec
+            //transform.angle = transform.vel.angleDeg();
+            //task_cmp.the_task = TaskComponent.TaskEnum.ROTATE_TO_VEL_NOW;
+            bod_cmp.body.getTransform().setRotation(transform.vel.cpy().nor().angleDeg());
+            weapon_cmp.aim_vec = transform.vel.cpy().nor();
             task_cmp.the_task = TaskComponent.TaskEnum.MOVE_VEL;
             
         }

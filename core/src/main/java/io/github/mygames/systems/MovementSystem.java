@@ -57,6 +57,7 @@ public class MovementSystem extends IteratingSystem{
             }*/
             if (state.the_state == StateEnum.MOVING) {
                 body_cmp.body.setLinearVelocity(position.vel.cpy().nor().scl(position.acceleration)); //chars movement
+                body_cmp.body.getTransform().setRotation(position.vel.cpy().nor().angleDeg());
             }
            
             if (state.the_state == StateEnum.ROTATE) {

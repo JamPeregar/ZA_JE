@@ -42,6 +42,7 @@ public class TransformComponent implements Component{
     }*/
     
     public static Vector2 getVector2FromAngle(float a) {
+        //ТАКЖЕ СМ Vector.angleDeg()
         //return new Vector2(-(float)Math.sin(a),(float)Math.cos(a));
         return new Vector2((float)Math.cos(a),-(float)Math.sin(a));
     }

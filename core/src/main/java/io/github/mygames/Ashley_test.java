@@ -200,8 +200,8 @@ public class Ashley_test implements Screen{
                 //h.performTask(TaskComponent.TaskEnum.WANDER);
                 npcpool.get(1).setCoords(touchPos.x,touchPos.y,touchPos.z);
             }
-            System.out.println("Player angle " + test_actor.getAngle());
-            System.out.println("Body angle = " + test_actor.getBod_cmp().body.getAngle());
+            //System.out.println("Player angle " + test_actor.getAngle());
+            //System.out.println("Body angle = " + test_actor.getBod_cmp().body.getAngle());
         } else {
             test_actor.makeshoot(false);
             //npcpool.get(1).performTask(TaskComponent.TaskEnum.WANDER);

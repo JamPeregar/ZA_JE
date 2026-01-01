@@ -102,25 +102,32 @@ public class TaskSystem extends EntitySystem{
                 case MOVE_VEL:
                     state.the_state = StateEnum.MOVING;
                     break;
-                case ROTATE_VEL:
+                case ROTATE_TO_VEL_NOW:
                     //NOT CORRECT FORMULA position.rotate_deg = TransformComponent.getAngleFromVector2(position.vel);
-                    state.the_state = StateEnum.MOVING;
+                    body_cmp.body.getTransform().setRotation(position.vel.cpy().nor().angleDeg());
+                    //state.the_state = StateEnum.ROTATE;
                     break;
                 case MOVE_TO_POINT_SIMPLE:
-                    if (position.coords.dst(position.move_to_coords) > TransformComponent.NAV_RANGE) {
+                    if (task_cmp.is_done) {
+                        task_cmp.the_task = TaskEnum.NONE;
+                        break;
+                    }
+                    if (position.coords.dst(position.move_to_coords) <= TransformComponent.NAV_RANGE) {
+                        //position.vel.set(0f, 0f);
+                       // task_cmp.the_task = TaskEnum.NONE;
+                        //state.the_state = StateEnum.STAYING;
+                        task_cmp.is_done = true;
+                        //body_cmp.body.setLinearVelocity(Vector2.Zero);
+                        //System.out.println("STOPPED");
+                    } 
+                    else {
                         new_vel3 = position.move_to_coords.cpy().sub(position.coords.cpy()).clamp(-position.acceleration, position.acceleration);
                         position.vel.set(new_vel3.x, new_vel3.y);
                         state.the_state = StateEnum.MOVING;
                         //body_cmp.body.applyForceToCenter(position.vel.cpy().scl(position.acceleration), false);
                          //body_cmp.body.setLinearVelocity(position.vel.cpy().scl(position.acceleration));
                         //System.out.println("nav changed");
-                    }
-                    if (position.coords.dst(position.move_to_coords) <= TransformComponent.NAV_RANGE && state.the_state == StateEnum.MOVING) {
-                        position.vel.set(0f, 0f);
-                        task_cmp.the_task = TaskEnum.NONE;
-                        state.the_state = StateEnum.STAYING;
-                        //body_cmp.body.setLinearVelocity(Vector2.Zero);
-                        //System.out.println("STOPPED");
+                        task_cmp.is_done = false;
                     }
                     break;
                 case WANDER:
@@ -136,8 +143,10 @@ public class TaskSystem extends EntitySystem{
                     break;
                 case NONE:
                     state.the_state = StateEnum.STAYING;
+                    position.vel.set(0f, 0f);
                     body_cmp.body.setLinearVelocity(Vector2.Zero);
                     body_cmp.body.setAngularVelocity(0f);
+                    task_cmp.is_done = false;
                     break;
             }
             

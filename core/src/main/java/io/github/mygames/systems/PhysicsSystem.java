@@ -70,7 +70,7 @@ public class PhysicsSystem extends IteratingSystem {
             //update weapon pos
             if (wpn_cmp != null) {
                 wpn_cmp.firePoint.set(tfm.coords.x,tfm.coords.y);
-                //wpn_cmp.aimangle = tfm.angle;
+                //wpn_cmp.aim_vec = TransformComponent.getNorVector2FromAngle(tfm.angle);
             }
         }
         //bodiesQueue.clear();
