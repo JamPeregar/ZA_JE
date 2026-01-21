@@ -10,6 +10,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import io.github.mygames.Components.B2dBodyComponent;
@@ -57,12 +58,20 @@ public class MovementSystem extends IteratingSystem{
             }*/
             if (state.the_state == StateEnum.MOVING) {
                 body_cmp.body.setLinearVelocity(position.vel.cpy().nor().scl(position.acceleration)); //chars movement
-                body_cmp.body.getTransform().setRotation(position.vel.cpy().nor().angleDeg());
+                //body_cmp.body.getTransform().setRotation(position.vel.cpy().nor().angleDeg());
+                
+                body_cmp.body.setAngularVelocity(position.rotate_vel);
+                //System.out.println("MOVING");
+            } else {
+                body_cmp.body.setLinearVelocity(Vector2.Zero); //chars movement
+                
+                body_cmp.body.setAngularVelocity(0f);
+                //System.out.println("STAYING");
             }
            
-            if (state.the_state == StateEnum.ROTATE) {
+            /*if (state.the_state == StateEnum.ROTATE) {
                 body_cmp.body.setAngularVelocity(position.rotate_speed); //chars rotate
-            }
+            }*/
             
             //System.out.println("move");
             //move_to = new Vector2(position.velocity.x - position.pos.x, position.velocity.y - position.pos.y);

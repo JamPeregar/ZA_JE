@@ -71,13 +71,15 @@ public class TaskSystem extends EntitySystem{
                 case MOVE_FORWARD:
                     //position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
                     //position.angle = body_cmp.body.getAngle();
+                    position.rotate_vel = 0f; // clean rotate to avoid task collisions
                     position.vel.set(TransformComponent.getNorVector2FromAngle(body_cmp.body.getAngle()).scl(position.acceleration));
                     System.out.println("foward is to " + body_cmp.body.getAngle());
-                    System.out.println("actually foward is to " + TransformComponent.getNorVector2FromAngle(body_cmp.body.getAngle()).scl(position.acceleration));
+                    //System.out.println("actually foward is to " + TransformComponent.getNorVector2FromAngle(body_cmp.body.getAngle()).scl(position.acceleration));
                     
                     state.the_state = StateEnum.MOVING;
                     break;
                 case MOVE_BACKWARD:
+                    position.rotate_vel = 0f;
                     position.vel.set(TransformComponent.getNorVector2FromAngle(position.angle).scl(-position.acceleration));
                     state.the_state = StateEnum.MOVING;
                     break;
@@ -90,13 +92,17 @@ public class TaskSystem extends EntitySystem{
                     state.the_state = StateEnum.MOVING;
                     break;*/
                 case ROTATE_LEFT:
-                    body_cmp.body.setAngularVelocity(position.rotate_speed);
+                    //body_cmp.body.setAngularVelocity(position.rotate_speed);
+                    position.rotate_vel = position.rotate_speed;
                     //puppet.bod_cmp.body.setAngularVelocity(speed);
                     
+                    position.vel.set(Vector2.Zero);
                     state.the_state = StateEnum.MOVING;
                     break;
                 case ROTATE_RIGHT:
-                    body_cmp.body.setAngularVelocity(-position.rotate_speed);
+                    //body_cmp.body.setAngularVelocity(-position.rotate_speed);
+                    position.rotate_vel = -position.rotate_speed;
+                    position.vel.set(Vector2.Zero);
                     state.the_state = StateEnum.MOVING;
                     break;
                 case MOVE_VEL:
@@ -138,14 +144,17 @@ public class TaskSystem extends EntitySystem{
                     break;
                 case STOP_MOVING:
                     state.the_state = StateEnum.STAYING;
-                    body_cmp.body.setLinearVelocity(Vector2.Zero);
-                    body_cmp.body.setAngularVelocity(0f);
+                    //body_cmp.body.setLinearVelocity(Vector2.Zero);
+                    //body_cmp.body.setAngularVelocity(0f);
+                    position.rotate_vel = 0f;
+                    position.vel.set(Vector2.Zero);
                     break;
                 case NONE:
                     state.the_state = StateEnum.STAYING;
                     position.vel.set(0f, 0f);
-                    body_cmp.body.setLinearVelocity(Vector2.Zero);
-                    body_cmp.body.setAngularVelocity(0f);
+                    position.rotate_vel = 0f;
+                    //body_cmp.body.setLinearVelocity(Vector2.Zero);
+                    //body_cmp.body.setAngularVelocity(0f);
                     task_cmp.is_done = false;
                     break;
             }

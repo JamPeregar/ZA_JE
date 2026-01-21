@@ -5,6 +5,7 @@
 package io.github.mygames.Components;
 
 import com.badlogic.ashley.core.Component;
+import java.util.EnumSet;
 
 /**
  *
@@ -12,12 +13,13 @@ import com.badlogic.ashley.core.Component;
  */
 public class StateComponent implements Component{
     public StateEnum the_state = StateEnum.STAYING;
+    //public EnumSet<StateEnum> state_flags = EnumSet.noneOf(StateEnum.class);
     
     public enum StateEnum {
     FREEZE,
     STAYING,
-    MOVING,
-    ROTATE,
-    FLYING
-}
+    MOVING
+    //ROTATE,
+    //FLYING
+    }
 }

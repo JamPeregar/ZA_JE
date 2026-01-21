@@ -284,13 +284,20 @@ public class SteeringSystem extends IteratingSystem {
                 task_cmp.the_task = TaskComponent.TaskEnum.STOP_MOVING;
             }
         } else {
-            transform.vel.set(randomizer.nextFloat(-transform.acceleration,transform.acceleration),randomizer.nextFloat(-transform.acceleration,transform.acceleration));
+            transform.vel.set(
+                    randomizer.nextFloat(-1f,1f),
+                    randomizer.nextFloat(-1f,1f)
+            );
             //somehow aim weapon at mov direction
             //weapon_component.aim_vec
             //transform.angle = transform.vel.angleDeg();
             //task_cmp.the_task = TaskComponent.TaskEnum.ROTATE_TO_VEL_NOW;
-            bod_cmp.body.getTransform().setRotation(transform.vel.cpy().nor().angleDeg());
-            weapon_cmp.aim_vec = transform.vel.cpy().nor();
+            
+            bod_cmp.body.setTransform(TransformComponent.Vector3ToVector2(transform.coords), transform.vel.angleDeg());
+            System.out.println("Turn to " +  bod_cmp.body.getAngle());
+            //weapon_cmp.aimPoint.set(transform.vel.cpy().nor()); ????
+            weapon_cmp.aim_vec.set(transform.vel.cpy().nor());
+            //transform.angle = ;
             task_cmp.the_task = TaskComponent.TaskEnum.MOVE_VEL;
             
         }

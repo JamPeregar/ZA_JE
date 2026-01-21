@@ -16,10 +16,11 @@ import com.badlogic.gdx.math.Vector3;
 public class TransformComponent implements Component{
     public Vector3 coords = new Vector3(0,0,0);
     public float angle = 0f;
+    
     public Vector2 vel = new Vector2(0,0);
     public float acceleration = 100f;
     public float rotate_speed = 100f;
-    public float rotate_deg = 0f;
+    public float rotate_vel = 0f;
     public float maxLinearAcceleration = acceleration*2;
     
     public Vector3 move_to_coords = new Vector3();

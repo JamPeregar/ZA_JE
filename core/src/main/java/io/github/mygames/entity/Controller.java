@@ -44,7 +44,7 @@ public class Controller extends InputAdapter{
             //System.out.println("GO");
         } else {
             puppet.performTask(TaskComponent.TaskEnum.STOP_MOVING);
-            puppet.setVelocity(Vector2.Zero);
+            //puppet.setVelocity(Vector2.Zero);
             //System.out.println("STOP");
         }
         
