@@ -30,6 +30,7 @@ public class TaskComponent implements Component{
     ROTATE_LEFT,
     ROTATE_RIGHT,
     ROTATE_TO_VEL_NOW,
+    ROTATE_TO_VEL_SIMPLE,
     MOVE_TO_POINT_SIMPLE,
     WANDER,
     AIM_AT_VEL,

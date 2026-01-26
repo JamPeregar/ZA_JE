@@ -90,11 +90,11 @@ public class Ashley_test implements Screen{
         shoot_sys = new ShootingSystem(world, engine);
         ai_sys = new SteeringSystem();
 
-        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.FARMER, mloader.getTextureRegionFromFileName("ally.png")));
-        npcpool.add(npc_gen.createNPCFaction(650f, 150f, 0f, FactionEnum.FARMER, mloader.getTextureRegionFromFileName("ally.png")));
-        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("enemy.png")));
-        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("enemy.png")));
-        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("enemy.png")));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.FARMER, mloader.getTextureRegionFromFileName("fermer.png")));
+        npcpool.add(npc_gen.createNPCFaction(650f, 150f, 0f, FactionEnum.FARMER, mloader.getTextureRegionFromFileName("fermer.png")));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("zombie.png")));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("zombie.png")));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("zombie.png")));
                 
 //npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
         
@@ -184,7 +184,7 @@ public class Ashley_test implements Screen{
             
             //test_enemy.makeSimpleShoot(new Vector2(touchPos.x, touchPos.y), 500, 0);
             test_actor.aimAtPoint(new Vector2(touchPos.x, touchPos.y));
-            test_actor.makeshoot(true);
+            //test_actor.makeshoot(true);
             //System.out.println("ANGLE = " + test_actor.getAngle());
             
             //shoot_sys.shoot(test_enemy.getBase_entity(), new Vector2(touchPos.x, touchPos.y));

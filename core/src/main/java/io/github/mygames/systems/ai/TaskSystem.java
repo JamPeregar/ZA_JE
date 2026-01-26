@@ -20,6 +20,7 @@ import io.github.mygames.Components.TransformComponent;
 import io.github.mygames.Components.TypeComponent;
 import io.github.mygames.Components.StateComponent.StateEnum;
 import io.github.mygames.Components.TaskComponent.TaskEnum;
+import static io.github.mygames.Components.TaskComponent.TaskEnum.ROTATE_TO_VEL_SIMPLE;
 import io.github.mygames.Components.TypeComponent.TypeEnum;
 import io.github.mygames.Components.WeaponComponent;
 import sun.awt.www.content.audio.aiff;
@@ -73,7 +74,7 @@ public class TaskSystem extends EntitySystem{
                     //position.angle = body_cmp.body.getAngle();
                     position.rotate_vel = 0f; // clean rotate to avoid task collisions
                     position.vel.set(TransformComponent.getNorVector2FromAngle(body_cmp.body.getAngle()).scl(position.acceleration));
-                    System.out.println("foward is to " + body_cmp.body.getAngle());
+                    //System.out.println("foward is to " + body_cmp.body.getAngle());
                     //System.out.println("actually foward is to " + TransformComponent.getNorVector2FromAngle(body_cmp.body.getAngle()).scl(position.acceleration));
                     
                     state.the_state = StateEnum.MOVING;
@@ -110,21 +111,32 @@ public class TaskSystem extends EntitySystem{
                     break;
                 case ROTATE_TO_VEL_NOW:
                     //NOT CORRECT FORMULA position.rotate_deg = TransformComponent.getAngleFromVector2(position.vel);
-                    body_cmp.body.getTransform().setRotation(position.vel.cpy().nor().angleDeg());
+                   // body_cmp.body.getTransform().setRotation(position.vel.cpy().nor().angleDeg());
+                    body_cmp.body.setTransform(TransformComponent.Vector3ToVector2(position.coords), position.vel.angleDeg());
                     //state.the_state = StateEnum.ROTATE;
                     break;
-                case MOVE_TO_POINT_SIMPLE:
-                    if (task_cmp.is_done) {
-                        task_cmp.the_task = TaskEnum.NONE;
-                        break;
+                case ROTATE_TO_VEL_SIMPLE:
+                    position.vel.set(Vector2.Zero);
+                    if (Math.abs(position.angle - position.rotate_to_angle) > TransformComponent.NAV_RANGE) {
+                        if (position.rotate_to_angle > position.angle) {
+                            position.rotate_vel = position.rotate_speed;
+                        } else {
+                            position.rotate_vel = -position.rotate_speed;
+                        }
+                        state.the_state = StateEnum.MOVING;
+                    } else {
+                        task_cmp.is_done = true;
+                        task_cmp.the_task = TaskEnum.STOP_MOVING;
                     }
+                    break;
+                case MOVE_TO_POINT_SIMPLE:
                     if (position.coords.dst(position.move_to_coords) <= TransformComponent.NAV_RANGE) {
                         //position.vel.set(0f, 0f);
-                       // task_cmp.the_task = TaskEnum.NONE;
+                        task_cmp.the_task = TaskEnum.STOP_MOVING;
                         //state.the_state = StateEnum.STAYING;
                         task_cmp.is_done = true;
                         //body_cmp.body.setLinearVelocity(Vector2.Zero);
-                        //System.out.println("STOPPED");
+                        System.out.println("MOVE_TO_POINT_SIMPLE ENDED");
                     } 
                     else {
                         new_vel3 = position.move_to_coords.cpy().sub(position.coords.cpy()).clamp(-position.acceleration, position.acceleration);
@@ -148,14 +160,16 @@ public class TaskSystem extends EntitySystem{
                     //body_cmp.body.setAngularVelocity(0f);
                     position.rotate_vel = 0f;
                     position.vel.set(Vector2.Zero);
+                    //task_cmp.is_done = true;
+                    task_cmp.the_task = TaskEnum.NONE;
                     break;
                 case NONE:
-                    state.the_state = StateEnum.STAYING;
-                    position.vel.set(0f, 0f);
-                    position.rotate_vel = 0f;
+                    //state.the_state = StateEnum.STAYING;
+                    //position.vel.set(0f, 0f);
+                    //position.rotate_vel = 0f;
                     //body_cmp.body.setLinearVelocity(Vector2.Zero);
                     //body_cmp.body.setAngularVelocity(0f);
-                    task_cmp.is_done = false;
+                    //task_cmp.is_done = false;
                     break;
             }
             

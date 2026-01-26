@@ -279,27 +279,51 @@ public class SteeringSystem extends IteratingSystem {
             transform.vel.set(randomizer.nextFloat(-transform.acceleration,transform.acceleration),randomizer.nextFloat(-transform.acceleration,transform.acceleration));
             task_cmp.the_task = TaskComponent.TaskEnum.MOVE_VEL;
         }*/
-        if (task_cmp.the_task == TaskComponent.TaskEnum.MOVE_VEL) {
+        
+        if (task_cmp.the_task == TaskComponent.TaskEnum.WANDER) {
+            
+            task_cmp.the_task = TaskComponent.TaskEnum.MOVE_FORWARD;
+            System.out.println("MOVE_FORWARD INIT AI");
+                
+        } 
+        //if (task_cmp.the_task == TaskComponent.TaskEnum.NONE) {return;}
+        else if (task_cmp.the_task == TaskComponent.TaskEnum.MOVE_FORWARD) {
             if (ai.stateTime > 2f) {
                 task_cmp.the_task = TaskComponent.TaskEnum.STOP_MOVING;
+                System.out.println("STOP_MOVING 1 AI");
             }
-        } else {
-            transform.vel.set(
+                
+        } 
+        else if (task_cmp.the_task == TaskComponent.TaskEnum.NONE) {
+            transform.rotate_to_angle = randomizer.nextFloat(0f,360f);
+            task_cmp.the_task = TaskComponent.TaskEnum.ROTATE_TO_VEL_SIMPLE;
+            System.out.println("TURN RANDOM 1 AI");
+            //System.out.println("ROTATE TO VEL AI");
+            /*transform.vel.set(
                     randomizer.nextFloat(-1f,1f),
                     randomizer.nextFloat(-1f,1f)
-            );
+            );*/
+            
             //somehow aim weapon at mov direction
             //weapon_component.aim_vec
             //transform.angle = transform.vel.angleDeg();
             //task_cmp.the_task = TaskComponent.TaskEnum.ROTATE_TO_VEL_NOW;
             
-            bod_cmp.body.setTransform(TransformComponent.Vector3ToVector2(transform.coords), transform.vel.angleDeg());
-            System.out.println("Turn to " +  bod_cmp.body.getAngle());
+            //bod_cmp.body.setTransform(TransformComponent.Vector3ToVector2(transform.coords), transform.vel.angleDeg());
+            //System.out.println("Turn to " +  bod_cmp.body.getAngle());
             //weapon_cmp.aimPoint.set(transform.vel.cpy().nor()); ????
-            weapon_cmp.aim_vec.set(transform.vel.cpy().nor());
+            //weapon_cmp.aim_vec.set(transform.vel.cpy().nor());
             //transform.angle = ;
-            task_cmp.the_task = TaskComponent.TaskEnum.MOVE_VEL;
+            //task_cmp.the_task = TaskComponent.TaskEnum.MOVE_FORWARD;
+        } else if (task_cmp.the_task == TaskComponent.TaskEnum.ROTATE_TO_VEL_SIMPLE && task_cmp.is_done) {
+            if (ai.stateTime > 5f) {
+                task_cmp.the_task = TaskComponent.TaskEnum.MOVE_FORWARD;
+                System.out.println("STOP_MOVING 1 AI");
+            }
             
+            System.out.println("MOVE_FORWARD 2 AI");
+        } else {
+            System.out.println("AI TASK - " + task_cmp.the_task);
         }
     }
     

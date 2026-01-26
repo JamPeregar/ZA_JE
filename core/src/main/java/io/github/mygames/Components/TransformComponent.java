@@ -24,6 +24,7 @@ public class TransformComponent implements Component{
     public float maxLinearAcceleration = acceleration*2;
     
     public Vector3 move_to_coords = new Vector3();
+    public float rotate_to_angle = 0f;
     
     public boolean is_hidden = false;
     
