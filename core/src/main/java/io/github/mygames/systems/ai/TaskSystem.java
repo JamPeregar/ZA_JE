@@ -66,9 +66,6 @@ public class TaskSystem extends EntitySystem{
             }
             
             switch (task_cmp.the_task) {
-                case AIM_AT_VEL:
-                    //wpn_cmp.aimangle = position.angle;
-                    break;
                 case MOVE_FORWARD:
                     //position.vel.set(TransformComponent.getVelocityFromVector3Angle(position.coords,position.angle).nor().scl(position.acceleration));
                     //position.angle = body_cmp.body.getAngle();
@@ -136,7 +133,7 @@ public class TaskSystem extends EntitySystem{
                         //state.the_state = StateEnum.STAYING;
                         task_cmp.is_done = true;
                         //body_cmp.body.setLinearVelocity(Vector2.Zero);
-                        System.out.println("MOVE_TO_POINT_SIMPLE ENDED");
+                        //System.out.println("MOVE_TO_POINT_SIMPLE ENDED");
                     } 
                     else {
                         new_vel3 = position.move_to_coords.cpy().sub(position.coords.cpy()).clamp(-position.acceleration, position.acceleration);

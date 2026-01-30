@@ -45,7 +45,7 @@ public class AIComponent implements Component {
     public float wanderDistance = 7f;
     public float wanderJitter = 20f;
     public float followDistanse = 10f;
-    public float detectionRadius = 200f;
+    public float detectionRadius = 1000f;
     public float attackRange = 50f;
     
     // Временные переменные

@@ -19,7 +19,7 @@ public class TransformComponent implements Component{
     
     public Vector2 vel = new Vector2(0,0);
     public float acceleration = 100f;
-    public float rotate_speed = 100f;
+    public float rotate_speed = 200f;
     public float rotate_vel = 0f;
     public float maxLinearAcceleration = acceleration*2;
     

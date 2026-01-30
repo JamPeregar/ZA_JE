@@ -75,6 +75,7 @@ public abstract class NpcGenericEntity {
         //this.type_cmp.type = TypeEnum.CHARACTER;
         bod_cmp.body = B2dBodyComponent.createCharBody(world);
         bod_cmp.body.setUserData(base_entity); // body belongs to entity
+        //faction_cmp.default_relations();
         //bod_cmp.hitboxFx = bod_cmp.body.getFixtureList().first();
         
         //add components
@@ -223,6 +224,11 @@ public abstract class NpcGenericEntity {
     public void setRelationship(int faction, int disposition) {
         faction_cmp.relationships[faction] = disposition;
     }
+    
+    public void restoreRelationships() {
+        faction_cmp.default_relations();
+    }
+    
     
     //-------------Render methods------------//
     

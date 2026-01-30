@@ -82,7 +82,7 @@ public class SteeringSystem extends IteratingSystem {
         AIComponent ai = aiMapper.get(entity);
         TransformComponent transform = transformMapper.get(entity);
         StatisticsComponent stats = statsMapper.get(entity);
-        FactionComponent faction = factionMapper.get(entity);
+        //FactionComponent faction = factionMapper.get(entity);
         //WeaponComponent wpn_cmp = wpnMapper.get(entity); //attack range
         // Проверяем, не мертв ли персонаж
         if (stats.is_dead) {
@@ -99,7 +99,7 @@ public class SteeringSystem extends IteratingSystem {
         
         // Проверяем, не пора ли принимать новое решение
         if (shouldMakeDecision(ai, deltaTime)) {
-            makeDecision(entity, ai, transform, stats, faction);
+            makeDecision(entity, ai, transform, stats);
         }
         
         // Обновляем поведение на основе текущего состояния
@@ -157,13 +157,14 @@ public class SteeringSystem extends IteratingSystem {
     }
     
     private void makeDecision(Entity self, AIComponent ai, TransformComponent transform, 
-                             StatisticsComponent stats, FactionComponent faction) {
+                             StatisticsComponent stats) {
         
         //System.out.println("MAKE DEC");
         // Проверяем ближайших существ
         ArrayList<Entity> nearbyEntities = getNearbyEntities(self, 
                 transform.coords, 
                 ai.detectionRadius);
+        //System.out.println("entities near: " + nearbyEntities.size());
         
         // Ищем ближайшую враждебную цель
         Entity closestHostile = findClosestHostile(self, nearbyEntities, transform.coords);
@@ -260,6 +261,7 @@ public class SteeringSystem extends IteratingSystem {
         if (closestHostile != null) {
             //ai.state = AIState.PURSUE;
             //ai.targetEntity = closestHostile;
+            
             return;
         }
         
@@ -283,45 +285,29 @@ public class SteeringSystem extends IteratingSystem {
         if (task_cmp.the_task == TaskComponent.TaskEnum.WANDER) {
             
             task_cmp.the_task = TaskComponent.TaskEnum.MOVE_FORWARD;
-            System.out.println("MOVE_FORWARD INIT AI");
+            //System.out.println("MOVE_FORWARD INIT AI");
                 
         } 
         //if (task_cmp.the_task == TaskComponent.TaskEnum.NONE) {return;}
         else if (task_cmp.the_task == TaskComponent.TaskEnum.MOVE_FORWARD) {
             if (ai.stateTime > 2f) {
                 task_cmp.the_task = TaskComponent.TaskEnum.STOP_MOVING;
-                System.out.println("STOP_MOVING 1 AI");
+                //System.out.println("STOP_MOVING 1 AI");
             }
                 
         } 
         else if (task_cmp.the_task == TaskComponent.TaskEnum.NONE) {
             transform.rotate_to_angle = randomizer.nextFloat(0f,360f);
             task_cmp.the_task = TaskComponent.TaskEnum.ROTATE_TO_VEL_SIMPLE;
-            System.out.println("TURN RANDOM 1 AI");
-            //System.out.println("ROTATE TO VEL AI");
-            /*transform.vel.set(
-                    randomizer.nextFloat(-1f,1f),
-                    randomizer.nextFloat(-1f,1f)
-            );*/
+           // System.out.println("TURN RANDOM 1 AI");
             
-            //somehow aim weapon at mov direction
-            //weapon_component.aim_vec
-            //transform.angle = transform.vel.angleDeg();
-            //task_cmp.the_task = TaskComponent.TaskEnum.ROTATE_TO_VEL_NOW;
-            
-            //bod_cmp.body.setTransform(TransformComponent.Vector3ToVector2(transform.coords), transform.vel.angleDeg());
-            //System.out.println("Turn to " +  bod_cmp.body.getAngle());
-            //weapon_cmp.aimPoint.set(transform.vel.cpy().nor()); ????
-            //weapon_cmp.aim_vec.set(transform.vel.cpy().nor());
-            //transform.angle = ;
-            //task_cmp.the_task = TaskComponent.TaskEnum.MOVE_FORWARD;
         } else if (task_cmp.the_task == TaskComponent.TaskEnum.ROTATE_TO_VEL_SIMPLE && task_cmp.is_done) {
             if (ai.stateTime > 5f) {
                 task_cmp.the_task = TaskComponent.TaskEnum.MOVE_FORWARD;
-                System.out.println("STOP_MOVING 1 AI");
+                //System.out.println("STOP_MOVING 1 AI");
             }
             
-            System.out.println("MOVE_FORWARD 2 AI");
+            //System.out.println("MOVE_FORWARD 2 AI");
         } else {
             System.out.println("AI TASK - " + task_cmp.the_task);
         }
@@ -618,19 +604,22 @@ public class SteeringSystem extends IteratingSystem {
         
         FactionComponent selfFaction = factionMapper.get(self);
         if (selfFaction == null) return null;
-        
         for (Entity entity : entities) {
             FactionComponent otherFaction = factionMapper.get(entity);
             if (otherFaction == null) continue;
-            
+            //System.out.println("TRY HOSTILE - " + selfFaction.self_aware + " vs " + otherFaction.self_aware);
             // Проверяем враждебность
             if (selfFaction.isHostileTo(otherFaction.self_aware)) {
+                //System.out.println("IS HOSTILE");
+               // System.out.println(selfFaction.self_aware + " IS HOSTILE to " + otherFaction.self_aware);
                 TransformComponent transform = transformMapper.get(entity);
+                    
                 if (transform != null) {
                     float distance = position.dst2(transform.coords);
                     if (distance < closestDistance) {
                         closest = entity;
                         closestDistance = distance;
+                        
                     }
                 }
             }

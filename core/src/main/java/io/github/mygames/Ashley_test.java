@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
+import io.github.mygames.Components.FactionComponent;
 import io.github.mygames.Components.FactionComponent.FactionEnum;
 import io.github.mygames.Components.TaskComponent;
 import io.github.mygames.Components.TransformComponent;
@@ -95,6 +96,8 @@ public class Ashley_test implements Screen{
         npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("zombie.png")));
         npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("zombie.png")));
         npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("zombie.png")));
+        FactionComponent.show_polmap();
+        npcpool.get(0).restoreRelationships();
                 
 //npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
         
