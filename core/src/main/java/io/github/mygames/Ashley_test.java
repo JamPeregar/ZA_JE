@@ -91,14 +91,15 @@ public class Ashley_test implements Screen{
         shoot_sys = new ShootingSystem(world, engine);
         ai_sys = new SteeringSystem();
 
-        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.FARMER, mloader.getTextureRegionFromFileName("fermer.png")));
-        npcpool.add(npc_gen.createNPCFaction(650f, 150f, 0f, FactionEnum.FARMER, mloader.getTextureRegionFromFileName("fermer.png")));
-        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("zombie.png")));
-        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("zombie.png")));
-        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("zombie.png")));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.FARMER, mloader.getTextureRegionFromFileName("ally.png")));
+        npcpool.add(npc_gen.createNPCFaction(650f, 150f, 0f, FactionEnum.FARMER, mloader.getTextureRegionFromFileName("ally.png")));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("enemy.png")));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("enemy.png")));
+        npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, mloader.getTextureRegionFromFileName("enemy.png")));
         FactionComponent.show_polmap();
         npcpool.get(0).restoreRelationships();
-                
+        //test_actor.giveWeapon(WeaponType.ASSAULT_RIFLE);
+        npcpool.get(1).giveWeapon(WeaponType.ASSAULT_RIFLE);
 //npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
         
         
@@ -176,15 +177,7 @@ public class Ashley_test implements Screen{
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
             
-            
-            /*test_enemy.setMoveTo(touchPos);
-            test_marker.setCoords(touchPos.x, touchPos.y, 0);
-            test_marker.setHidden(false);
-            //System.out.printf("\n nav from %s to %s", test_actor.getCoords().toString(),test_marker.getCoords().toString());
-            if (test_actor.isCollidedWithEntity(test_enemy.getBase_entity())) {
-                System.out.println("COLLIDED");
-            }*/
-            
+            test_actor.makeshoot(true);
             //test_enemy.makeSimpleShoot(new Vector2(touchPos.x, touchPos.y), 500, 0);
             test_actor.aimAtPoint(new Vector2(touchPos.x, touchPos.y));
             //test_actor.makeshoot(true);
@@ -212,6 +205,7 @@ public class Ashley_test implements Screen{
         }
         if (Gdx.input.isKeyPressed(Input.Keys.E) ) {
             npcpool.get(0).performTask(TaskComponent.TaskEnum.WANDER);
+            
         }
         
         //System.out.println(test_actor.getState_cmp().the_state);

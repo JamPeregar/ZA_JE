@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
+import io.github.mygames.Components.AIComponent;
 import io.github.mygames.Components.B2dBodyComponent;
 import io.github.mygames.Components.BulletComponent;
 import io.github.mygames.Components.CollisionComponent;
@@ -47,6 +48,7 @@ public abstract class NpcGenericEntity {
     final B2dBodyComponent bod_cmp;
     final CollisionComponent col_cmp;
     final WeaponComponent wpn_cmp;
+    final AIComponent ai_cmp;
     
     final Engine base_engine;
     final World base_world;
@@ -69,6 +71,7 @@ public abstract class NpcGenericEntity {
         this.col_cmp = engine.createComponent(CollisionComponent.class);
         this.stats_cmp = engine.createComponent(StatisticsComponent.class);
         this.wpn_cmp = engine.createComponent(WeaponComponent.class);
+        this.ai_cmp = engine.createComponent(AIComponent.class);
         
           //configure other in children     
           //configure components
@@ -77,7 +80,7 @@ public abstract class NpcGenericEntity {
         bod_cmp.body.setUserData(base_entity); // body belongs to entity
         //faction_cmp.default_relations();
         //bod_cmp.hitboxFx = bod_cmp.body.getFixtureList().first();
-        
+        ai_cmp.state = AIComponent.AIState.IDLE;
         //add components
         base_entity.add(type_cmp);
         base_entity.add(position_cmp);
@@ -90,6 +93,7 @@ public abstract class NpcGenericEntity {
         base_entity.add(stats_cmp);
         base_entity.add(col_cmp);
         base_entity.add(wpn_cmp);
+        base_entity.add(ai_cmp);
         
         engine.addEntity(base_entity);
     }
@@ -274,6 +278,8 @@ public abstract class NpcGenericEntity {
             wpn_cmp.make_shoot = false;
         }
     }
+    
+    //public void makeshoot(boolean fire_pressed) {}
     
      //--------------Other------------//
     public Entity getBase_entity() {

@@ -33,9 +33,11 @@ public class NpcFactory {
         switch (faction) {
             case ZOMBIE:
                 human_template.setName("Infected");
+                human_template.setFaction(FactionEnum.ZOMBIE);
                 break;
             case SURVIVOR:
                 human_template.setName("Survivor");
+                human_template.setFaction(FactionEnum.SURVIVOR);
                 break;
             case BANDIT:
                 //human_template = new Human(base_engine,base_world);
@@ -46,6 +48,7 @@ public class NpcFactory {
                 //human_template = new Human(base_engine,base_world);
                 //configure components
                 human_template.setName("Farmer");
+                human_template.setFaction(FactionEnum.FARMER);
                 break;
             case ARMY:
                 //human_template = new Human(base_engine,base_world);
@@ -53,7 +56,8 @@ public class NpcFactory {
                 human_template.setName("Army");
                 break;
             default:
-                throw new AssertionError("unknown type");
+                //throw new AssertionError("unknown type");
+                human_template.setName("???");
         }
         return human_template;
     }
