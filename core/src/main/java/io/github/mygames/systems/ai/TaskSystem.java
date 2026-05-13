@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import io.github.mygames.Components.AIComponent;
 import io.github.mygames.Components.B2dBodyComponent;
+import io.github.mygames.Components.ControlComponent;
 import io.github.mygames.Components.StateComponent;
 import io.github.mygames.Components.TaskComponent;
 import io.github.mygames.Components.TransformComponent;
@@ -39,6 +40,7 @@ public class TaskSystem extends EntitySystem{
     private final ComponentMapper<TaskComponent> task_mapper = ComponentMapper.getFor(TaskComponent.class);
     private final ComponentMapper<AIComponent> ai_mapper = ComponentMapper.getFor(AIComponent.class);
     private final ComponentMapper<WeaponComponent> weapon_map = ComponentMapper.getFor(WeaponComponent.class);
+    //private final ComponentMapper<ControlComponent> ctrl_map = ComponentMapper.getFor(ControlComponent.class);
     private final Family nav_family = Family.all(TransformComponent.class, B2dBodyComponent.class, StateComponent.class, TypeComponent.class, TaskComponent.class).get();
     private Vector3 new_vel3;
     
@@ -60,6 +62,7 @@ public class TaskSystem extends EntitySystem{
             TaskComponent task_cmp = task_mapper.get(entity);
             AIComponent ai_cmp = ai_mapper.get(entity);
             WeaponComponent wpn_cmp = weapon_map.get(entity);
+            //ControlComponent ctrl = ctrl_map.get(entity);
             if (state.the_state == StateEnum.FREEZE 
                     || type_cmp.type != TypeEnum.CHARACTER) {
                 continue;

@@ -34,6 +34,7 @@ public class TaskComponent implements Component{
     MOVE_TO_POINT_SIMPLE,
     WANDER,
     AIM_AT_VEL,
+    AIM_AT_POINT,
     ATTACK_ENTITY
 }
 }

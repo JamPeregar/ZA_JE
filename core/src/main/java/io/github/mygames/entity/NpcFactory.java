@@ -43,6 +43,7 @@ public class NpcFactory {
                 //human_template = new Human(base_engine,base_world);
                 //configure components
                 human_template.setName("Bandit");
+                human_template.setFaction(FactionEnum.BANDIT);
                 break;
             case FARMER:
                 //human_template = new Human(base_engine,base_world);
@@ -54,6 +55,7 @@ public class NpcFactory {
                 //human_template = new Human(base_engine,base_world);
                 //configure components
                 human_template.setName("Army");
+                human_template.setFaction(FactionEnum.ARMY);
                 break;
             default:
                 //throw new AssertionError("unknown type");
