@@ -23,6 +23,7 @@ import io.github.mygames.Components.AIComponent;
 import io.github.mygames.Components.AIComponent.AIState;
 import io.github.mygames.Components.AIComponent.SteeringLocation;
 import io.github.mygames.Components.B2dBodyComponent;
+import io.github.mygames.Components.ControlComponent;
 import io.github.mygames.Components.FactionComponent;
 import io.github.mygames.Components.StateComponent;
 import io.github.mygames.Components.StatisticsComponent;
@@ -45,6 +46,7 @@ public class SteeringSystem extends IteratingSystem {
     private ComponentMapper<FactionComponent> factionMapper;
     private ComponentMapper<WeaponComponent> wpnMapper;
     private ComponentMapper<B2dBodyComponent> bodyMapper;
+    //private ComponentMapper<ControlComponent> ctrl_map;
     private ImmutableArray<Entity> CharsEntities;
     private ArrayList<Entity> nearbyEntitiesCache;
     
@@ -69,9 +71,10 @@ public class SteeringSystem extends IteratingSystem {
         factionMapper = ComponentMapper.getFor(FactionComponent.class);
         wpnMapper = ComponentMapper.getFor(WeaponComponent.class);
         bodyMapper = ComponentMapper.getFor(B2dBodyComponent.class);
+        //ctrl_map = ComponentMapper.getFor(ControlComponent.class);
         // Получаем персонажей для обнаружения (а мы их и так имеем. Тут был игрок зачем-то)
         CharsEntities = engine.getEntitiesFor(
-            Family.all(FactionComponent.class, TransformComponent.class).get()
+            Family.all(TransformComponent.class,AIComponent.class).get()
         );
         nearbyEntitiesCache  = new ArrayList<>();
         System.out.println("AI Added");
@@ -109,8 +112,8 @@ public class SteeringSystem extends IteratingSystem {
         //updateSteeringBehavior(entity, ai, transform, stats);
         
         // Обрабатываем текущее состояние
-        /*processAIState(entity, ai, transform, stats, deltaTime);
-        
+        processAIState(entity, ai, transform, stats, deltaTime);
+        /*
         // Применяем steering behavior если он есть
         if (ai.steeringBehavior != null && ai.state != AIState.IDLE && ai.state != AIState.DEAD) {
             // Инициализируем steering output если нужно
@@ -173,12 +176,13 @@ public class SteeringSystem extends IteratingSystem {
         Entity closestHostile = findClosestHostile(self, nearbyEntities, transform.coords);
         
         // Проверяем наличие опасности (для EVADE)
-        Entity closestDanger = findClosestDanger(self, nearbyEntities, transform.coords, stats);
+        Entity closestDanger = null; //findClosestDanger(self, nearbyEntities, transform.coords, stats);
         //System.out.println("DEC");
         // Логика принятия решений на основе текущего состояния
         switch (ai.state) {
             case IDLE:
-                //handleIdleState(self, ai, stats, closestHostile, closestDanger);
+                //System.out.println("idle state");
+                handleIdleState(self, ai, stats, closestHostile, closestDanger);
                 break;
                 
             case WANDER:
@@ -198,9 +202,10 @@ public class SteeringSystem extends IteratingSystem {
                 break;
                 
             case ATTACK:
+                System.out.println("atk state");
+                
                 handleAttackState(self, ai, transform, stats, closestHostile);
                 break;
-                
             case EVADE:
                 //handleEvadeState(self, ai, stats, closestDanger);
                 break;
@@ -212,6 +217,8 @@ public class SteeringSystem extends IteratingSystem {
             case DEAD:
                 // Ничего не делаем
                 break;
+            default:
+                System.out.println("unhandled state" + ai.state);
         }
         
         // Обновляем таймер для следующего решения
@@ -222,18 +229,20 @@ public class SteeringSystem extends IteratingSystem {
     
     private void handleIdleState(Entity self, AIComponent ai, StatisticsComponent stats,
                                 Entity closestHostile, Entity closestDanger) {
-        // Проверяем опасность
+        //System.out.println("IDLE");
+// Проверяем опасность
         if (closestDanger != null) {
             //ai.state = AIState.EVADE;
             //ai.targetEntity = closestDanger;
+            System.out.println("IS DANGER");
             return;
         }
         
         // Проверяем врагов
         if (closestHostile != null) {
             //ai.state = AIState.PURSUE;
-            //ai.targetEntity = closestHostile;
-            //ai.targetEntity = closestHostile;
+            ai.targetEntity = closestHostile;
+            System.out.println("SPOTTED HOSTILE");
             ai.state = AIState.ATTACK;
             return;
         }
@@ -398,11 +407,13 @@ public class SteeringSystem extends IteratingSystem {
     private void handleAttackState(Entity self, AIComponent ai, TransformComponent transform,
                                   StatisticsComponent stats, Entity closestHostile) {
         // Если цель мертва или потеряна
+        
         if (closestHostile == null || closestHostile != ai.targetEntity) {
             //ai.state = AIState.INVESTIGATE;
             ai.state = AIState.IDLE;
             ai.previous_state = AIState.ATTACK;
             ai.targetEntity = null;
+            System.out.println("ATTACK STOPPED");
             return;
         }
         
@@ -412,6 +423,7 @@ public class SteeringSystem extends IteratingSystem {
             float distance = transform.coords.dst(targetTransform.coords);
             if (distance > ai.attackRange) {
                 //ai.state = AIState.PURSUE;
+                System.out.println("ENEMY LOST");
                 ai.state = AIState.IDLE;
             }
         }
@@ -540,15 +552,36 @@ public class SteeringSystem extends IteratingSystem {
             case ATTACK:
                 // Здесь можно добавить логику атаки
                 // Например, вызов системы боя
+                WeaponComponent wpn = entity.getComponent(WeaponComponent.class);
+                wpn.aimPoint = TransformComponent.Vector3ToVector2(
+                            ai.targetEntity.getComponent(TransformComponent.class).coords
+                    );
                 if (ai.targetEntity != null && ai.stateTime >= 1f / stats.attack_rate) {
                     // Сброс таймера для следующей атаки
                     ai.stateTime = 0;
-                    entity.getComponent(WeaponComponent.class).aimPoint = TransformComponent.Vector3ToVector2(
+                    /*entity.getComponent(WeaponComponent.class).aimPoint = TransformComponent.Vector3ToVector2(
                             ai.targetEntity.getComponent(TransformComponent.class).coords
                     );
                     entity.getComponent(WeaponComponent.class).make_shoot = true;
+*/
                     // Инициировать атаку через систему событий
-                    System.out.println("ATTACK");
+                    
+                    wpn.aimPoint = TransformComponent.Vector3ToVector2(
+                            ai.targetEntity.getComponent(TransformComponent.class).coords);
+                    float targetAngle = (float) Math.atan2(
+                        wpn.aimPoint.x - transform.coords.x,
+                        wpn.aimPoint.y - transform.coords.y
+                    );
+                    entity.getComponent(B2dBodyComponent.class).body.setTransform(transform.coords.x, transform.coords.y, targetAngle);
+                    //transform.angle = (float) Math.toDegrees(targetAngle);
+                    if (!wpn.make_shoot) {
+                        //wtf its crashing like a/0
+                        wpn.make_shoot = true;
+                        //System.out.println("BAM");
+                    } else {
+                        wpn.make_shoot = false;
+                    }
+                    //System.out.println("ATTACK");
                 }
                 break;
                 
@@ -637,7 +670,7 @@ public class SteeringSystem extends IteratingSystem {
                     if (distance < closestDistance) {
                         closest = entity;
                         closestDistance = distance;
-                        
+                        //System.out.println("IS HOSTILE ADDED");
                     }
                 }
             }
@@ -645,35 +678,5 @@ public class SteeringSystem extends IteratingSystem {
         
         return closest;
     }
-    
-    private Entity findClosestDanger(Entity self, ArrayList<Entity> entities, 
-                                    Vector3 position, StatisticsComponent stats) {
-        
-        // По умолчанию ищем более сильных врагов
-        Entity closestDanger = null;
-        float closestDistance = stats.sense_range;
-        //float dangerThreshold = 1.5f; // Во сколько раз враг должен быть сильнее
-        
-        FactionComponent selfFaction = factionMapper.get(self);
-        if (selfFaction == null) return null;
-        
-        for (Entity entity : entities) {
-            FactionComponent otherFaction = factionMapper.get(entity);
-            if (otherFaction == null) continue;
-            
-            // Проверяем враждебность
-            if (selfFaction.isHostileTo(otherFaction.self_aware)) {
-                TransformComponent transform = transformMapper.get(entity);
-                if (transform != null) {
-                    float distance = position.dst2(transform.coords);
-                    if (distance < closestDistance) {
-                        closestDanger = entity;
-                        closestDistance = distance;
-                    }
-                }
-            }
-        }
-        
-        return closestDanger;
-    }
+
 }

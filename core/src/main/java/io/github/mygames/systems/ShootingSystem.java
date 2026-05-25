@@ -48,7 +48,8 @@ public class ShootingSystem extends IteratingSystem {
     protected void processEntity(Entity entity, float deltaTime) {
         WeaponComponent weapon = wm.get(entity);
         //TransformComponent transform = tm.get(entity);
-        if (weapon.make_shoot) {
+        if (weapon.weaponType == WeaponComponent.WeaponType.UNARMED) return;
+        else if (weapon.make_shoot) {
             shoot(entity, weapon.aimPoint);
         }
         weapon.lastShotTime += deltaTime;
@@ -67,13 +68,14 @@ public class ShootingSystem extends IteratingSystem {
         //System.out.println("some shoot!");
         switch (weapon.projectileType) {
             case BULLET:
+                //System.out.println("performHitscanShot");
                 performHitscanShot(shooter, weapon);
                 break;
             case PROJECTILE:
-                launchProjectile(shooter, targetPosition, weapon);
+                //launchProjectile(shooter, targetPosition, weapon);
                 break;
             case MELEE:
-                performMeleeAttack(shooter, targetPosition, weapon);
+                //performMeleeAttack(shooter, targetPosition, weapon);
                 break;
             default:
                 System.out.println("Unhandled weapontype");
@@ -89,6 +91,8 @@ public class ShootingSystem extends IteratingSystem {
         //something wrong here...
         Vector2 direction = new Vector2(weapon.aimPoint).sub(weapon.firePoint).cpy().nor();
         Vector2 rayEnd = new Vector2(weapon.firePoint).add(direction.scl(weapon.range));
+        //crashes if target and shooter at same point 0.0???
+        //if (rayEnd.equals(Vector2.Zero) || rayEnd == Vector2.Zero || ) return;
         
         //create visual shoot line
        //Entity hit_vis = ashleyEngine.createEntity();

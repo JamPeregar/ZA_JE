@@ -50,7 +50,7 @@ public abstract class NpcGenericEntity {
     final CollisionComponent col_cmp;
     final WeaponComponent wpn_cmp;
     final AIComponent ai_cmp;
-    final ControlComponent ctrl_cmp;
+    //final ControlComponent ctrl_cmp;
     
     final Engine base_engine;
     final World base_world;
@@ -74,7 +74,7 @@ public abstract class NpcGenericEntity {
         this.stats_cmp = engine.createComponent(StatisticsComponent.class);
         this.wpn_cmp = engine.createComponent(WeaponComponent.class);
         this.ai_cmp = engine.createComponent(AIComponent.class);
-        ctrl_cmp = engine.createComponent(ControlComponent.class);
+        //ctrl_cmp = engine.createComponent(ControlComponent.class);
         
           //configure other in children     
           //configure components
@@ -84,7 +84,8 @@ public abstract class NpcGenericEntity {
         //faction_cmp.default_relations();
         //bod_cmp.hitboxFx = bod_cmp.body.getFixtureList().first();
         ai_cmp.state = AIComponent.AIState.IDLE;
-        ctrl_cmp.npc = this;
+        
+        //ctrl_cmp.npc = this;
         //add components
         base_entity.add(type_cmp);
         base_entity.add(position_cmp);
@@ -98,7 +99,7 @@ public abstract class NpcGenericEntity {
         base_entity.add(col_cmp);
         base_entity.add(wpn_cmp);
         base_entity.add(ai_cmp);
-        base_entity.add(ctrl_cmp);
+        //base_entity.add(ctrl_cmp);
         
         engine.addEntity(base_entity);
     }
