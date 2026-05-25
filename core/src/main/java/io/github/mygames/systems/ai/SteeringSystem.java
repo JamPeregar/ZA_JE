@@ -94,7 +94,7 @@ public class SteeringSystem extends IteratingSystem {
                 //ai.steeringBehavior = null;
                 //transform.vel.set(0, 0);
             }
-            System.out.println("DEAD");
+            //System.out.println("DEAD");
             return; // Мертвые не двигаются
         }
         
@@ -202,7 +202,7 @@ public class SteeringSystem extends IteratingSystem {
                 break;
                 
             case ATTACK:
-                System.out.println("atk state");
+                //System.out.println("atk state");
                 
                 handleAttackState(self, ai, transform, stats, closestHostile);
                 break;
@@ -421,7 +421,7 @@ public class SteeringSystem extends IteratingSystem {
         TransformComponent targetTransform = transformMapper.get(closestHostile);
         if (targetTransform != null) {
             float distance = transform.coords.dst(targetTransform.coords);
-            if (distance > ai.attackRange) {
+            if (distance > ai.attackRange || statsMapper.get(closestHostile).is_dead) {
                 //ai.state = AIState.PURSUE;
                 System.out.println("ENEMY LOST");
                 ai.state = AIState.IDLE;
@@ -553,9 +553,10 @@ public class SteeringSystem extends IteratingSystem {
                 // Здесь можно добавить логику атаки
                 // Например, вызов системы боя
                 WeaponComponent wpn = entity.getComponent(WeaponComponent.class);
-                wpn.aimPoint = TransformComponent.Vector3ToVector2(
+                /*wpn.aimPoint = TransformComponent.Vector3ToVector2(
                             ai.targetEntity.getComponent(TransformComponent.class).coords
                     );
+                */
                 if (ai.targetEntity != null && ai.stateTime >= 1f / stats.attack_rate) {
                     // Сброс таймера для следующей атаки
                     ai.stateTime = 0;
@@ -566,13 +567,22 @@ public class SteeringSystem extends IteratingSystem {
 */
                     // Инициировать атаку через систему событий
                     
-                    wpn.aimPoint = TransformComponent.Vector3ToVector2(
-                            ai.targetEntity.getComponent(TransformComponent.class).coords);
+                    wpn.aimPoint.set(TransformComponent.Vector3ToVector2(transformMapper.get(ai.targetEntity).coords));
                     float targetAngle = (float) Math.atan2(
-                        wpn.aimPoint.x - transform.coords.x,
-                        wpn.aimPoint.y - transform.coords.y
+                        wpn.aimPoint.x - wpn.firePoint.x,
+                        wpn.aimPoint.y - wpn.firePoint.y
                     );
-                    entity.getComponent(B2dBodyComponent.class).body.setTransform(transform.coords.x, transform.coords.y, targetAngle);
+                    
+                    float a = targetAngle;//(float) Math.toDegrees(targetAngle);
+                    
+                    //transform.angle = a;
+                    a = a % 360;
+                        if (a < 0) {
+                            a += 360;
+                        } //to make sure its 0-360 degree
+                   transform.angle = a;
+                    bodyMapper.get(entity).body.setTransform(transform.coords.x, transform.coords.y, a);
+                    //if (task_map.get(entity).the_task != TaskComponent.TaskEnum.ROTATE_LEFT) task_map.get(entity).the_task = TaskComponent.TaskEnum.ROTATE_LEFT;
                     //transform.angle = (float) Math.toDegrees(targetAngle);
                     if (!wpn.make_shoot) {
                         //wtf its crashing like a/0
@@ -657,7 +667,7 @@ public class SteeringSystem extends IteratingSystem {
         if (selfFaction == null) return null;
         for (Entity entity : entities) {
             FactionComponent otherFaction = factionMapper.get(entity);
-            if (otherFaction == null) continue;
+            if (otherFaction == null || statsMapper.get(entity).is_dead) continue;
             //System.out.println("TRY HOSTILE - " + selfFaction.self_aware + " vs " + otherFaction.self_aware);
             // Проверяем враждебность
             if (selfFaction.isHostileTo(otherFaction.self_aware)) {

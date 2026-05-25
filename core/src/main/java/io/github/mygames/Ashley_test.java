@@ -100,7 +100,7 @@ public class Ashley_test implements Screen{
         FactionComponent.show_polmap();
         npcpool.get(0).restoreRelationships();
         //test_actor.giveWeapon(WeaponType.ASSAULT_RIFLE);
-        npcpool.get(1).giveWeapon(WeaponType.ASSAULT_RIFLE);
+        //npcpool.get(1).giveWeapon(WeaponType.ASSAULT_RIFLE);
         //npcpool.get(1).setAIState(AIComponent.AIState.IDLE);
 //npcpool.add(npc_gen.createNPCFaction(500f, 500f, 0f, FactionEnum.ZOMBIE, new TextureRegion(new Texture(Gdx.files.internal("models/enemy.png")))));
         

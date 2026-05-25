@@ -91,6 +91,10 @@ public class ShootingSystem extends IteratingSystem {
         //something wrong here...
         Vector2 direction = new Vector2(weapon.aimPoint).sub(weapon.firePoint).cpy().nor();
         Vector2 rayEnd = new Vector2(weapon.firePoint).add(direction.scl(weapon.range));
+        if (weapon.aimPoint.epsilonEquals(weapon.firePoint)) {
+            System.out.println("SKIP!! aimPoint= " + weapon.aimPoint + "firePoint= "+ weapon.firePoint);
+            return;
+        }
         //crashes if target and shooter at same point 0.0???
         //if (rayEnd.equals(Vector2.Zero) || rayEnd == Vector2.Zero || ) return;
         
@@ -103,6 +107,7 @@ public class ShootingSystem extends IteratingSystem {
         // RayCastCallback создаётся при пересечении фикстур (они часть body)
         RayCastCallback callback = (Fixture fixture, Vector2 point, Vector2 normal, float fraction) -> {
             // Игнорируем сенсоры и триггеры
+            
             if (fixture.isSensor()) return -1;
             // Получаем сущность из фикстуры
             Entity hitEntity = (Entity) fixture.getBody().getUserData();
@@ -118,8 +123,9 @@ public class ShootingSystem extends IteratingSystem {
                 
                 // Эффекты: кровь, искры и т.д.
                 //createHitEffect(point, normal);
-                return fraction; // Останавливаем raycast
+                return -1; // Останавливаем raycast
             } 
+
             //bullet_cmp.set(weapon.firePoint, rayEnd); //renderable bullet;
             return -1; // Продолжаем raycast
         };
@@ -127,6 +133,7 @@ public class ShootingSystem extends IteratingSystem {
         bullet_cmp.set(weapon.firePoint, rayEnd); //renderable bullet; 
         
         box2dWorld.rayCast(callback, weapon.firePoint, rayEnd); //hit scaning
+        
         //System.out.println("shoot ended");
         
         // Визуальные эффекты выстрела
